@@ -1,0 +1,7 @@
+context_len,method,best_batch_size,decode_throughput_tokens_s,peak_process_gpu_memory_mib,speedup_vs_full_attention,source_table
+30000,Full_Flash_Attn,16,319.16564194603404,76264.0,1.0,research/fig13_single_gpu_consolidated/paper_cache_peak_throughput.csv
+30000,RetroInfer,32,765.5607284616467,34394.0,2.398631393385041,research/fig13_single_gpu_consolidated/paper_cache_peak_throughput.csv
+60000,Full_Flash_Attn,8,159.4161224045843,76078.0,1.0,research/fig13_single_gpu_consolidated/paper_cache_peak_throughput.csv
+60000,RetroInfer,16,397.2275848280289,37782.0,2.491765442769331,research/fig13_single_gpu_consolidated/paper_cache_peak_throughput.csv
+120000,Full_Flash_Attn,4,79.86775572554616,75960.0,1.0,research/fig13_single_gpu_consolidated/paper_cache_peak_throughput.csv
+120000,RetroInfer,8,198.26467644920544,41960.0,2.4824120153133253,research/fig13_single_gpu_consolidated/paper_cache_peak_throughput.csv

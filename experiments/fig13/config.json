@@ -1,0 +1,22 @@
+{
+  "context_lens": [
+    30000,
+    60000,
+    120000
+  ],
+  "cuda_visible_devices": "0",
+  "estimation_budget": 0.232,
+  "experiment": "fig13_single_a100",
+  "gen_len": 100,
+  "gpu": "single A100 80GB PCIe",
+  "methods": [
+    "Full_Flash_Attn",
+    "RetroInfer"
+  ],
+  "model_name": "gradientai/Llama-3-8B-Instruct-Gradient-1048k",
+  "result_filter": "successful measured rows only",
+  "retrieval_budget": 0.018,
+  "retroinfer_cache_ratio": 0.05,
+  "source_artifact": "research/fig13_single_gpu_consolidated",
+  "task_name": "NIAH"
+}

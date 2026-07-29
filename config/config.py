@@ -3,6 +3,48 @@ from pathlib import Path
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 
+def compute_retroinfer_block_cache_capacity(
+    n_centroids: int,
+    n_centroids_new: int,
+    nprobe: int,
+    nprobe_new: int,
+    pages_per_cluster: int,
+    cache_ratio: float,
+) -> dict:
+    """Compute RetroInfer offload GPU block-cache capacity in implementation units."""
+    int_values = {
+        "n_centroids": n_centroids,
+        "n_centroids_new": n_centroids_new,
+        "nprobe": nprobe,
+        "nprobe_new": nprobe_new,
+        "pages_per_cluster": pages_per_cluster,
+    }
+    for name, value in int_values.items():
+        if value < 0:
+            raise ValueError(f"{name}({value}) should be non-negative")
+    if pages_per_cluster == 0:
+        raise ValueError("pages_per_cluster should be positive")
+
+    index_cluster_num = n_centroids + n_centroids_new
+    retrieval_cluster_num = nprobe + nprobe_new
+    if cache_ratio > 0.0:
+        cache_cluster_num = round(index_cluster_num * cache_ratio)
+        source = "cache_ratio"
+    else:
+        cache_cluster_num = retrieval_cluster_num * 3
+        source = "retrieval_budget_default"
+
+    return {
+        "source": source,
+        "cache_ratio": cache_ratio,
+        "index_cluster_num": index_cluster_num,
+        "retrieval_cluster_num": retrieval_cluster_num,
+        "cache_cluster_num": cache_cluster_num,
+        "pages_per_cluster": pages_per_cluster,
+        "cache_pages": cache_cluster_num * pages_per_cluster,
+    }
+
+
 def add_config_args(parser):
     parser.add_argument("--attn_type", type=str, default="RetroInfer",
                         choices=["Full_Flash_Attn", "RetroInfer"], help="Attention method")

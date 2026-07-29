@@ -1,0 +1,47 @@
+{
+  "baseline_cache_ratio": 0.05,
+  "batch_sizes": [
+    1,
+    8
+  ],
+  "cache_ratios": [
+    0.005,
+    0.05,
+    0.1
+  ],
+  "context_lens": [
+    120000,
+    240000,
+    480000
+  ],
+  "context_batch_groups": [
+    {
+      "context_len": 120000,
+      "batch_size": 1
+    },
+    {
+      "context_len": 120000,
+      "batch_size": 8
+    },
+    {
+      "context_len": 240000,
+      "batch_size": 1
+    },
+    {
+      "context_len": 480000,
+      "batch_size": 1
+    }
+  ],
+  "cuda_visible_devices": "0",
+  "estimation_budget": 0.232,
+  "experiment": "cache_ratio_single_a100",
+  "gen_len": 100,
+  "gpu": "single A100 80GB PCIe",
+  "method": "RetroInfer",
+  "model_name": "gradientai/Llama-3-8B-Instruct-Gradient-1048k",
+  "result_scope": "measured rows for the configured context/batch groups",
+  "retrieval_budget": 0.018,
+  "seed": 2025,
+  "source_artifact": "research/block_cache_single_a100_pressure_final",
+  "task_name": "NIAH"
+}

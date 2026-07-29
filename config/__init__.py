@@ -1,1 +1,1 @@
-from .config import add_config_args, generate_config
+from .config import add_config_args, compute_retroinfer_block_cache_capacity, generate_config

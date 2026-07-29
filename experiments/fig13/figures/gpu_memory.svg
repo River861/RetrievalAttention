@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="420" viewBox="0 0 720 420">
+<style>text{font-family:Arial,sans-serif;font-size:14px}.title{font-size:20px;font-weight:700}.axis{stroke:#222;stroke-width:1.4}.grid{stroke:#ddd;stroke-width:1}.line{fill:none;stroke-width:3}.pt{stroke:#fff;stroke-width:1.4}</style>
+<text class="title" x="360.0" y="28" text-anchor="middle">Figure 13 single-A100 GPU memory</text>
+<line class="grid" x1="82" y1="346.0" x2="692" y2="346.0"/>
+<text x="72" y="350.0" text-anchor="end">0</text>
+<line class="grid" x1="82" y1="271.0" x2="692" y2="271.0"/>
+<text x="72" y="275.0" text-anchor="end">21</text>
+<line class="grid" x1="82" y1="196.0" x2="692" y2="196.0"/>
+<text x="72" y="200.0" text-anchor="end">42</text>
+<line class="grid" x1="82" y1="121.0" x2="692" y2="121.0"/>
+<text x="72" y="125.0" text-anchor="end">63</text>
+<line class="grid" x1="82" y1="46.0" x2="692" y2="46.0"/>
+<text x="72" y="50.0" text-anchor="end">83</text>
+<line class="axis" x1="82" y1="346" x2="692" y2="346"/>
+<line class="axis" x1="82" y1="46" x2="82" y2="346"/>
+<text x="82.0" y="374" text-anchor="middle">30K</text>
+<text x="387.0" y="374" text-anchor="middle">60K</text>
+<text x="692.0" y="374" text-anchor="middle">120K</text>
+<text x="360.0" y="402" text-anchor="middle">Context length</text>
+<text transform="translate(22 210.0) rotate(-90)" text-anchor="middle">Peak process GPU memory (GiB)</text>
+<polyline class="line" stroke="#0072B2" points="82.0,78.1 387.0,78.8 692.0,79.2"/>
+<circle class="pt" cx="82.0" cy="78.1" r="5" fill="#0072B2"/>
+<circle class="pt" cx="387.0" cy="78.8" r="5" fill="#0072B2"/>
+<circle class="pt" cx="692.0" cy="79.2" r="5" fill="#0072B2"/>
+<rect x="100" y="57" width="22" height="4" fill="#0072B2"/><text x="132" y="63">Full FlashAttn</text>
+<polyline class="line" stroke="#D55E00" points="82.0,225.2 387.0,213.3 692.0,198.6"/>
+<circle class="pt" cx="82.0" cy="225.2" r="5" fill="#D55E00"/>
+<circle class="pt" cx="387.0" cy="213.3" r="5" fill="#D55E00"/>
+<circle class="pt" cx="692.0" cy="198.6" r="5" fill="#D55E00"/>
+<rect x="345" y="57" width="22" height="4" fill="#D55E00"/><text x="377" y="63">RetroInfer</text>
+</svg>

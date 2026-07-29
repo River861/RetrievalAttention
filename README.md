@@ -5,6 +5,10 @@
 - By leveraging coarse-grained spatial locality in attention, we design a lightweight *segmented clustering* algorithm for low-overhead index construction and updates.
 - Highly-optimized CUDA kernels to support fast GPU–CPU data movement and sustain high throughput.
 
+## Final experiment deliveries
+
+This cleaned tree keeps two final experiment packages under [`experiments/`](experiments/): `fig13/` for the single-A100 Figure 13 reproduction and `cache_ratio/` for the 0.5% / 5% / 10% cache-ratio sensitivity study.
+
 <div align="center">
   <img src="asserts/RetroInfer.png" width="500"/>
   <p><em>RetroInfer Architecture.</em></p>
@@ -183,6 +187,10 @@ sudo apt install numactl -y
 cd throughput_eval
 bash run.sh
 ```
+
+### Final experiment bundles
+
+The cleaned final deliveries are under [`experiments/`](experiments/): [`fig13/`](experiments/fig13/) for the single-A100 Figure 13 reproduction and [`cache_ratio/`](experiments/cache_ratio/) for the 0.5% / 5% / 10% cache-ratio study. Each bundle contains a concise report, notes, config, structured results, final figures, and a rerun entry.
 
 ## :clipboard: Add New Sparsity Methods
 This repository provides a flexible inference framework that allows users to easily integrate new sparsity-based attention methods. To add a new sparsity method, you can follow these steps: 

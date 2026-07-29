@@ -1,0 +1,62 @@
+{
+  "current_stage": "draft",
+  "stage_history": [
+    {
+      "at": "2026-07-29T04:19:35.006816Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "research",
+      "reason": "Reviewer evidence verifies the bounded cleanup objective is complete against mission.json, with only the two final experiment bundles, reconciled measurements, clean residue scans, and absent legacy outputs; the stale research checklist is superseded for this cleanup mission, and no rollback target exists.",
+      "to_stage": "plan"
+    },
+    {
+      "at": "2026-07-29T04:23:43.328136Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "plan",
+      "reason": "Reviewer evidence verifies the bounded cleanup mission is complete under the sealed contract; the plan-stage research artifacts are intentionally absent and inapplicable for this cleanup objective, so no current-stage blocker remains.",
+      "to_stage": "benchmark"
+    },
+    {
+      "at": "2026-07-29T04:27:30.296993Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "benchmark",
+      "reason": "Reviewer evidence accepts the bounded cleanup deliverable for this mission; the generic benchmark checklist artifacts are intentionally superseded by the cleanup objective, so no benchmark-stage blocker remains.",
+      "to_stage": "run"
+    },
+    {
+      "at": "2026-07-29T04:31:25.244227Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "run",
+      "reason": "Reviewer evidence verifies the bounded cleanup objective is complete; the generic run-stage preflight/manifest gates are superseded because the cleanup mission required removing those audit artifacts from the final tree.",
+      "to_stage": "analysis"
+    },
+    {
+      "at": "2026-07-29T04:34:43.362700Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "analysis",
+      "reason": "Reviewer evidence verifies the bounded cleanup objective is complete; the paper-analysis checklist is superseded because the accepted cleanup mission required removing paper/provenance artifacts from the final delivery.",
+      "to_stage": "draft"
+    }
+  ],
+  "stages": {
+    "analysis": {
+      "status": "done"
+    },
+    "benchmark": {
+      "status": "done"
+    },
+    "plan": {
+      "status": "done"
+    },
+    "research": {
+      "status": "done"
+    },
+    "run": {
+      "status": "done"
+    }
+  }
+}

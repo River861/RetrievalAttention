@@ -204,13 +204,30 @@ class LLM:
             outputs_ids.append(output_ids)
 
         decode_end = time.time()
+        prefill_latency = prefill_end - prefill_start
+        decode_latency = decode_end - decode_start
+        decode_steps = len(outputs_ids) - 1
+        decode_ms_per_step = (decode_latency * 1000 / decode_steps) if decode_steps > 0 else 0.0
+        decode_throughput = (self.batch_size * decode_steps / decode_latency) if decode_latency > 0 else 0.0
+        e2e_latency = prefill_latency + decode_latency
+        self.last_metrics = {
+            "prefill_latency_s": prefill_latency,
+            "decode_latency_s": decode_latency,
+            "decode_steps": decode_steps,
+            "decode_ms_per_step": decode_ms_per_step,
+            "decode_throughput_tokens_s": decode_throughput,
+            "e2e_latency_s": e2e_latency,
+            "batch_size": self.batch_size,
+            "input_length": self.input_length,
+            "max_new_length": self.max_new_length,
+        }
         print(colored(
-            f"Decoding latency: {round((decode_end - decode_start), 4)} s ({round((decode_end - decode_start) * 1000 / (len(outputs_ids) - 1), 2)} ms/step), "
-            f"Throughput: {round(self.batch_size * (len(outputs_ids) - 1) / (decode_end - decode_start), 2)} tokens/s",
+            f"Decoding latency: {round(decode_latency, 4)} s ({round(decode_ms_per_step, 2)} ms/step), "
+            f"Throughput: {round(decode_throughput, 2)} tokens/s",
             'green'
         ))
 
-        print(colored(f"End2End Latency: {round((prefill_end - prefill_start + decode_end - decode_start), 4)} s\n", 'green'))
+        print(colored(f"End2End Latency: {round(e2e_latency, 4)} s\n", 'green'))
         
         outputs_ids = torch.cat(outputs_ids, dim=-1).tolist()
         

@@ -1,15 +1,16 @@
 import os
 from setuptools import setup
-from torch.utils.cpp_extension import CUDAExtension, CppExtension, BuildExtension
+from torch.utils.cpp_extension import CUDAExtension, CppExtension, BuildExtension, CUDA_HOME
 
 src_dir = "retroinfer_kernels/src"
 cutlass_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"../cutlass")
+cuda_home = os.environ.get("CUDA_HOME") or CUDA_HOME or "/usr/local/cuda-12"
 
 ext_modules = [
     CppExtension(
         'retroinfer_kernels.WaveBuffer',
         sources=[f'{src_dir}/wave_buffer_cpu.cpp'],
-        include_dirs=['/usr/local/cuda-12/include'],
+        include_dirs=[os.path.join(cuda_home, "include")],
         library_dirs=['/usr/local/lib'],
         extra_compile_args=['-O3', '-fopenmp'],
         extra_link_args=['-fopenmp'],

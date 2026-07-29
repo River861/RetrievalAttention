@@ -1,8 +1,10 @@
 import math
+
 import torch
 from retroinfer_kernels import ThreadPool, WaveBufferCPU
 from retroinfer_kernels import gather_copy_and_concat, gather_copy_and_scatter, gather_copy_vectors, batch_gemm_softmax
 
+from config.config import compute_retroinfer_block_cache_capacity
 from .cache import KV_Cache
 from .kmeans import segment_k_means
 from weighted_flash_decoding import weighted_flash_decoding
@@ -148,9 +150,18 @@ class retroinfer_cache(KV_Cache):
             self.update_cudagraphs = [torch.cuda.CUDAGraph() for _ in range(self.layer_num)]
 
         # calculate the GPU block cache size and compute buffer size (count by pages)
-        cache_cluster_num = round((self.n_centroids + self.n_centroids_new) * cache_ratio) if cache_ratio > 0.0 \
-                            else (self.nprobe + self.nprobe_new) * 3
-        self.cache_size = cache_cluster_num * pages_per_cluster
+        self.block_cache_capacity = compute_retroinfer_block_cache_capacity(
+            n_centroids=self.n_centroids,
+            n_centroids_new=self.n_centroids_new,
+            nprobe=self.nprobe,
+            nprobe_new=self.nprobe_new,
+            pages_per_cluster=pages_per_cluster,
+            cache_ratio=cache_ratio,
+        )
+        self.cache_ratio = cache_ratio
+        self.pages_per_cluster = pages_per_cluster
+        self.cache_cluster_num = self.block_cache_capacity["cache_cluster_num"]
+        self.cache_size = self.block_cache_capacity["cache_pages"]
         self.buffer_size = max(buffer_cluster_num, (self.nprobe + self.nprobe_new) * 4) * pages_per_cluster
         print(f"Cache pages: {self.cache_size}, Buffer pages: {self.buffer_size}")
 
@@ -346,8 +357,31 @@ class retroinfer_cache(KV_Cache):
         self.esitimate_gpu_memory /= 1024 * 1024 * 1024
         # print(f"Estimate GPU memory consumption for cache and buffers: {self.esitimate_gpu_memory:.4f} GB")
         return self.free_memory > self.esitimate_gpu_memory*1.5
-    
-    
+
+
+    def block_cache_metadata(self):
+        """Return structured capacity metadata for the per-layer GPU block cache."""
+        dtype_bytes = torch.empty((), dtype=self.dtype).element_size()
+        vectors_per_layer = self.cache_size * self.page_size
+        bytes_per_layer = 2 * self.batch_size * self.kv_head * vectors_per_layer * self.head_dim * dtype_bytes
+        return {
+            "block_cache_source": self.block_cache_capacity["source"],
+            "block_cache_ratio": self.cache_ratio,
+            "block_cache_index_clusters": self.block_cache_capacity["index_cluster_num"],
+            "block_cache_retrieval_clusters": self.block_cache_capacity["retrieval_cluster_num"],
+            "block_cache_clusters_per_layer": self.cache_cluster_num,
+            "block_cache_pages_per_cluster": self.pages_per_cluster,
+            "block_cache_pages_per_layer": self.cache_size,
+            "block_cache_page_size_vectors": self.page_size,
+            "block_cache_vectors_per_layer": vectors_per_layer,
+            "block_cache_layer_count": self.layer_num,
+            "block_cache_total_pages": self.cache_size * self.layer_num,
+            "block_cache_total_vectors": vectors_per_layer * self.layer_num,
+            "block_cache_dtype_bytes": dtype_bytes,
+            "block_cache_bytes_per_layer": bytes_per_layer,
+            "block_cache_total_bytes": bytes_per_layer * self.layer_num,
+        }
+
     def allocate_computation_buffer(self):
         """Allocate layer-share buffers, dict for different GPUs"""
         self.gemm_o_dict, self.softmax_o_dict, self.norm_dict, self.sum_dict, self.dist_dict = {}, {}, {}, {}, {}

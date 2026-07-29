@@ -21,6 +21,52 @@ def set_seed(seed):
     torch.cuda.manual_seed_all(seed)
 
 
+def reset_cuda_peak_memory_stats():
+    if not torch.cuda.is_available():
+        return
+    for device_idx in range(torch.cuda.device_count()):
+        torch.cuda.synchronize(device_idx)
+        torch.cuda.reset_peak_memory_stats(device_idx)
+
+
+def collect_cuda_memory_stats():
+    if not torch.cuda.is_available():
+        return {}
+
+    per_device = []
+    for device_idx in range(torch.cuda.device_count()):
+        torch.cuda.synchronize(device_idx)
+        per_device.append(
+            {
+                "device": device_idx,
+                "allocated_mib": torch.cuda.memory_allocated(device_idx) / (1024 ** 2),
+                "reserved_mib": torch.cuda.memory_reserved(device_idx) / (1024 ** 2),
+                "peak_allocated_mib": torch.cuda.max_memory_allocated(device_idx) / (1024 ** 2),
+                "peak_reserved_mib": torch.cuda.max_memory_reserved(device_idx) / (1024 ** 2),
+            }
+        )
+    if not per_device:
+        return {}
+
+    return {
+        "torch_cuda_memory_allocated_mib": sum(item["allocated_mib"] for item in per_device),
+        "torch_cuda_memory_reserved_mib": sum(item["reserved_mib"] for item in per_device),
+        "torch_cuda_peak_allocated_mib": max(item["peak_allocated_mib"] for item in per_device),
+        "torch_cuda_peak_reserved_mib": max(item["peak_reserved_mib"] for item in per_device),
+        "torch_cuda_peak_allocated_all_devices_mib": sum(item["peak_allocated_mib"] for item in per_device),
+        "torch_cuda_peak_reserved_all_devices_mib": sum(item["peak_reserved_mib"] for item in per_device),
+        "torch_cuda_per_device_memory": per_device,
+    }
+
+
+def collect_block_cache_stats(llm):
+    kv_cache = getattr(llm, "kv_cache", None)
+    metadata = getattr(kv_cache, "block_cache_metadata", None)
+    if metadata is None:
+        return {}
+    return metadata()
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Test example")
     parser.add_argument("--batch_size", type=int, default=1, help="Total Batch size")
@@ -74,6 +120,7 @@ if __name__ == "__main__":
     attn_config = generate_config(model_name, input_len, attn_type, 
                                   float(args.retrieval_budget), float(args.estimation_budget), float(args.cache_ratio),
                                   args.use_cuda_graph, args.gpu_only)
+    reset_cuda_peak_memory_stats()
     llm = load_model(model_name, max_len, dtype, device)
 
     out = llm.generate(
@@ -87,8 +134,37 @@ if __name__ == "__main__":
         prefill_bsz=args.prefill_bsz,
         prefill_method=args.prefill_method
     )
+    torch_memory_stats = collect_cuda_memory_stats()
+    metrics = getattr(llm, "last_metrics", None)
+    if metrics is not None:
+        result = {
+            "runner": "retroinfer_native",
+            "model_name": model_name,
+            "attention_type": attn_type,
+            "task_name": task_name,
+            "context_len_arg": args.context_len,
+            "batch_size": batch_size,
+            "prefill_bsz": args.prefill_bsz,
+            "prefill_method": args.prefill_method,
+            "retrieval_budget": float(args.retrieval_budget),
+            "estimation_budget": float(args.estimation_budget),
+            "cache_ratio": float(args.cache_ratio),
+            "use_cuda_graph": bool(args.use_cuda_graph),
+            "gpu_only": bool(args.gpu_only),
+        }
+        result.update(metrics)
+        result.update(torch_memory_stats)
+        result.update(collect_block_cache_stats(llm))
+        print("RETROINFER_RESULT_JSON=" + json.dumps(result, sort_keys=True))
     
     if gen_len <= 100:
         result = tokenizer.batch_decode(out, skip_special_tokens=True)
         print(groundtruth)
         print(result)
+        task_hits = [str(groundtruth) in item for item in result]
+        print("RETROINFER_OUTPUT_JSON=" + json.dumps({
+            "groundtruth": groundtruth,
+            "outputs": result,
+            "task_contains_groundtruth": task_hits,
+            "all_outputs_contain_groundtruth": all(task_hits),
+        }, sort_keys=True))
