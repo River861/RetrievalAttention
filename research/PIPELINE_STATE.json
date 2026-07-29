@@ -1,5 +1,5 @@
 {
-  "current_stage": "draft",
+  "current_stage": "delivery",
   "stage_history": [
     {
       "at": "2026-07-29T04:19:35.006816Z",
@@ -40,6 +40,14 @@
       "from_stage": "analysis",
       "reason": "Reviewer evidence verifies the bounded cleanup objective is complete; the paper-analysis checklist is superseded because the accepted cleanup mission required removing paper/provenance artifacts from the final delivery.",
       "to_stage": "draft"
+    },
+    {
+      "at": "2026-07-29T07:26:35.545951Z",
+      "by": "manager",
+      "direction": "complete",
+      "from_stage": "delivery",
+      "reason": "reviewer certified the final-stage checklist, overriding the Manager hold (Delivery checklist is satisfied by reviewer evidence, including the real 120000x8 cache_ratio=0.025 run, updated artifacts, and passing compile/script/artifact )",
+      "to_stage": "delivery"
     }
   ],
   "stages": {
@@ -47,6 +55,11 @@
       "status": "done"
     },
     "benchmark": {
+      "status": "done"
+    },
+    "delivery": {
+      "completion_contract_sha256": "3ad6ee3580700f7632b683c350e7dbd060c9cc554342c6667ddbd5111ef9577a",
+      "completion_contract_version": 1,
       "status": "done"
     },
     "plan": {
@@ -58,5 +71,7 @@
     "run": {
       "status": "done"
     }
-  }
+  },
+  "vertical": "software",
+  "workflow_mode": "direct"
 }

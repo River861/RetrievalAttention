@@ -3,6 +3,7 @@ context_len,batch_size,cache_ratio,passed_runs,block_cache_total_gib,block_cache
 120000,1,0.05,2,0.7265625,744.0,0.908203125,34.61699126417905,29686.0,research/block_cache_single_a100_pressure_final/summary.csv
 120000,1,0.1,2,1.453125,1488.0,1.81640625,33.32570438755954,30454.0,research/block_cache_single_a100_pressure_final/summary.csv
 120000,8,0.005,2,0.578125,592.0,0.72265625,88.70186130749339,36584.0,research/block_cache_single_a100_pressure_final/summary.csv
+120000,8,0.025,1,2.90625,2976.0,3.6328125,149.08941189618056,39016.0,/home/v-xuchuanluo/.argus-skill/copilot-home/session-state/7253a517-eda5-4749-81b1-9df3fa71cead/files/cache_ratio_2p5_run/summary.csv
 120000,8,0.05,2,5.8125,5952.0,7.265625,202.3755708533842,41960.0,research/block_cache_single_a100_pressure_final/summary.csv
 120000,8,0.1,2,11.625,11904.0,14.53125,209.14495822592096,47848.0,research/block_cache_single_a100_pressure_final/summary.csv
 240000,1,0.005,2,0.146484375,150.0,0.18310546875,23.393422526104217,35576.0,research/block_cache_single_a100_pressure_final/summary.csv

@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760">
-<title>RetroInfer Figure 13 single-GPU reproduction</title>
+<title>RetroInfer cache-ratio single-A100</title>
 <g font-family="DejaVu Sans, Arial, sans-serif">
 <rect x="0.000" y="0.000" width="1280.000" height="760.000" fill="#FFFFFF" stroke="none" />
 <text x="640.000" y="38.000" font-size="25.000" text-anchor="middle" fill="#111111">Decode throughput</text>
-<text x="640.000" y="68.000" font-size="15.000" text-anchor="middle" fill="#444444">Measured context/batch groups at cache ratios 0.5%, 5%, and 10%</text>
+<text x="640.000" y="68.000" font-size="15.000" text-anchor="middle" fill="#444444">Measured rows; 2.5% added only for ctx 120K, bsz 8</text>
 <text x="105.000" y="105.000" font-size="16.000" text-anchor="start" fill="#111111">Decode throughput (tokens/s)</text>
 <line x1="105.000" y1="650.000" x2="1225.000" y2="650.000" stroke="#222222" stroke-width="1.400" stroke-linecap="round" />
 <line x1="105.000" y1="130.000" x2="105.000" y2="650.000" stroke="#222222" stroke-width="1.400" stroke-linecap="round" />
@@ -19,6 +19,8 @@
 <text x="95.000" y="135.000" font-size="12.000" text-anchor="end" fill="#333333">500</text>
 <line x1="105.000" y1="650.000" x2="105.000" y2="656.000" stroke="#222222" stroke-width="1.200" stroke-linecap="round" />
 <text x="105.000" y="675.000" font-size="12.000" text-anchor="middle" fill="#333333">0.005</text>
+<line x1="340.789" y1="650.000" x2="340.789" y2="656.000" stroke="#222222" stroke-width="1.200" stroke-linecap="round" />
+<text x="340.789" y="675.000" font-size="12.000" text-anchor="middle" fill="#333333">0.025</text>
 <line x1="635.526" y1="650.000" x2="635.526" y2="656.000" stroke="#222222" stroke-width="1.200" stroke-linecap="round" />
 <text x="635.526" y="675.000" font-size="12.000" text-anchor="middle" fill="#333333">0.05</text>
 <line x1="1225.000" y1="650.000" x2="1225.000" y2="656.000" stroke="#222222" stroke-width="1.200" stroke-linecap="round" />
@@ -31,8 +33,9 @@
 <line x1="115.000" y1="92.000" x2="149.000" y2="92.000" stroke="#0072B2" stroke-width="4.000" stroke-linecap="round" />
 <circle cx="132.000" cy="92.000" r="6.000" fill="#0072B2" stroke="#FFFFFF" stroke-width="1.000" />
 <text x="159.000" y="97.000" font-size="13.000" text-anchor="start" fill="#222222">ctx 120K, bsz 1</text>
-<polyline points="105.000,557.750 635.526,439.529 1225.000,432.489" fill="none" stroke="#D55E00" stroke-width="4.000" stroke-linecap="round" stroke-linejoin="round" />
+<polyline points="105.000,557.750 340.789,494.947 635.526,439.529 1225.000,432.489" fill="none" stroke="#D55E00" stroke-width="4.000" stroke-linecap="round" stroke-linejoin="round" />
 <circle cx="105.000" cy="557.750" r="7.000" fill="#D55E00" stroke="#FFFFFF" stroke-width="1.200" />
+<circle cx="340.789" cy="494.947" r="7.000" fill="#D55E00" stroke="#FFFFFF" stroke-width="1.200" />
 <circle cx="635.526" cy="439.529" r="7.000" fill="#D55E00" stroke="#FFFFFF" stroke-width="1.200" />
 <circle cx="1225.000" cy="432.489" r="7.000" fill="#D55E00" stroke="#FFFFFF" stroke-width="1.200" />
 <line x1="375.000" y1="92.000" x2="409.000" y2="92.000" stroke="#D55E00" stroke-width="4.000" stroke-linecap="round" />

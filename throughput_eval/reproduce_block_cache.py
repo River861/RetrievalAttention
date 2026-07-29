@@ -1679,7 +1679,11 @@ def validate_args(args: argparse.Namespace) -> None:
     if not args.cache_ratios:
         raise SystemExit("--cache-ratios must contain at least one ratio")
     if not any(ratios_equal(ratio, args.baseline_cache_ratio) for ratio in args.cache_ratios):
-        raise SystemExit("--cache-ratios must include --baseline-cache-ratio")
+        print(
+            "warning: --cache-ratios does not include --baseline-cache-ratio; "
+            "baseline-relative deltas will be empty",
+            file=sys.stderr,
+        )
     context_batch_groups = selected_context_batch_groups(args)
     if not context_batch_groups:
         raise SystemExit("at least one context/batch group is required")

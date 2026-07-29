@@ -9,28 +9,28 @@
     0.05,
     0.1
   ],
+  "context_batch_groups": [
+    {
+      "batch_size": 1,
+      "context_len": 120000
+    },
+    {
+      "batch_size": 8,
+      "context_len": 120000
+    },
+    {
+      "batch_size": 1,
+      "context_len": 240000
+    },
+    {
+      "batch_size": 1,
+      "context_len": 480000
+    }
+  ],
   "context_lens": [
     120000,
     240000,
     480000
-  ],
-  "context_batch_groups": [
-    {
-      "context_len": 120000,
-      "batch_size": 1
-    },
-    {
-      "context_len": 120000,
-      "batch_size": 8
-    },
-    {
-      "context_len": 240000,
-      "batch_size": 1
-    },
-    {
-      "context_len": 480000,
-      "batch_size": 1
-    }
   ],
   "cuda_visible_devices": "0",
   "estimation_budget": 0.232,
@@ -39,9 +39,20 @@
   "gpu": "single A100 80GB PCIe",
   "method": "RetroInfer",
   "model_name": "gradientai/Llama-3-8B-Instruct-Gradient-1048k",
-  "result_scope": "measured rows for the configured context/batch groups",
+  "result_scope": "measured rows for the configured context/batch groups, plus one supplemental 120K batch 8 cache_ratio 2.5% row",
   "retrieval_budget": 0.018,
   "seed": 2025,
   "source_artifact": "research/block_cache_single_a100_pressure_final",
+  "supplemental_measurements": [
+    {
+      "batch_size": 8,
+      "cache_ratio": 0.025,
+      "context_len": 120000,
+      "raw_log": "/home/v-xuchuanluo/.argus-skill/copilot-home/session-state/7253a517-eda5-4749-81b1-9df3fa71cead/files/cache_ratio_2p5_run/raw_logs/block_cache_single_a100_retroinfer_ctx120000_bsz8_cr0p025_r1.txt",
+      "rounds": 1,
+      "source_artifact": "/home/v-xuchuanluo/.argus-skill/copilot-home/session-state/7253a517-eda5-4749-81b1-9df3fa71cead/files/cache_ratio_2p5_run",
+      "structured_summary": "/home/v-xuchuanluo/.argus-skill/copilot-home/session-state/7253a517-eda5-4749-81b1-9df3fa71cead/files/cache_ratio_2p5_run/summary.csv"
+    }
+  ],
   "task_name": "NIAH"
 }
