@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "stage": "optimize",
+  "network_status": "online",
+  "trigger": "mechanism_pivot_to_async_side_stream_block_cache_admission",
+  "checked_surfaces": [
+    "target_repository",
+    "official_toolchains",
+    "research_frontier",
+    "adjacent_implementations"
+  ],
+  "queries": [
+    {
+      "channel": "web_search",
+      "purpose": "Check whether PyTorch/CUDA stream, wait_event, CUDAGraph replay, and non-blocking copy semantics support a side-stream gather_copy_and_scatter admission mechanism guarded by explicit stream waits.",
+      "query": "PyTorch CUDA streams CUDAGraph replay current stream wait_event side stream non_blocking copy documentation 2026"
+    }
+  ],
+  "sources": [
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch torch.cuda.Stream documentation",
+      "url": "https://docs.pytorch.org/docs/main/generated/torch.cuda.Stream_class.html",
+      "relevance": "Documents CUDA streams and wait_event/wait_stream synchronization used to sequence side-stream cache admission before dependent default-stream reads or execution-buffer reuse."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch CUDAGraph documentation",
+      "url": "https://docs.pytorch.org/docs/main/generated/torch.cuda.graphs.CUDAGraph.html",
+      "relevance": "Documents replay of captured static CUDA work; opt016 keeps the existing captured update graph and only changes the stream used for explicit opt-in replay."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch CUDA Graphs notes",
+      "url": "https://pytorch.org/docs/stable/notes/cuda.html#cuda-graphs",
+      "relevance": "Reinforces static-memory and synchronization constraints for safe CUDA Graph replay; opt016 does not allocate inside capture and records explicit events around replay."
+    },
+    {
+      "source_type": "official_repo",
+      "title": "River861/RetrievalAttention",
+      "url": "https://github.com/River861/RetrievalAttention",
+      "relevance": "The target repository provides the installed RetroInfer block-cache update path and custom gather_copy_and_scatter kernel; opt016 modifies that project-native path rather than importing new infrastructure."
+    }
+  ],
+  "material_updates": [
+    {
+      "action": "Implement opt-in side-stream block-cache admission instead of importing a new KV offload/runtime stack.",
+      "finding": "The project already has CUDA stream/event primitives and an installed gather_copy_and_scatter kernel; PyTorch stream wait_event/wait_stream and CUDAGraph replay semantics are sufficient for a bounded Python/runtime mechanism.",
+      "impact": "Add RETROINFER_ASYNC_CACHE_ADMISSION as a default-off runtime flag, launch admission on per-device side streams, and enqueue waits before later execution-buffer reuse or same-layer cache read."
+    },
+    {
+      "action": "Keep correctness gating before any speed or memory claim.",
+      "finding": "Side-stream replay changes ordering and shared execution-buffer lifetime; correctness must be measured with canonical --use_cuda_graph enabled before comparing throughput.",
+      "impact": "Only raw A100 120000x8/gen_len=100/cache_ratio=0.05 runs with clean return code and RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth=true can be retained."
+    }
+  ],
+  "decision_impact": "Proceed with a default-off async cache-admission implementation and measure opt013-capacity isolation first; lower-memory schedules remain bounded by the mission-specified correctness and no-worse-throughput retention gate."
+}

@@ -344,6 +344,7 @@ class LlamaModel(LLM):
                         self.kv_cache.execution_buffer_keys = self.kv_cache.execution_buffer_keys_dict[next_device]
                         self.kv_cache.execution_buffer_values = self.kv_cache.execution_buffer_values_dict[next_device]
                         self.kv_cache.valid_lengths = self.kv_cache.valid_lengths_dict[next_device]
+                    self.kv_cache.nprobe_tensor = self.kv_cache.nprobe_tensor_dict[next_device]
         return hidden_states
 
     

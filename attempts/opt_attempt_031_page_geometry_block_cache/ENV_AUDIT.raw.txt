@@ -1,0 +1,69 @@
+# env_audit opt031 2026-07-30T05:32:08Z
+## git_status_before
+ M cache_hub/retroinfer_cache.py
+ M model_hub/llama.py
+ M research/PIPELINE_STATE.json
+ M throughput_eval/reproduce_block_cache.py
+?? RESULTS.md
+?? attempts/
+?? research/BASELINE_PROTOCOL.md
+?? research/BASELINE_RESULT.json
+?? research/ENVIRONMENT_AUDIT.json
+?? research/ENVIRONMENT_AUDIT.md
+?? research/FRONTIER_WATCH.jsonl
+?? research/GROUND_TRUTH.md
+?? research/INFRASTRUCTURE_REUSE_PLAN.md
+?? research/KERNEL_SCOPE.md
+?? research/PROJECT_NATIVE_SETUP.md
+?? research/TOOLCHAIN_CANDIDATES.md
+?? research/VALIDATION_MATRIX.md
+?? research/VALIDATION_RESULT.json
+?? research/baseline_block_cache_single_a100_120k_b8_cr0p05/
+?? research/frontier/
+?? research/validation_fractional_layer_capacity_120k_b8_cr0p05/
+?? research/validation_layer_cache_residency_120k_b8_cr0p05/
+?? research/validation_low6_async_buffer_mult_3p0_120k_b8_cr0p05/
+?? research/validation_low6_async_cluster_id_copy_120k_b8_cr0p05/
+?? research/validation_low6_multilayer_fractional_capacity_120k_b8_cr0p05/
+## python_cuda_stack
+{
+  "cuda_available": true,
+  "cuda_home_env": null,
+  "device0": "NVIDIA A100 80GB PCIe",
+  "device_count": 1,
+  "executable": "/home/v-xuchuanluo/RetroInfer/.venv/bin/python",
+  "gpu_smi": [
+    "NVIDIA A100 80GB PCIe, 81920 MiB, 580.173.02"
+  ],
+  "modules": {
+    "flash_attn": "2.7.3",
+    "flashinfer": "0.2.4+cu124torch2.5",
+    "nvcc_cuda_13_3": "Build cuda_13.3.r13.3/compiler.38244171_0",
+    "nvcc_default": "Build cuda_12.0.r12.0/compiler.32267302_0",
+    "nvcc_usr": "Build cuda_12.0.r12.0/compiler.32267302_0",
+    "pybind11": "2.12.0",
+    "retroinfer_kernels": "imported",
+    "torch": "2.5.1+cu124",
+    "transformers": "4.49.0",
+    "triton": "3.1.0",
+    "vllm": "0.6.5",
+    "weighted_flash_decoding": "0.1"
+  },
+  "platform": "Linux-6.17.0-1020-azure-x86_64-with-glibc2.39",
+  "python": "3.11.15 (main, Mar  3 2026, 09:26:23) [GCC 13.3.0]",
+  "retroinfer_kernel_symbols": [
+    "ThreadPool",
+    "WaveBufferCPU",
+    "gather_copy_and_concat",
+    "gather_copy_and_scatter",
+    "gather_copy_vectors",
+    "batch_gemm_softmax"
+  ],
+  "source_rebuild_status": {
+    "execution_status": "blocked",
+    "failure_class": "environment_rebuild_toolchain_cuda_version_mismatch",
+    "reason": "runtime is cu124 but default/available nvcc probes are not proven CUDA 12.4; CUDA/C++ rebuild is non-goal for opt031"
+  },
+  "torch_cuda": "12.4",
+  "torch_version": "2.5.1+cu124"
+}

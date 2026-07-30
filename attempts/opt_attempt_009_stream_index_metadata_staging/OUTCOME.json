@@ -1,0 +1,602 @@
+{
+  "artifact_manifest": {
+    "candidate_run_logs": "attempts/opt_attempt_009_stream_index_metadata_staging/logs",
+    "candidate_summary_csv": "attempts/opt_attempt_009_stream_index_metadata_staging/candidate_summary.csv",
+    "candidate_summary_json": "attempts/opt_attempt_009_stream_index_metadata_staging/candidate_summary.json",
+    "changes": "attempts/opt_attempt_009_stream_index_metadata_staging/CHANGES.md",
+    "environment_audit_json": "attempts/opt_attempt_009_stream_index_metadata_staging/environment_audit.json",
+    "environment_audit_log": "attempts/opt_attempt_009_stream_index_metadata_staging/environment_audit.log",
+    "frontier_binding": "attempts/opt_attempt_009_stream_index_metadata_staging/frontier_binding.json",
+    "outcome": "attempts/opt_attempt_009_stream_index_metadata_staging/OUTCOME.json",
+    "source_diff": "attempts/opt_attempt_009_stream_index_metadata_staging/source_diff.patch",
+    "source_diff_sha256": "9ca9f9e857d6bcfb44ff8c76966a19dc9a8010d7fd7222fd25b82ca7aae9998f"
+  },
+  "attempt_id": "opt_attempt_009_stream_index_metadata_staging",
+  "baseline_identity": "research/BASELINE_RESULT.json canonical 120000x8/cache_ratio=0.05/gen_len=100 baseline, 2 correctness-passing rounds on A100 80GB.",
+  "baseline_reference": {
+    "block_cache_total_gib": 5.8125,
+    "block_cache_total_mib": 5952.0,
+    "decode_throughput_tokens_s": 198.8364143870935,
+    "e2e_generated_tokens_per_s": 3.277045618,
+    "e2e_latency_s": 244.12288427352905,
+    "peak_process_gpu_memory_mib": 41960.0
+  },
+  "candidate_identity": "Default-off Python/runtime path in cache_hub/retroinfer_cache.py controlled by RETROINFER_STAGE_INDEX_METADATA_LAYERS. Selected layers keep centroids/value_sum/centroids_mask/cluster_size on pinned host memory and use one per-device GPU staging buffer for CUDA graph/eager sparse attention; throughput_eval/reproduce_block_cache.py records staged-index env and metadata fields.",
+  "candidate_identity_detail": {
+    "changed_source_surfaces": [
+      "cache_hub/retroinfer_cache.py",
+      "throughput_eval/reproduce_block_cache.py"
+    ],
+    "cuda_graph_behavior": "CUDA graphs remain enabled for the measured candidates; graph replay reads fixed per-device stage buffers after H2D prefetch/sync before topk.",
+    "default_api_behavior": "Preserved when RETROINFER_STAGE_INDEX_METADATA_LAYERS is unset/off; existing low6, async cluster-id copy, buffer multiplier, stream-only, and capacity controls retain prior semantics.",
+    "no_cuda_cpp_rebuild": true,
+    "no_vendor_framework_rewrite": true
+  },
+  "candidates": [
+    {
+      "candidate_id": "stage_l2",
+      "command": [
+        "/home/v-xuchuanluo/RetroInfer/.venv/bin/python",
+        "-u",
+        "test.py",
+        "--model_name",
+        "gradientai/Llama-3-8B-Instruct-Gradient-1048k",
+        "--attn_type",
+        "RetroInfer",
+        "--context_len",
+        "120000",
+        "--task_name",
+        "NIAH",
+        "--gen_len",
+        "100",
+        "--batch_size",
+        "8",
+        "--prefill_bsz",
+        "1",
+        "--retrieval_budget",
+        "0.018",
+        "--estimation_budget",
+        "0.232",
+        "--cache_ratio",
+        "0.05",
+        "--use_cuda_graph"
+      ],
+      "correctness": {
+        "all_outputs_contain_groundtruth": true,
+        "groundtruth": "9879991",
+        "harness_status": "passed",
+        "oracle": "RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+        "output_json_count": 1,
+        "returncode": 0,
+        "status": "pass",
+        "task_contains_groundtruth": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      "deltas_vs_baseline": {
+        "block_cache_total_gib": {
+          "candidate": 5.5400390625,
+          "delta": -0.2724609375,
+          "delta_pct": -4.6875,
+          "reference": 5.8125
+        },
+        "block_cache_total_mib": {
+          "candidate": 5673.0,
+          "delta": -279.0,
+          "delta_pct": -4.6875,
+          "reference": 5952.0
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 196.4327498064286,
+          "delta": -2.403664580664895,
+          "delta_pct": -1.2088653821655904,
+          "reference": 198.8364143870935
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.2857999247189977,
+          "delta": 0.008754306718997906,
+          "delta_pct": 0.26714021528759524,
+          "reference": 3.277045618
+        },
+        "e2e_latency_s": {
+          "candidate": 243.47191500663757,
+          "delta": -0.6509692668914795,
+          "delta_pct": -0.2666563885760488,
+          "reference": 244.12288427352905
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41604.0,
+          "delta": -356.0,
+          "delta_pct": -0.8484270734032412,
+          "reference": 41960.0
+        }
+      },
+      "deltas_vs_validation_low6_async_buffer3": {
+        "block_cache_total_gib": {
+          "candidate": 5.5400390625,
+          "delta": 0.0,
+          "delta_pct": 0.0,
+          "reference": 5.5400390625
+        },
+        "block_cache_total_mib": {
+          "candidate": 5673.0,
+          "delta": 0.0,
+          "delta_pct": 0.0,
+          "reference": 5673.0
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 196.4327498064286,
+          "delta": -2.166691765174278,
+          "delta_pct": -1.0909858295815502,
+          "reference": 198.59944157160288
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.2857999247189977,
+          "delta": 0.0007429684652255908,
+          "delta_pct": 0.022616608330373076,
+          "reference": 3.285056956253772
+        },
+        "e2e_latency_s": {
+          "candidate": 243.47191500663757,
+          "delta": -0.05994153022766113,
+          "delta_pct": -0.02461342474042501,
+          "reference": 243.53185653686523
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41604.0,
+          "delta": 0.0,
+          "delta_pct": 0.0,
+          "reference": 41604.0
+        }
+      },
+      "description": "Stage layer 2 index metadata only; feasibility/correctness probe with one per-device stage buffer.",
+      "env": {
+        "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+        "RETROINFER_BUFFER_NPROBE_MULTIPLIER": "3.0",
+        "RETROINFER_CACHE_TELEMETRY": "unset",
+        "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.75,2-3=0.75,25=0.75,28-29=0.75",
+        "RETROINFER_LAYER_CACHE_RESIDENCY": "unset",
+        "RETROINFER_STAGE_INDEX_METADATA_LAYERS": "2",
+        "RETROINFER_STREAM_ONLY_LAYERS": "unset"
+      },
+      "execution_status": "completed",
+      "failure_class": "success",
+      "idea_status": "feasibility_pass_no_resident_metadata_saving_decode_regression",
+      "metrics": {
+        "block_cache_total_gib": 5.5400390625,
+        "block_cache_total_mib": 5673.0,
+        "decode_latency_s": 4.031914234161377,
+        "decode_steps": 99,
+        "decode_throughput_tokens_s": 196.4327498064286,
+        "e2e_generated_tokens_per_s": 3.2857999247189977,
+        "e2e_latency_s": 243.47191500663757,
+        "gpu_memory_sample_count": 694,
+        "gpu_memory_sampler_error_count": 0,
+        "index_metadata_gpu_bytes_saved_vs_nominal": 0,
+        "index_metadata_gpu_resident_bytes": 7847116800,
+        "index_metadata_host_pinned_bytes": 245222400,
+        "index_metadata_nominal_persistent_gpu_bytes": 7847116800,
+        "index_metadata_persistent_gpu_bytes": 7601894400,
+        "index_metadata_stage_buffer_bytes": 245222400,
+        "index_metadata_stage_copy_bytes": 245222400,
+        "index_metadata_stage_prefetch_count": 1,
+        "index_metadata_stage_sync_count": 100,
+        "peak_process_gpu_memory_mib": 41604.0,
+        "torch_cuda_peak_allocated_mib": 38211.3505859375,
+        "torch_cuda_peak_reserved_mib": 41074.0
+      },
+      "raw_artifact_dir": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_120k_b8_cr0p05",
+      "raw_artifacts": {
+        "commands_jsonl": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_120k_b8_cr0p05/commands.jsonl",
+        "config_json": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_120k_b8_cr0p05/config.json",
+        "environment_json": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_120k_b8_cr0p05/environment.json",
+        "memory_samples": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_120k_b8_cr0p05/memory_samples/opt009_stage_l2_low6_async_buffer3_retroinfer_ctx120000_bsz8_cr0p05_r1.jsonl",
+        "per_round_table_csv": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_120k_b8_cr0p05/per_round_table.csv",
+        "raw_log": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_120k_b8_cr0p05/raw_logs/opt009_stage_l2_low6_async_buffer3_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+        "results_csv": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_120k_b8_cr0p05/results.csv",
+        "results_jsonl": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_120k_b8_cr0p05/results.jsonl",
+        "summary_csv": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_120k_b8_cr0p05/summary.csv"
+      },
+      "returncode": 0,
+      "status": "passed",
+      "structured_metadata": {
+        "async_cluster_id_copy_enabled": true,
+        "async_cluster_id_copy_mode": "separate_stream_d2h_non_blocking",
+        "async_cluster_id_copy_stream_count": 1,
+        "block_cache_layer_capacity_scales": [
+          1.0,
+          0.75,
+          0.75,
+          0.75,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.75,
+          1.0,
+          1.0,
+          0.75,
+          0.75,
+          1.0,
+          1.0
+        ],
+        "block_cache_layer_pages": [
+          744,
+          558,
+          558,
+          558,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          558,
+          744,
+          744,
+          558,
+          558,
+          744,
+          744
+        ],
+        "buffer_min_pages": 64,
+        "buffer_nprobe_multiplier": 3.0,
+        "buffer_nprobe_multiplier_env": "3.0",
+        "buffer_pages": 804,
+        "buffer_probe_pages": 804,
+        "execution_stride": 6599,
+        "index_metadata_cuda_graph_behavior": "cuda_graph_replay_reads_fixed_stage_buffers_after_h2d_prefetch",
+        "index_metadata_stage_copy_mode": "async_h2d_non_blocking_prefetch_stream",
+        "index_metadata_stage_mode": "host_pinned_cpu_metadata_with_per_device_gpu_stage_buffer",
+        "index_metadata_stage_prefetch_policy": "prefetch_next_staged_layer_after_current_layer_metadata_use",
+        "index_metadata_stage_sync_point": "before_topk_batch_gemm_softmax",
+        "index_metadata_staged_layers": [
+          2
+        ],
+        "index_metadata_staged_layers_env": "2",
+        "index_metadata_staging_enabled": true
+      },
+      "warnings": {
+        "buffer_capacity_warning_count": 0,
+        "material_warning_count": 2
+      }
+    },
+    {
+      "candidate_id": "stage_l2_l3",
+      "command": [
+        "/home/v-xuchuanluo/RetroInfer/.venv/bin/python",
+        "-u",
+        "test.py",
+        "--model_name",
+        "gradientai/Llama-3-8B-Instruct-Gradient-1048k",
+        "--attn_type",
+        "RetroInfer",
+        "--context_len",
+        "120000",
+        "--task_name",
+        "NIAH",
+        "--gen_len",
+        "100",
+        "--batch_size",
+        "8",
+        "--prefill_bsz",
+        "1",
+        "--retrieval_budget",
+        "0.018",
+        "--estimation_budget",
+        "0.232",
+        "--cache_ratio",
+        "0.05",
+        "--use_cuda_graph"
+      ],
+      "correctness": {
+        "all_outputs_contain_groundtruth": true,
+        "groundtruth": "9879991",
+        "harness_status": "passed",
+        "oracle": "RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+        "output_json_count": 1,
+        "returncode": 0,
+        "status": "pass",
+        "task_contains_groundtruth": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      "deltas_vs_baseline": {
+        "block_cache_total_gib": {
+          "candidate": 5.5400390625,
+          "delta": -0.2724609375,
+          "delta_pct": -4.6875,
+          "reference": 5.8125
+        },
+        "block_cache_total_mib": {
+          "candidate": 5673.0,
+          "delta": -279.0,
+          "delta_pct": -4.6875,
+          "reference": 5952.0
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 143.06063226303573,
+          "delta": -55.77578212405777,
+          "delta_pct": -28.051090287452993,
+          "reference": 198.8364143870935
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.251411729360891,
+          "delta": -0.02563388863910898,
+          "delta_pct": -0.7822255661718098,
+          "reference": 3.277045618
+        },
+        "e2e_latency_s": {
+          "candidate": 246.0469686985016,
+          "delta": 1.9240844249725342,
+          "delta_pct": 0.7881622530793473,
+          "reference": 244.12288427352905
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41366.0,
+          "delta": -594.0,
+          "delta_pct": -1.415633937082936,
+          "reference": 41960.0
+        }
+      },
+      "deltas_vs_validation_low6_async_buffer3": {
+        "block_cache_total_gib": {
+          "candidate": 5.5400390625,
+          "delta": 0.0,
+          "delta_pct": 0.0,
+          "reference": 5.5400390625
+        },
+        "block_cache_total_mib": {
+          "candidate": 5673.0,
+          "delta": 0.0,
+          "delta_pct": 0.0,
+          "reference": 5673.0
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 143.06063226303573,
+          "delta": -55.53880930856715,
+          "delta_pct": -27.965239413094338,
+          "reference": 198.59944157160288
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.251411729360891,
+          "delta": -0.0336452268928813,
+          "delta_pct": -1.02419006248372,
+          "reference": 3.285056956253772
+        },
+        "e2e_latency_s": {
+          "candidate": 246.0469686985016,
+          "delta": 2.5151121616363525,
+          "delta_pct": 1.0327651574633405,
+          "reference": 243.53185653686523
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41366.0,
+          "delta": -238.0,
+          "delta_pct": -0.5720603788097298,
+          "reference": 41604.0
+        }
+      },
+      "description": "Stage layers 2 and 3 index metadata; first memory-saving expansion using the shared stage buffer.",
+      "env": {
+        "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+        "RETROINFER_BUFFER_NPROBE_MULTIPLIER": "3.0",
+        "RETROINFER_CACHE_TELEMETRY": "unset",
+        "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.75,2-3=0.75,25=0.75,28-29=0.75",
+        "RETROINFER_LAYER_CACHE_RESIDENCY": "unset",
+        "RETROINFER_STAGE_INDEX_METADATA_LAYERS": "2-3",
+        "RETROINFER_STREAM_ONLY_LAYERS": "unset"
+      },
+      "execution_status": "completed",
+      "failure_class": "success",
+      "idea_status": "refuted_memory_saving_but_decode_and_e2e_regressed",
+      "metrics": {
+        "block_cache_total_gib": 5.5400390625,
+        "block_cache_total_mib": 5673.0,
+        "decode_latency_s": 5.53611421585083,
+        "decode_steps": 99,
+        "decode_throughput_tokens_s": 143.06063226303573,
+        "e2e_generated_tokens_per_s": 3.251411729360891,
+        "e2e_latency_s": 246.0469686985016,
+        "gpu_memory_sample_count": 698,
+        "gpu_memory_sampler_error_count": 0,
+        "index_metadata_gpu_bytes_saved_vs_nominal": 245222400,
+        "index_metadata_gpu_resident_bytes": 7601894400,
+        "index_metadata_host_pinned_bytes": 490444800,
+        "index_metadata_nominal_persistent_gpu_bytes": 7847116800,
+        "index_metadata_persistent_gpu_bytes": 7356672000,
+        "index_metadata_stage_buffer_bytes": 245222400,
+        "index_metadata_stage_copy_bytes": 49044480000,
+        "index_metadata_stage_prefetch_count": 200,
+        "index_metadata_stage_sync_count": 200,
+        "peak_process_gpu_memory_mib": 41366.0,
+        "torch_cuda_peak_allocated_mib": 37977.48828125,
+        "torch_cuda_peak_reserved_mib": 40836.0
+      },
+      "raw_artifact_dir": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_l3_120k_b8_cr0p05",
+      "raw_artifacts": {
+        "commands_jsonl": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_l3_120k_b8_cr0p05/commands.jsonl",
+        "config_json": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_l3_120k_b8_cr0p05/config.json",
+        "environment_json": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_l3_120k_b8_cr0p05/environment.json",
+        "memory_samples": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_l3_120k_b8_cr0p05/memory_samples/opt009_stage_l2_l3_low6_async_buffer3_retroinfer_ctx120000_bsz8_cr0p05_r1.jsonl",
+        "per_round_table_csv": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_l3_120k_b8_cr0p05/per_round_table.csv",
+        "raw_log": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_l3_120k_b8_cr0p05/raw_logs/opt009_stage_l2_l3_low6_async_buffer3_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+        "results_csv": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_l3_120k_b8_cr0p05/results.csv",
+        "results_jsonl": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_l3_120k_b8_cr0p05/results.jsonl",
+        "summary_csv": "attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_l3_120k_b8_cr0p05/summary.csv"
+      },
+      "returncode": 0,
+      "status": "passed",
+      "structured_metadata": {
+        "async_cluster_id_copy_enabled": true,
+        "async_cluster_id_copy_mode": "separate_stream_d2h_non_blocking",
+        "async_cluster_id_copy_stream_count": 1,
+        "block_cache_layer_capacity_scales": [
+          1.0,
+          0.75,
+          0.75,
+          0.75,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.75,
+          1.0,
+          1.0,
+          0.75,
+          0.75,
+          1.0,
+          1.0
+        ],
+        "block_cache_layer_pages": [
+          744,
+          558,
+          558,
+          558,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          558,
+          744,
+          744,
+          558,
+          558,
+          744,
+          744
+        ],
+        "buffer_min_pages": 64,
+        "buffer_nprobe_multiplier": 3.0,
+        "buffer_nprobe_multiplier_env": "3.0",
+        "buffer_pages": 804,
+        "buffer_probe_pages": 804,
+        "execution_stride": 6599,
+        "index_metadata_cuda_graph_behavior": "cuda_graph_replay_reads_fixed_stage_buffers_after_h2d_prefetch",
+        "index_metadata_stage_copy_mode": "async_h2d_non_blocking_prefetch_stream",
+        "index_metadata_stage_mode": "host_pinned_cpu_metadata_with_per_device_gpu_stage_buffer",
+        "index_metadata_stage_prefetch_policy": "prefetch_next_staged_layer_after_current_layer_metadata_use",
+        "index_metadata_stage_sync_point": "before_topk_batch_gemm_softmax",
+        "index_metadata_staged_layers": [
+          2,
+          3
+        ],
+        "index_metadata_staged_layers_env": "2-3",
+        "index_metadata_staging_enabled": true
+      },
+      "warnings": {
+        "buffer_capacity_warning_count": 0,
+        "material_warning_count": 2
+      }
+    }
+  ],
+  "decision": {
+    "recommended_redirect": "Do not pursue whole-layer index metadata streaming on PCIe A100 without finer-grained GPU-resident topk metadata, compressed metadata, or a kernel/harness capable of staging only selected estimation metadata; CUDA/C++ rebuild remains blocked here.",
+    "retained": false,
+    "stop_reason": "First memory-saving staged-index candidate has large decode/e2e regression from repeated 245 MB metadata H2D copies per staged layer/token; no further expansion is justified in the bounded try budget."
+  },
+  "environment_audit": {
+    "execution_status": "success_for_runtime",
+    "failure_class": "environment_rebuild_toolchain_cuda_version_mismatch",
+    "path": "attempts/opt_attempt_009_stream_index_metadata_staging/environment_audit.json",
+    "source_rebuild_status": "blocked_for_source_rebuild"
+  },
+  "evidence": "Raw candidate artifacts under attempts/opt_attempt_009_stream_index_metadata_staging/stage_l2_120k_b8_cr0p05 and stage_l2_l3_120k_b8_cr0p05; candidate_summary.json/csv; source_diff.patch; environment_audit.json/log; frontier_binding.json; correctness oracle RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth passed for both candidates.",
+  "execution_status": "completed",
+  "failure_class": "performance",
+  "frontier_binding": "attempts/opt_attempt_009_stream_index_metadata_staging/frontier_binding.json",
+  "idea_status": "refuted",
+  "idea_status_detail": "The default-off staged-index implementation is correct and records CUDA-graph staging behavior, but layer 2 alone saves no resident GPU metadata because one stage buffer replaces one persistent layer; staging layers 2-3 saves 245222400 index-metadata bytes and 238 MiB peak process GPU memory vs validation, but decode throughput falls by 55.54 tok/s and e2e throughput falls by 0.03365 tok/s vs validation, so the memory-throughput Pareto is worse than retained low6+async+buffer_mult3.0.",
+  "path_coverage": "Both measured candidates set RETROINFER_STAGE_INDEX_METADATA_LAYERS and emitted index_metadata_staging_enabled=true, staged layer lists, CUDA graph staging behavior, stage prefetch/sync counts, and H2D copy bytes in results.jsonl, proving the new staged-index path was exercised under CUDA graph sparse attention.",
+  "recorded_at": "2026-07-29T16:42:10.885133+00:00",
+  "schema_version": 1,
+  "summary": "Default-off staged index metadata executed successfully and passed correctness, but the first memory-saving two-layer candidate reduced peak GPU memory by 238 MiB vs validation at the cost of a 55.54 tok/s decode regression and lower e2e throughput; whole-layer index metadata staging is refuted for the retained 120000x8 low6+async+buffer3 path on this A100 PCIe setup.",
+  "validation_identity": "research/VALIDATION_RESULT.json retained low6+async+buffer_mult3.0 comparison point, 2 correctness-passing rounds on A100 80GB.",
+  "validation_reference": {
+    "block_cache_total_gib": 5.5400390625,
+    "block_cache_total_mib": 5673.0,
+    "decode_throughput_tokens_s": 198.59944157160288,
+    "e2e_generated_tokens_per_s": 3.285056956253772,
+    "e2e_latency_s": 243.53185653686523,
+    "peak_process_gpu_memory_mib": 41604.0
+  }
+}

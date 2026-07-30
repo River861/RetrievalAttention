@@ -1,0 +1,35 @@
+{
+  "cuda_home_env": null,
+  "gpu0_capability": "8.0",
+  "gpu0_name": "NVIDIA A100 80GB PCIe",
+  "modules": {
+    "flash_attn": "2.7.3",
+    "flashinfer": "0.2.4+cu124torch2.5",
+    "pybind11": "2.12.0",
+    "retroinfer_kernels": "import_ok",
+    "torch": "2.5.1+cu124",
+    "transformers": "4.49.0",
+    "triton": "3.1.0",
+    "vllm": "0.6.5",
+    "weighted_flash_decoding": "0.1"
+  },
+  "nsys_path": "/usr/local/bin/nsys",
+  "nvcc_path": "/usr/bin/nvcc",
+  "nvcc_version": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2023 NVIDIA Corporation\nBuilt on Fri_Jan__6_16:45:21_PST_2023\nCuda compilation tools, release 12.0, V12.0.140\nBuild cuda_12.0.r12.0/compiler.32267302_0"
+  },
+  "nvidia_smi": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "0, NVIDIA A100 80GB PCIe, 580.173.02, 81920, 8.0"
+  },
+  "platform": "Linux-6.17.0-1020-azure-x86_64-with-glibc2.39",
+  "python_executable": "/home/v-xuchuanluo/RetroInfer/.venv/bin/python",
+  "python_version": "3.11.15",
+  "torch_cpp_extension_cuda_home": "/usr",
+  "torch_cuda": "12.4",
+  "torch_cuda_available": true,
+  "torch_cuda_device_count": 1
+}

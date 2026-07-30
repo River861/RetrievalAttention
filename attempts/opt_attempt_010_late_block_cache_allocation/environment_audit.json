@@ -1,0 +1,27 @@
+{
+  "attempt_id": "opt_attempt_010_late_block_cache_allocation",
+  "audit_text_path": "attempts/opt_attempt_010_late_block_cache_allocation/environment_audit.txt",
+  "harness_environment_json": "attempts/opt_attempt_010_late_block_cache_allocation/late_allocation_low6_async_buffer3_120k_b8_cr0p05/environment.json",
+  "project_native_runtime": {
+    "package_status": {
+      "flash_attn": "found",
+      "flashinfer": "found",
+      "minference": "missing",
+      "retroinfer_kernels": "found",
+      "torch": "found",
+      "transformers": "found",
+      "vllm": "found"
+    },
+    "platform": "Linux-6.17.0-1020-azure-x86_64-with-glibc2.39",
+    "python_executable": "/home/v-xuchuanluo/RetroInfer/.venv/bin/python"
+  },
+  "schema_version": 1,
+  "source_rebuild_status": {
+    "execution_status": "blocked_for_source_rebuild",
+    "failure_class": "environment_rebuild_toolchain_cuda_version_mismatch",
+    "idea_status": "not_evaluated",
+    "notes": "CUDA/C++ rebuild is a non-goal for this mission and remains blocked by no proven CUDA 12.4 nvcc/CUDA_HOME; installed cu124 extensions import when torch is preloaded."
+  },
+  "system_audit_excerpt": "# Environment audit: opt_attempt_010_late_block_cache_allocation\n2026-07-29T16:50:25Z\n## Repo setup files\n./benchmark/reasoning/requirements.txt\n./library/cutlass/pyproject.toml\n./library/cutlass/setup.cfg\n./library/retroinfer/setup.py\n./requirements.txt\n## Git status\n M cache_hub/retroinfer_cache.py\n M model_hub/llama.py\n M research/PIPELINE_STATE.json\n M throughput_eval/reproduce_block_cache.py\n?? RESULTS.md\n?? attempts/\n?? research/BASELINE_PROTOCOL.md\n?? research/BASELINE_RESULT.json\n?? research/ENVIRONMENT_AUDIT.json\n?? research/ENVIRONMENT_AUDIT.md\n?? research/FRONTIER_WATCH.jsonl\n?? research/GROUND_TRUTH.md\n?? research/INFRASTRUCTURE_REUSE_PLAN.md\n?? research/KERNEL_SCOPE.md\n?? research/PROJECT_NATIVE_SETUP.md\n?? research/TOOLCHAIN_CANDIDATES.md\n?? research/VALIDATION_MATRIX.md\n?? research/VALIDATION_RESULT.json\n?? research/baseline_block_cache_single_a100_120k_b8_cr0p05/\n?? research/frontier/\n?? research/validation_fractional_layer_capacity_120k_b8_cr0p05/\n?? research/validation_layer_cache_residency_120k_b8_cr0p05/\n?? research/validation_low6_async_buffer_mult_3p0_120k_b8_cr0p05/\n?? research/validation_low6_async_cluster_id_copy_120k_b8_cr0p05/\n?? research/validation_low6_multilayer_fractional_capacity_120k_b8_cr0p05/\n## Python\n/usr/bin/python\nPython 3.12.3\n## Key Python packages\ntorch: NOT INSTALLED\ntriton: NOT INSTALLED\nnumpy: NOT INSTALLED\ncupy-cuda12x: NOT INSTALLED\ncupy: NOT INSTALLED\nflash-attn: NOT INSTALLED\ntransformers: NOT INSTALLED\n## Torch CUDA\n## NVIDIA driver/GPU\nField \"cuda_version\" is not a valid field to query.\n\n## nvcc\n/usr/bin/nvcc\nnvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2023 NVIDIA Corporation\nBuilt on Fri_Jan__6_16:45:21_PST_2023\nCuda compilation tools, release 12.0, V12.0.140\nBuild cuda_12.0.r12.0/compiler.32267302_0\n\n# Project-native runtime audit (selected repair: use pinned .venv, no source rebuild)\n2026-07-29T16:50:55Z\n## Python\nPython 3.11.15\n/home/v-xuchuanluo/RetroInfer/.venv/bin/python\n## Key package imports and versions\ntorch: import_ok version=2.5.1\nvllm: import_ok version=0.6.5\ntransformers: import_ok version=4.49.0\nflash_attn: import_ok version=2.7.3\nflashinfer: import_ok version=0.2.4+cu124torch2.5\ntriton: import_ok version=3.1.0\npybind11: import_ok version=2.12.0\nretroinfer_kernels: import_ok version=0.1\nweighted_flash_decoding: import_ok version=0.1\n## RetroInfer kernel symbols\n## Torch CUDA\ntorch 2.5.1+cu124\ntorch.version.cuda 12.4\ncuda_available True\ndevice_count 1\ngpu[0] name=NVIDIA A100 80GB PCIe capability=8.0 total_memory=85093777408 mem_get_info_free=84644986880 mem_get_info_total=85093777408\n## NVIDIA driver/GPU\n0, NVIDIA A100 80GB PCIe, 580.173.02, 81920 MiB, 81152 MiB\n## Source rebuild status\nnot_attempted: CUDA/C++ source rebuild is out of scope; existing installed cu124 runtime/extensions are used.\n\n# RetroInfer extension import repair/proof\n2026-07-29T16:51:09Z\ntorch_preload_then_retroinfer_kernels symbols import_ok\ntorch_lib_preloaded 2.5.1+cu124 12.4\n",
+  "verdict": "Project-native .venv Python 3.11/cu124 runtime and installed RetroInfer extensions were used; direct system Python lacks the required packages."
+}

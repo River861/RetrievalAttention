@@ -1,0 +1,664 @@
+{
+  "blocking_findings": [],
+  "capabilities": {
+    "cuda_cpp": {
+      "evidence": [],
+      "missing": [
+        "ninja or cmake"
+      ],
+      "ready": false
+    },
+    "cutlass_cute": {
+      "evidence": [],
+      "missing": [
+        "cuda_cpp",
+        "CUTLASS/CuTe source, package, or CUTLASS_PATH"
+      ],
+      "ready": false
+    },
+    "profiling": {
+      "evidence": [
+        "GPU",
+        "ncu or nsys"
+      ],
+      "missing": [],
+      "ready": true
+    },
+    "sanitizer": {
+      "evidence": [
+        "GPU",
+        "compute-sanitizer"
+      ],
+      "missing": [],
+      "ready": true
+    },
+    "tilelang": {
+      "evidence": [],
+      "missing": [
+        "tilelang"
+      ],
+      "ready": false
+    },
+    "torch": {
+      "evidence": [
+        "CUDA-visible GPU",
+        "torch with CUDA"
+      ],
+      "missing": [],
+      "ready": true
+    },
+    "triton": {
+      "evidence": [
+        "torch",
+        "triton"
+      ],
+      "missing": [],
+      "ready": true
+    }
+  },
+  "dependency_health": {
+    "issues": [
+      "No broken requirements found."
+    ],
+    "ok": true,
+    "probe_ok": true,
+    "returncode": 0
+  },
+  "generated_at": "2026-07-30T04:51:54.498554+00:00",
+  "gpus": [
+    {
+      "compute_cap": "8.0",
+      "driver_version": "580.173.02",
+      "index": "0",
+      "memory.total": "81920",
+      "name": "NVIDIA A100 80GB PCIe",
+      "uuid": "GPU-6316fdce-387f-5ebb-f606-9e1c8f5bf021"
+    }
+  ],
+  "host": {
+    "argus_python": "/usr/bin/python",
+    "hostname": "GCRAZGDL1630",
+    "platform": "Linux-6.17.0-1020-azure-x86_64-with-glibc2.39",
+    "target_python": ".venv/bin/python",
+    "target_python_version": "Python 3.11.15"
+  },
+  "packages": {
+    "apache_tvm_ffi": {
+      "present": true,
+      "version": "0.1.12"
+    },
+    "cuda_python": {
+      "present": false,
+      "version": ""
+    },
+    "cupy": {
+      "present": false,
+      "version": ""
+    },
+    "cutlass": {
+      "present": false,
+      "version": ""
+    },
+    "einops": {
+      "present": true,
+      "version": "0.8.2"
+    },
+    "flash_attn": {
+      "present": true,
+      "version": "2.7.3"
+    },
+    "flashinfer": {
+      "present": true,
+      "version": "0.2.4+cu124torch2.5"
+    },
+    "hypothesis": {
+      "present": false,
+      "version": ""
+    },
+    "kernels": {
+      "present": false,
+      "version": ""
+    },
+    "numpy": {
+      "present": true,
+      "version": "1.26.4"
+    },
+    "pytest": {
+      "present": false,
+      "version": ""
+    },
+    "tilelang": {
+      "present": false,
+      "version": ""
+    },
+    "torch": {
+      "present": true,
+      "version": "2.5.1"
+    },
+    "transformer_engine": {
+      "present": false,
+      "version": ""
+    },
+    "triton": {
+      "present": true,
+      "version": "3.1.0"
+    },
+    "xformers": {
+      "present": true,
+      "version": "0.0.28.post3"
+    }
+  },
+  "policy": {
+    "auto_install": false,
+    "benchmark_environment_must_match_validation_environment": true,
+    "declared_dependency_closure_must_be_healthy": true,
+    "missing_tooling_is_environment_failure_not_algorithm_failure": true,
+    "project_native_first": true
+  },
+  "project_root": "/home/v-xuchuanluo/RetroInfer",
+  "project_signals": {
+    "benchmark_directories": [
+      "benchmark"
+    ],
+    "ci_workflows": [],
+    "framework_directories": [],
+    "instruction_and_lock_files": [
+      "README.md",
+      "requirements.txt"
+    ],
+    "kernel_source_counts": {
+      "cpp": 1208,
+      "cuda": 1093,
+      "triton_or_python": 693
+    },
+    "project_name": "",
+    "pyproject_extras": {}
+  },
+  "ready": true,
+  "requested_capabilities": [
+    "torch",
+    "triton",
+    "profiling"
+  ],
+  "schema_version": 1,
+  "specialized_tool_registry": {
+    "available": [
+      {
+        "available": true,
+        "categories": [
+          "core_toolchain",
+          "build_binding",
+          "debugging"
+        ],
+        "detectable": true,
+        "distribution": "",
+        "env_vars": [],
+        "executables": {
+          "cuobjdump": "/usr/bin/cuobjdump",
+          "nvcc": "/usr/bin/nvcc",
+          "nvdisasm": "/usr/bin/nvdisasm",
+          "ptxas": "/usr/bin/ptxas"
+        },
+        "found_imports": [],
+        "id": "cuda_toolkit",
+        "name": "NVIDIA CUDA Toolkit and binary utilities",
+        "platforms": [
+          "nvidia"
+        ],
+        "source_markers": [],
+        "status": "active",
+        "version": ""
+      },
+      {
+        "available": true,
+        "categories": [
+          "integration",
+          "build_binding",
+          "correctness"
+        ],
+        "detectable": true,
+        "distribution": "torch",
+        "env_vars": [],
+        "executables": {},
+        "found_imports": [
+          "torch"
+        ],
+        "id": "pytorch_custom_ops",
+        "name": "PyTorch custom operators and torch.library",
+        "platforms": [
+          "nvidia",
+          "amd",
+          "intel",
+          "cpu"
+        ],
+        "source_markers": [],
+        "status": "active",
+        "version": "2.5.1"
+      },
+      {
+        "available": true,
+        "categories": [
+          "compiler",
+          "fusion",
+          "integration"
+        ],
+        "detectable": true,
+        "distribution": "torch",
+        "env_vars": [],
+        "executables": {},
+        "found_imports": [
+          "torch"
+        ],
+        "id": "torch_inductor",
+        "name": "torch.compile and TorchInductor",
+        "platforms": [
+          "nvidia",
+          "amd",
+          "intel",
+          "cpu"
+        ],
+        "source_markers": [],
+        "status": "active",
+        "version": "2.5.1"
+      },
+      {
+        "available": true,
+        "categories": [
+          "dsl_compiler",
+          "autotuning",
+          "kernel_language"
+        ],
+        "detectable": true,
+        "distribution": "triton",
+        "env_vars": [],
+        "executables": {},
+        "found_imports": [
+          "triton"
+        ],
+        "id": "triton",
+        "name": "Triton",
+        "platforms": [
+          "nvidia",
+          "amd",
+          "intel"
+        ],
+        "source_markers": [],
+        "status": "active",
+        "version": "3.1.0"
+      },
+      {
+        "available": true,
+        "categories": [
+          "dsl_compiler",
+          "kernel_language",
+          "layout_control"
+        ],
+        "detectable": true,
+        "distribution": "triton",
+        "env_vars": [],
+        "executables": {},
+        "found_imports": [
+          "triton.language.extra.libdevice"
+        ],
+        "id": "triton_gluon",
+        "name": "Triton Gluon",
+        "platforms": [
+          "nvidia"
+        ],
+        "source_markers": [],
+        "status": "experimental",
+        "version": "3.1.0"
+      },
+      {
+        "available": true,
+        "categories": [
+          "dsl_compiler",
+          "autotuning",
+          "kernel_language"
+        ],
+        "detectable": true,
+        "distribution": "",
+        "env_vars": [],
+        "executables": {
+          "nvcc": "/usr/bin/nvcc"
+        },
+        "found_imports": [],
+        "id": "tilelang",
+        "name": "TileLang",
+        "platforms": [
+          "nvidia",
+          "amd",
+          "cpu"
+        ],
+        "source_markers": [],
+        "status": "active",
+        "version": ""
+      },
+      {
+        "available": true,
+        "categories": [
+          "specialist_kernel",
+          "attention",
+          "training_kernel"
+        ],
+        "detectable": true,
+        "distribution": "flash-attn",
+        "env_vars": [],
+        "executables": {},
+        "found_imports": [
+          "flash_attn"
+        ],
+        "id": "flash_attention",
+        "name": "FlashAttention",
+        "platforms": [
+          "nvidia",
+          "amd"
+        ],
+        "source_markers": [],
+        "status": "active",
+        "version": "2.7.3"
+      },
+      {
+        "available": true,
+        "categories": [
+          "specialist_kernel",
+          "attention",
+          "serving",
+          "sampling"
+        ],
+        "detectable": true,
+        "distribution": "flashinfer-python",
+        "env_vars": [],
+        "executables": {},
+        "found_imports": [
+          "flashinfer"
+        ],
+        "id": "flashinfer",
+        "name": "FlashInfer",
+        "platforms": [
+          "nvidia"
+        ],
+        "source_markers": [],
+        "status": "active",
+        "version": "0.2.4+cu124torch2.5"
+      },
+      {
+        "available": true,
+        "categories": [
+          "specialist_kernel",
+          "attention",
+          "transformer_blocks"
+        ],
+        "detectable": true,
+        "distribution": "xformers",
+        "env_vars": [],
+        "executables": {},
+        "found_imports": [
+          "xformers"
+        ],
+        "id": "xformers",
+        "name": "xFormers",
+        "platforms": [
+          "nvidia",
+          "amd"
+        ],
+        "source_markers": [],
+        "status": "active",
+        "version": "0.0.28.post3"
+      },
+      {
+        "available": true,
+        "categories": [
+          "serving",
+          "integration",
+          "specialist_kernel"
+        ],
+        "detectable": true,
+        "distribution": "vllm",
+        "env_vars": [],
+        "executables": {},
+        "found_imports": [
+          "vllm"
+        ],
+        "id": "vllm",
+        "name": "vLLM",
+        "platforms": [
+          "nvidia",
+          "amd",
+          "intel",
+          "multi"
+        ],
+        "source_markers": [],
+        "status": "active",
+        "version": "0.6.5"
+      },
+      {
+        "available": true,
+        "categories": [
+          "profiling",
+          "timeline",
+          "distributed"
+        ],
+        "detectable": true,
+        "distribution": "",
+        "env_vars": [],
+        "executables": {
+          "nsys": "/usr/local/bin/nsys"
+        },
+        "found_imports": [],
+        "id": "nsight_systems",
+        "name": "NVIDIA Nsight Systems",
+        "platforms": [
+          "nvidia",
+          "cpu"
+        ],
+        "source_markers": [],
+        "status": "active",
+        "version": ""
+      },
+      {
+        "available": true,
+        "categories": [
+          "debugging",
+          "correctness",
+          "race_detection"
+        ],
+        "detectable": true,
+        "distribution": "",
+        "env_vars": [],
+        "executables": {
+          "compute-sanitizer": "/usr/bin/compute-sanitizer"
+        },
+        "found_imports": [],
+        "id": "compute_sanitizer",
+        "name": "NVIDIA Compute Sanitizer",
+        "platforms": [
+          "nvidia"
+        ],
+        "source_markers": [],
+        "status": "active",
+        "version": ""
+      },
+      {
+        "available": true,
+        "categories": [
+          "benchmark",
+          "cpp",
+          "measurement"
+        ],
+        "detectable": true,
+        "distribution": "",
+        "env_vars": [],
+        "executables": {},
+        "found_imports": [],
+        "id": "google_benchmark",
+        "name": "Google Benchmark",
+        "platforms": [
+          "cpu",
+          "nvidia",
+          "amd"
+        ],
+        "source_markers": [
+          "benchmark"
+        ],
+        "status": "active",
+        "version": ""
+      },
+      {
+        "available": true,
+        "categories": [
+          "build_binding",
+          "python_extension"
+        ],
+        "detectable": true,
+        "distribution": "pybind11",
+        "env_vars": [],
+        "executables": {},
+        "found_imports": [
+          "pybind11"
+        ],
+        "id": "pybind11",
+        "name": "pybind11",
+        "platforms": [
+          "nvidia",
+          "amd",
+          "intel",
+          "cpu"
+        ],
+        "source_markers": [],
+        "status": "active",
+        "version": "2.12.0"
+      }
+    ],
+    "available_count": 14,
+    "entry_count": 90,
+    "legacy_statuses_excluded_from_default_catalog": [
+      "archived",
+      "deprecated",
+      "moved"
+    ],
+    "refreshed_at": "2026-07-18"
+  },
+  "tools": {
+    "ccache": {
+      "path": "",
+      "present": false,
+      "version": ""
+    },
+    "clang": {
+      "path": "",
+      "present": false,
+      "version": ""
+    },
+    "cmake": {
+      "path": "",
+      "present": false,
+      "version": ""
+    },
+    "compute-sanitizer": {
+      "path": "/usr/bin/compute-sanitizer",
+      "present": true,
+      "version": "NVIDIA (R) Compute Sanitizer",
+      "version_returncode": 0
+    },
+    "cuobjdump": {
+      "path": "/usr/bin/cuobjdump",
+      "present": true,
+      "version": "cuobjdump: NVIDIA (R) fat binary listing tool",
+      "version_returncode": 0
+    },
+    "g++": {
+      "path": "/usr/bin/g++",
+      "present": true,
+      "version": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "version_returncode": 0
+    },
+    "gcc": {
+      "path": "/usr/bin/gcc",
+      "present": true,
+      "version": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "version_returncode": 0
+    },
+    "git": {
+      "path": "/usr/bin/git",
+      "present": true,
+      "version": "git version 2.43.0",
+      "version_returncode": 0
+    },
+    "jq": {
+      "path": "/usr/bin/jq",
+      "present": true,
+      "version": "jq-1.7",
+      "version_returncode": 0
+    },
+    "ncu": {
+      "path": "",
+      "present": false,
+      "version": ""
+    },
+    "ninja": {
+      "path": "",
+      "present": false,
+      "version": ""
+    },
+    "nsys": {
+      "path": "/usr/local/bin/nsys",
+      "present": true,
+      "version": "NVIDIA Nsight Systems version 2026.1.3.425-261338342291v0",
+      "version_returncode": 0
+    },
+    "nvcc": {
+      "path": "/usr/bin/nvcc",
+      "present": true,
+      "version": "nvcc: NVIDIA (R) Cuda compiler driver",
+      "version_returncode": 0
+    },
+    "nvdisasm": {
+      "path": "/usr/bin/nvdisasm",
+      "present": true,
+      "version": "nvdisasm: NVIDIA (R) CUDA disassembler",
+      "version_returncode": 0
+    },
+    "nvidia-smi": {
+      "path": "/usr/bin/nvidia-smi",
+      "present": true,
+      "version": "NVIDIA-SMI version  : 580.173.02",
+      "version_returncode": 0
+    },
+    "ptxas": {
+      "path": "/usr/bin/ptxas",
+      "present": true,
+      "version": "ptxas: NVIDIA (R) Ptx optimizing assembler",
+      "version_returncode": 0
+    },
+    "rg": {
+      "path": "",
+      "present": false,
+      "version": ""
+    },
+    "uv": {
+      "path": "",
+      "present": false,
+      "version": ""
+    }
+  },
+  "torch_runtime": {
+    "cuda_available": true,
+    "cuda_version": "12.4",
+    "device_count": 1,
+    "devices": [
+      {
+        "capability": [
+          8,
+          0
+        ],
+        "name": "NVIDIA A100 80GB PCIe"
+      }
+    ],
+    "probe_ok": true,
+    "version": "2.5.1+cu124"
+  },
+  "warnings": [
+    "Unrelated installed distribution is inconsistent: No broken requirements found."
+  ]
+}

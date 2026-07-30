@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "stage": "optimize",
+  "trigger": "mechanism_pivot_from_wavebuffer_core_metadata_staging_to_conservative_async_wave_capacity_recovery",
+  "frontier_as_of": "2026-07-30",
+  "network_status": "online",
+  "checked_surfaces": [
+    "target_repository",
+    "official_toolchains",
+    "research_frontier",
+    "prior_attempt_frontier_records",
+    "adjacent_async_copy_and_stream_semantics"
+  ],
+  "queries": [
+    {
+      "channel": "prior_frontier_record",
+      "purpose": "Reuse opt024 official PyTorch/CUDA evidence for pinned CPU memory, non_blocking CUDA copies, streams/events, and explicit synchronization before CPU consumption of D2H data.",
+      "query": "Refresh optimize-stage evidence for a conservative async-wave capacity recovery pivot: PyTorch pinned memory non_blocking transfer, CUDA stream/event synchronization, and CUDA graph sync-free constraints.",
+      "references": [
+        "attempts/opt_attempt_024_async_wave_batch_access_overlap/frontier_check.raw.txt",
+        "https://docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html",
+        "https://pytorch.org/docs/stable/notes/cuda.html",
+        "https://docs.nvidia.com/dl-cuda-graph/torch-cuda-graph/sync-free-code.html"
+      ]
+    },
+    {
+      "channel": "target_repository",
+      "purpose": "Confirm current code already exposes RETROINFER_ASYNC_WAVE_BATCH_ACCESS and RETROINFER_LAYER_CACHE_CAPACITY_SCALE without a CUDA/C++ rebuild or benchmark-harness replacement.",
+      "query": "Search River861/RetrievalAttention current source for RetroInfer async WaveBuffer batch_access and per-layer block-cache capacity scale controls.",
+      "references": [
+        "cache_hub/retroinfer_cache.py",
+        "throughput_eval/reproduce_block_cache.py"
+      ]
+    }
+  ],
+  "material_updates": [
+    {
+      "action": "Stop WaveBufferCPU core-count and metadata-staging expansion.",
+      "finding": "opt027 near-default WaveBufferCPU core recovery was correctness-clean but failed to recover both opt013 throughput gates; metadata staging and WaveBuffer core retuning are closed negative mechanisms for this bounded node.",
+      "impact": "The next screen must use the existing async-wave path with conservative layer31 capacity recovery only, not a new core, metadata-staging, stream-only, scratch-empty, or native-kernel branch."
+    },
+    {
+      "action": "Bound the candidate stack to opt013 plus async wave batch access and layer31 capacity recovery.",
+      "finding": "opt021 showed layer31 0.875 and 0.9375 were memory-saving and correctness-clean without async wave but each missed one throughput axis; opt024 showed async-wave can recover throughput on opt013 capacity and an aggressive lower-memory stack, but the aggressive two-round confirmation regressed e2e.",
+      "impact": "Screen exactly one C1 round at layer31=0.875 with RETROINFER_ASYNC_WAVE_BATCH_ACCESS=1; if and only if C1 is execution/correctness-clean and misses throughput retention, screen exactly one C2 round with layer31=0.9375. Promote only a qualifying one-round candidate to exact two-round confirmation."
+    }
+  ],
+  "decision_impact": "Proceed with a no-source, env-gated conservative async-wave capacity screen on the canonical 120000x8/cache_ratio=0.05/gen_len=100 harness. Do not rerun the healthy baseline, Figure 13, metadata staging, WaveBuffer core tuning, stream-only, scratch-empty, or CUDA/C++ rebuild paths.",
+  "sources": [
+    {
+      "source_type": "official_repo",
+      "title": "River861/RetrievalAttention",
+      "url": "https://github.com/River861/RetrievalAttention",
+      "relevance": "Target repository containing RetroInfer block-cache source and canonical throughput harness surfaces."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch tutorial: A guide on good usage of non_blocking and pin_memory()",
+      "url": "https://docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html",
+      "relevance": "Documents pinned-memory and non_blocking transfer behavior relevant to the existing async cluster-id copy feeding CPU WaveBuffer access."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch CUDA semantics",
+      "url": "https://pytorch.org/docs/stable/notes/cuda.html",
+      "relevance": "Documents CUDA stream/event semantics and asynchronous execution constraints for host/GPU overlap."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "NVIDIA/PyTorch sync-free CUDA graph guidance",
+      "url": "https://docs.nvidia.com/dl-cuda-graph/torch-cuda-graph/sync-free-code.html",
+      "relevance": "Supports requiring use_cuda_graph=true and avoiding new synchronization-heavy mechanisms."
+    }
+  ],
+  "candidate": {
+    "name": "async_wave_conservative_layer31_recovery",
+    "node_key": "opt028_async_wave_conservative_layer31_recovery",
+    "shape": "context_len=120000,batch_size=8,gen_len=100,cache_ratio=0.05,seed=2025,A100_80GB,use_cuda_graph=true",
+    "screen_policy": "C1 one round at layer31=0.875; C2 one round at layer31=0.9375 only if C1 is execution/correctness-clean but misses throughput retention; exact two-round confirmation only for a one-round qualifying candidate.",
+    "environment": {
+      "RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY": "late",
+      "RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY": "pinned_side_stream",
+      "RETROINFER_LATE_BLOCK_CACHE_INIT": "uninitialized",
+      "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+      "RETROINFER_ASYNC_WAVE_BATCH_ACCESS": "1",
+      "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.75,2-3=0.75,25=0.75,28-29=0.75,31=0.875",
+      "RETROINFER_BUFFER_NPROBE_MULTIPLIER": "3.0",
+      "RETROINFER_INDEX_METADATA_PREFILL_RESIDENCY": "unset",
+      "RETROINFER_STAGE_INDEX_METADATA_LAYERS": "unset",
+      "RETROINFER_STREAM_ONLY_LAYERS": "unset",
+      "RETROINFER_LAYER_CACHE_RESIDENCY": "unset",
+      "RETROINFER_CACHE_TELEMETRY": "unset",
+      "RETROINFER_ASYNC_CACHE_ADMISSION": "unset",
+      "RETROINFER_ASYNC_STREAM_ONLY_GATHER": "unset",
+      "RETROINFER_SCRATCH_BUFFER_INIT": "unset",
+      "RETROINFER_WAVE_BUFFER_CORE_OVERRIDE": "unset"
+    }
+  }
+}

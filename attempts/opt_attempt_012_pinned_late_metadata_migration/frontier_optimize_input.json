@@ -1,0 +1,89 @@
+{
+  "checked_surfaces": [
+    "target_repository",
+    "official_toolchains",
+    "research_frontier",
+    "adjacent_implementations"
+  ],
+  "decision_impact": "Fresh optimize-stage evidence supports a bounded opt012 candidate that keeps forced-late index metadata off GPU during prefill, allocates it in pinned host memory, and migrates it once before decode with an explicit pinned/non_blocking side-stream policy. This targets the opt010-to-opt011 tradeoff without repeating per-decode metadata staging; it may reduce opt010 prepare-cache cost while preserving opt010-like peak GPU memory, but it cannot claim transfer/compute overlap without profiler/timeline evidence.",
+  "frontier_as_of": "2026-07-29",
+  "material_updates": [
+    {
+      "action": "Bind opt012 to pinned late metadata migration rather than repeated decode H2D staging.",
+      "finding": "The existing opt009 result showed per-decode staged metadata copies can preserve correctness but produce large repeated H2D traffic and lose decode throughput; opt010 showed low peak GPU memory with pageable CPU metadata migrated in prepare_cache; opt011 showed e2e recovery by moving metadata back to GPU during prefill at higher peak memory.",
+      "impact": "The bounded candidate should migrate the CPU metadata exactly once before decode, with pinned host allocation and explicit copy policy telemetry, and should compare against preserved opt010/opt011 artifacts without rerunning healthy baseline."
+    },
+    {
+      "action": "Keep CUDA/PyTorch async-transfer claim boundaries explicit.",
+      "finding": "Current official CUDA and PyTorch guidance still requires page-locked host memory, non_blocking transfers, non-default streams, and explicit synchronization dependencies for asynchronous H2D transfer; profiler/timeline evidence is required before claiming actual transfer/compute overlap.",
+      "impact": "The opt012 report may claim only measured copy policy, bytes, timing, correctness, and throughput; it must not claim overlap or overlap-derived speedup unless a profiler trace is collected."
+    },
+    {
+      "action": "Retain tiered/offloaded KV-cache frontier as context only.",
+      "finding": "Current KV-cache offload and tiered residency systems continue to expose workload- and hardware-dependent memory-throughput tradeoffs rather than universal speedups.",
+      "impact": "The opt012 outcome remains bounded to the native RetroInfer A100 120000x8/cache_ratio=0.05 validation point."
+    }
+  ],
+  "network_status": "online",
+  "no_material_update": false,
+  "queries": [
+    {
+      "channel": "web_search",
+      "purpose": "Refresh optimize-stage evidence for pinned/non_blocking side-stream metadata migration and claim boundaries before implementing opt012.",
+      "query": "Official current guidance for PyTorch pinned memory non_blocking CUDA host-to-device transfers side streams synchronization and profiler evidence for overlap, plus current LLM KV cache offload tiered streaming memory throughput tradeoff context."
+    }
+  ],
+  "schema_version": 1,
+  "searched_at": "2026-07-29T18:25:00+00:00",
+  "sources": [
+    {
+      "relevance": "Target repository and native artifacts define the block-cache allocation, metadata allocation, prepare_cache migration surface, and opt009/opt010/opt011 measured tradeoffs used to select opt012.",
+      "source_type": "official_repo",
+      "title": "River861/RetrievalAttention",
+      "url": "https://github.com/River861/RetrievalAttention"
+    },
+    {
+      "relevance": "Official pinned-memory/non_blocking guidance; supports requiring pre-pinned host tensors and non_blocking transfers for async H2D policy, while warning that pinning itself can synchronize.",
+      "source_type": "official_docs",
+      "title": "PyTorch: A guide on good usage of non_blocking and pin_memory()",
+      "url": "https://docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html"
+    },
+    {
+      "relevance": "Official CUDA stream/asynchronous execution semantics; supports explicit stream/event synchronization and profiler evidence boundaries.",
+      "source_type": "official_docs",
+      "title": "CUDA C++ Programming Guide: Asynchronous Execution",
+      "url": "https://docs.nvidia.com/cuda/cuda-programming-guide/02-basics/asynchronous-execution.html"
+    },
+    {
+      "relevance": "Official PyTorch CUDA memory and stream semantics relevant to pinned host allocation telemetry and synchronization behavior.",
+      "source_type": "official_docs",
+      "title": "PyTorch CUDA semantics and memory management notes",
+      "url": "https://pytorch.org/docs/stable/notes/cuda.html"
+    },
+    {
+      "relevance": "Adjacent maintained KV-cache tiering/offload implementation context; comparison evidence only, not RetroInfer speed proof.",
+      "source_type": "author_repo",
+      "title": "LMCache",
+      "url": "https://github.com/LMCache/LMCache"
+    }
+  ],
+  "stage": "optimize",
+  "trigger": "mechanism_pivot_to_pinned_late_index_metadata_migration",
+  "candidate": {
+    "name": "pinned_late_index_metadata_side_stream_migration",
+    "node_key": "opt012_pinned_late_metadata_migration",
+    "shape": "context_len=120000,batch_size=8,gen_len=100,cache_ratio=0.05,rounds=2,seed=2025,A100_80GB",
+    "environment": {
+      "RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY": "late",
+      "RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY": "pinned_side_stream",
+      "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+      "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.75,2-3=0.75,25=0.75,28-29=0.75",
+      "RETROINFER_BUFFER_NPROBE_MULTIPLIER": "3.0",
+      "RETROINFER_INDEX_METADATA_PREFILL_RESIDENCY": "unset",
+      "RETROINFER_STAGE_INDEX_METADATA_LAYERS": "unset",
+      "RETROINFER_STREAM_ONLY_LAYERS": "unset",
+      "RETROINFER_LAYER_CACHE_RESIDENCY": "unset",
+      "RETROINFER_CACHE_TELEMETRY": "unset"
+    }
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "architecture_binding": {
+    "cpu_owner": "complete logical block-cache K/V body for all L layers, preferably pinned host memory",
+    "gpu_residency": "physical GPU block-cache K/V slots <= m, no long-lived independent cache tensor per layer",
+    "non_approximations": [
+      "metadata staging only",
+      "stream-only direct gather",
+      "late allocation of per-layer GPU cache tensors",
+      "static capacity scaling",
+      "page-geometry-only changes"
+    ],
+    "streams": [
+      "compute_stream",
+      "h2d_prefetch_stream",
+      "d2h_unload_stream"
+    ],
+    "synchronization": "events and slot generations; compute waits only before consuming a slot or overwriting/reusing one"
+  },
+  "checked_surfaces": [
+    "target_repository",
+    "official_toolchains",
+    "official_cuda_docs",
+    "official_pytorch_package_matrix",
+    "research_frontier",
+    "adjacent_kv_offload_implementations"
+  ],
+  "decision_impact": "Proceed next to a bounded implementation/probe of CPU full block-cache K/V ownership with <=m rotating GPU slots, starting at m=8 and optionally comparing m=12 only if H2D wait telemetry requires it. Do not resume static capacity, stream-only layer, direct-gather-only, late-allocation-only, or page-geometry enumeration for this inserted task.",
+  "environment_binding": {
+    "cuda_12_4_rebuild_status": "blocked_no_verified_cuda_12_4_nvcc_or_cuda_home",
+    "driver": "580.173.02",
+    "gpu": "NVIDIA A100 80GB PCIe",
+    "host_mem_available_kb": 220147364,
+    "host_mem_total_kb": 226765912,
+    "memlock_kb": 28345736,
+    "ncu": "not_found_on_path",
+    "nsys": "NVIDIA Nsight Systems 2026.1.3",
+    "runtime_python": "/home/v-xuchuanluo/RetroInfer/.venv/bin/python",
+    "torch": "2.5.1+cu124",
+    "torch_cuda": "12.4"
+  },
+  "frontier_as_of": "2026-07-30",
+  "initial_m": {
+    "optional_comparator": 12,
+    "rationale": "Canonical 120K x batch 8 x cache ratio 5% has 186 MiB K+V per layer and 5.8125 GiB across 32 layers. m=8 uses 1.453125 GiB of slots and gives a seven-layer prefetch lead, roughly matching a 7.6-9.3 ms H2D copy at 20-24 GiB/s to opt013's approximate 1.25 ms/layer decode cadence. m=12 is reserved only if telemetry shows H2D waits dominate.",
+    "value": 8
+  },
+  "material_updates": [
+    {
+      "action": "Retarget the next optimize-stage work to real CPU-owned block-cache K/V with a bounded GPU slot ring.",
+      "finding": "The operator-requested CPU full-KV plus rotating GPU-slot design is materially different from prior capacity scaling and stream-only/direct-gather candidates.",
+      "impact": "Scope now requires real block-cache K/V body rotation with CPU ownership, <=m physical GPU slots, H2D/D2H streams/events, slot generations, and explicit non-approximation gates."
+    },
+    {
+      "action": "Require pinned-memory feasibility and explicit transfer synchronization before accepting the architecture as runnable.",
+      "finding": "Official CUDA and PyTorch docs both bind useful overlap to pinned/page-locked host buffers, separate streams, and explicit synchronization before CPU/GPU consumers read copied data.",
+      "impact": "Pinned CPU full block-cache allocation is a first-class feasibility check; failure is an environment/resource blocker, not a failed optimization idea."
+    },
+    {
+      "action": "Bind CUDA graph compatibility to fixed preallocated slot addresses or a reported graph blocker.",
+      "finding": "CUDA graph replay depends on stable captured resources and valid stream/event dependencies.",
+      "impact": "GPU slots must be allocated before capture and graph layers must capture fixed slot addresses, or the implementation must disable/report the slot-rotation CUDA graph path rather than silently changing pointers."
+    },
+    {
+      "action": "Reuse the audited project runtime while keeping source rebuild support blocked until a CUDA 12.4 compiler is proven.",
+      "finding": "The audited project .venv already imports the cu124 runtime stack and installed retroinfer_kernels, while CUDA 12.4 source rebuild support remains unproven.",
+      "impact": "Runtime evidence may reuse .venv; any source rebuild is blocked until a CUDA 12.4 compiler/toolkit is proven, and that blocker remains separate from idea status."
+    }
+  ],
+  "network_status": "online",
+  "no_material_update": false,
+  "queries": [
+    {
+      "channel": "web_search",
+      "purpose": "Trigger-fresh mechanism search for CPU/GPU KV-cache offload, async layer prefetch/offload, pinned host memory, CUDA graph address constraints, and current package/toolchain compatibility.",
+      "query": "Current public evidence for LLM KV cache CPU offload or prefetch between host and GPU, pinned host memory requirements for asynchronous CUDA H2D/D2H copies, CUDA Graph fixed-address memory constraints, and recent official CUDA/PyTorch/Triton package compatibility changes relevant to PyTorch 2.5 CUDA 12.4 and A100 PCIe."
+    },
+    {
+      "channel": "web_fetch",
+      "purpose": "Official package/toolchain compatibility for project-pinned torch 2.5.1 cu124.",
+      "query": "https://pytorch.org/get-started/previous-versions/"
+    },
+    {
+      "channel": "web_fetch",
+      "purpose": "Official CUDA stream, event, cudaMemcpyAsync, pinned/page-locked host memory, and overlap constraints.",
+      "query": "https://docs.nvidia.com/cuda/cuda-programming-guide/02-basics/asynchronous-execution.html"
+    },
+    {
+      "channel": "web_fetch",
+      "purpose": "Official CUDA graph definition/instantiation/replay and stream-capture/event constraints.",
+      "query": "https://docs.nvidia.com/cuda/cuda-programming-guide/04-special-topics/cuda-graphs.html"
+    },
+    {
+      "channel": "web_fetch",
+      "purpose": "Official PyTorch pinned memory and non_blocking transfer guidance.",
+      "query": "https://docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html"
+    }
+  ],
+  "record_id": "304e0adfef4687d1",
+  "recorded_at": "2026-07-30T07:15:06.668220+00:00",
+  "schema_version": 1,
+  "searched_at": "2026-07-30T07:08:11.436+00:00",
+  "sources": [
+    {
+      "relevance": "Target repository containing RetroInfer block-cache allocation, WaveBufferCPU LRU/admission, CUDA gather/scatter kernels, and the canonical harness.",
+      "source_type": "official_repo",
+      "title": "River861/RetrievalAttention",
+      "url": "https://github.com/River861/RetrievalAttention"
+    },
+    {
+      "relevance": "Confirms torch==2.5.1 CUDA 12.4 package availability for the project-pinned runtime; newer releases do not require a scope-stage stack replacement.",
+      "source_type": "official_docs",
+      "title": "PyTorch previous versions installation matrix",
+      "url": "https://pytorch.org/get-started/previous-versions/"
+    },
+    {
+      "relevance": "States CUDA streams/events, cudaMemcpyAsync behavior, and that host buffers must be pinned/page-locked for asynchronous CPU/GPU copies to overlap with other work.",
+      "source_type": "official_docs",
+      "title": "CUDA Programming Guide: Asynchronous Execution",
+      "url": "https://docs.nvidia.com/cuda/cuda-programming-guide/02-basics/asynchronous-execution.html"
+    },
+    {
+      "relevance": "Defines graph definition/instantiation/replay and cross-stream event capture constraints; scope binds slot rotation to fixed preallocated GPU slot addresses.",
+      "source_type": "official_docs",
+      "title": "CUDA Programming Guide: CUDA Graphs",
+      "url": "https://docs.nvidia.com/cuda/cuda-programming-guide/04-special-topics/cuda-graphs.html"
+    },
+    {
+      "relevance": "Official PyTorch guidance that CPU-to-GPU overlap needs a separate stream, pinned source memory, and non_blocking transfers; warns about unsafe async GPU-to-CPU consumption without synchronization.",
+      "source_type": "official_docs",
+      "title": "PyTorch tutorial: non_blocking and pin_memory()",
+      "url": "https://docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html"
+    },
+    {
+      "relevance": "Adjacent evidence that production LLM serving stacks expose CPU KV-cache offload; used only as frontier context, not as a mandate to recreate vLLM internals.",
+      "source_type": "official_docs",
+      "title": "vLLM Ascend KV Cache CPU Offload Guide",
+      "url": "https://docs.vllm.ai/projects/ascend/en/latest/user_guide/feature_guide/kv_cache_cpu_offload.html"
+    },
+    {
+      "relevance": "Mechanism-level evidence for layerwise asynchronous KV prefetch/offload overlap, matching the inserted architecture's scheduling goal.",
+      "source_type": "preprint",
+      "title": "Accelerating LLM Inference Throughput via Asynchronous KV Cache Prefetching",
+      "url": "https://arxiv.org/abs/2504.06319"
+    }
+  ],
+  "stage": "scope",
+  "trigger": "operator_inserted_cpu_full_kv_gpu_slot_rotation"
+}

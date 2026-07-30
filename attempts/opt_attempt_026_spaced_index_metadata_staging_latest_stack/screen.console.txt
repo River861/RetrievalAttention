@@ -1,0 +1,1 @@
+Wrote block-cache artifacts to attempts/opt_attempt_026_spaced_index_metadata_staging_latest_stack/raw/screen_120k_b8_cr0p05

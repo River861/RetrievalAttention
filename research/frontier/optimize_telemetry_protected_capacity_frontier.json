@@ -1,0 +1,69 @@
+{
+  "checked_surfaces": [
+    "target_repository",
+    "research_frontier",
+    "adjacent_kv_cache_streaming_partial_residency_evidence",
+    "project_native_toolchain"
+  ],
+  "decision_impact": "Proceed with only the assigned opt006 candidates: preserve layers 1/25/29 unless explicitly set to 0.875 by the contract, cut telemetry-stable lower-hit layers 2/3/28, keep telemetry disabled and async cluster-id copy enabled, and compare raw A100 120000x8/cache_ratio=0.05 measurements against research/BASELINE_RESULT.json and research/VALIDATION_RESULT.json.",
+  "frontier_as_of": "2026-07-29",
+  "material_updates": [
+    {
+      "action": "Use real harness measurements for block-cache bytes, process peak GPU memory, decode throughput, e2e throughput, correctness, and stability.",
+      "finding": "Recent KV-cache work continues to frame partial residency/offload/prefetch as workload-dependent Pareto tradeoffs.",
+      "impact": "No speed or overlap claim will be made without profiler/timing evidence; this attempt is capacity-frontier evidence."
+    },
+    {
+      "action": "Reuse installed kernels and Python runtime controls; do not rebuild CUDA/C++.",
+      "finding": "The local source rebuild path remains blocked unless CUDA 12.4 nvcc/CUDA_HOME is proven.",
+      "impact": "Any rebuild issue is an environment/toolchain blocker, not a kernel idea failure."
+    }
+  ],
+  "network_status": "online",
+  "queries": [
+    {
+      "channel": "web_search",
+      "purpose": "Fresh optimize-stage evidence for protected sensitive layers 1/25/29 while cutting lower-hit layers 2/3/28 under async cluster-id copy.",
+      "query": "2025 2026 LLM inference KV cache GPU memory reduction partial per-layer capacity residency streaming offload prefetch async host to device transfer overlap evidence requirements throughput memory tradeoff"
+    }
+  ],
+  "record_id": "d8ded3de5d34167b",
+  "recorded_at": "2026-07-29T13:42:16Z",
+  "repository_head": "7096eab9190da389bbc75c1992140d1432d9d8ec",
+  "schema_version": 1,
+  "searched_at": "2026-07-29T13:42:16Z",
+  "sources": [
+    {
+      "relevance": "Target repository, native harness, and default-off runtime controls used for this attempt.",
+      "source_type": "official_repo",
+      "title": "River861/RetrievalAttention",
+      "url": "https://github.com/River861/RetrievalAttention"
+    },
+    {
+      "relevance": "Recent survey evidence that partial/tiered/streaming KV-cache optimizations require paired memory, throughput, and correctness measurements.",
+      "source_type": "survey",
+      "title": "KV Cache Optimization Strategies for Scalable and Efficient LLM Inference",
+      "url": "https://arxiv.org/abs/2603.20397"
+    },
+    {
+      "relevance": "Adjacent maintained KV-cache tiering/offload system motivating workload-specific residency tradeoffs, not a drop-in replacement.",
+      "source_type": "maintained_system",
+      "title": "LMCache",
+      "url": "https://github.com/LMCache/LMCache"
+    },
+    {
+      "relevance": "Supports that offload/prefetch/overlap claims need real-hardware evidence and should not be inferred from capacity arithmetic.",
+      "source_type": "vendor_engineering",
+      "title": "NVIDIA CPU-GPU memory sharing / KV cache offload guidance",
+      "url": "https://developer.nvidia.com/blog/accelerate-large-scale-llm-inference-and-kv-cache-offload-with-cpu-gpu-memory-sharing/"
+    },
+    {
+      "relevance": "Current engineering framing for memory/latency tradeoffs in paged, partial, quantized, and streamed KV caches.",
+      "source_type": "engineering_guides",
+      "title": "2026 LLM inference KV-cache optimization guides",
+      "url": "https://www.digitalapplied.com/blog/kv-cache-optimization-techniques-2026-engineering-guide"
+    }
+  ],
+  "stage": "optimize",
+  "trigger": "bounded_telemetry_protected_capacity_frontier_after_opt005_decode_regression"
+}

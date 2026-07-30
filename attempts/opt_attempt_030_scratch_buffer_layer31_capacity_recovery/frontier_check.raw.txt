@@ -1,0 +1,15 @@
+# Frontier check: opt_attempt_030_scratch_buffer_layer31_capacity_recovery
+generated_at_utc=2026-07-30T04:51:11Z
+scope=bounded optimize node OPT030_SCRATCH_BUFFER_LAYER31_CAPACITY_RECOVERY
+event_trigger=fresh bounded attempt after opt023 layer31 0.75 failed e2e and opt029 stream-only was negative
+reference=attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/OUTCOME.json only; no healthy baseline rerun
+candidate_plan=opt013 late/uninitialized/pinned-side-stream/async-cluster-copy stack + RETROINFER_SCRATCH_BUFFER_INIT=uninitialized + RETROINFER_BUFFER_NPROBE_MULTIPLIER=2.75 + layer31 capacity 0.8125, then 0.875 only if needed
+frontier conclusion=use existing default-off Python/runtime hooks in cache_hub/retroinfer_cache.py and canonical throughput_eval/reproduce_block_cache.py; no C++/CUDA rebuild, new native kernels, new harness, stream-only rerun, Figure13, or unrelated matrix
+
+# frontier_watch check
+frontier watch: optimize evidence recorded as of 2026-07-30
+
+# prior bounded evidence
+{"attempt_id": "opt_attempt_013_uninitialized_late_block_cache_allocation", "execution_status": "completed", "failure_class": "none", "idea_status": "supported", "path": "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/OUTCOME.json", "summary": "Default-off uninitialized late block-cache allocation passed 2/2 A100 120000x8 correctness runs, kept 5673.0 MiB block cache and 29884 MiB peak GPU memory, used torch.empty for 64 late K/V cache tensors totaling 5948571648 bytes, improved e2e generated throughput versus opt012 (3.268888 vs 3.264410 tok/s), and regressed decode throughput versus opt012 (198.037 vs 201.132 tok/s)."}
+{"attempt_id": "opt_attempt_023_scratch_empty_buffer_2p75_layer31_screen", "execution_status": "completed", "failure_class": "performance", "idea_status": "refuted", "path": "attempts/opt_attempt_023_scratch_empty_buffer_2p75_layer31_screen/OUTCOME.json", "summary": "One A100 120000x8 round passed correctness and saved memory (block cache 5626.5 vs 5673.0 MiB; peak GPU 29820.0 vs 29884.0 MiB) with decode 200.406653 tok/s, but e2e generated throughput 3.267889 tok/s regressed versus opt013 3.268888 tok/s; not retained and no two-round rerun."}
+{"attempt_id": "opt_attempt_029_stream_only_layer31_lowhit_screen", "execution_status": "completed", "failure_class": "performance", "idea_status": "refuted", "path": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/OUTCOME.json", "summary": "Stream-only layer31 removed one layer of GPU block cache (5487.0 vs 5673.0 MiB) and lowered peak process GPU memory (29696.0 vs 29884.0 MiB), but C1 decode fell to 190.548259 tok/s and C2 decode fell to 177.335506 tok/s versus opt013 198.036572; C2 also regressed e2e, so opt029 stops negative without two-round confirmation."}

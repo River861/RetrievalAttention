@@ -1,0 +1,11 @@
+{
+  "attempt_id": "opt_attempt_007_stream_only_fused_layers",
+  "decision_impact": "Implement only a default-off stream-only layer path using installed gather_copy_cluster_and_concat_fuse; measure one low-hit-layer candidate under the canonical 120000x8/gen_len=100/cache_ratio=0.05 harness with async cluster-id copy and telemetry disabled.",
+  "recorded_at": "2026-07-29T14:29:01Z",
+  "reuse_decision": "No new frontier search was run inside this bounded turn; mechanism scope was assigned by planner and no upstream/toolchain pivot occurred before implementation. Existing frontier evidence still applies to memory-throughput/correctness measurement requirements for partial/streaming KV residency.",
+  "schema_version": 1,
+  "snapshot_path": "research/frontier/optimize_telemetry_protected_capacity_frontier.json",
+  "snapshot_sha256": "aabd813375d3f5cd94f51330ac87cfaf513f27651a49272c4134562368d81bc5",
+  "stage": "optimize",
+  "trigger": "planner_delegated_stream_only_fused_layers_after_opt006_capacity_frontier_refutation"
+}

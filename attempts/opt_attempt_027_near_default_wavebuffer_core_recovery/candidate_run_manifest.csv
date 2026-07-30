@@ -1,0 +1,4 @@
+candidate_id,wave_buffer_core_override,planned_rounds,context_len,batch_size,gen_len,cache_ratio,seed,env_stack,output_dir,status,gate_reason
+core21_screen,21,1,120000,8,100,0.05,2025,opt023_lower_memory,attempts/opt_attempt_027_near_default_wavebuffer_core_recovery/raw/core21_screen_120k_b8_cr0p05,fail_one_round,decode_regressed_vs_opt013
+core20_screen,20,1,120000,8,100,0.05,2025,opt023_lower_memory,attempts/opt_attempt_027_near_default_wavebuffer_core_recovery/raw/core20_screen_120k_b8_cr0p05,fail_one_round,e2e_regressed_vs_opt013
+core18_screen,18,1,120000,8,100,0.05,2025,opt023_lower_memory,attempts/opt_attempt_027_near_default_wavebuffer_core_recovery/raw/core18_screen_120k_b8_cr0p05,fail_one_round,e2e_regressed_vs_opt013

@@ -1,0 +1,12 @@
+# Frontier check: opt_attempt_026_spaced_index_metadata_staging_latest_stack
+generated_at_utc=2026-07-30T03:05:55Z
+scope=bounded optimize node; trigger=selecting spaced staged index metadata scope on latest opt013 stack
+frontier_watch_check_begin
+/home/v-xuchuanluo/RetroInfer/.venv/bin/python: Error while finding module specification for 'argus_skill.verticals.kernel_engineering.frontier_watch' (ModuleNotFoundError: No module named 'argus_skill')
+frontier_watch_check_end
+frontier evidence summary:
+- target code already exposes default-off RETROINFER_STAGE_INDEX_METADATA_LAYERS for pinned-host per-device staged metadata buffers.
+- opt009 proved one staged layer was correct but offered no resident-GPU metadata saving because one layer was replaced by a one-layer stage buffer.
+- opt013 is the retained reference stack for this screen: late allocation, uninitialized block cache, pinned side-stream late metadata migration, async cluster-id copy, low6 capacity scale, buffer multiplier 3.0.
+- This attempt tests spaced six-layer staging (4,9,14,19,24,29) only; no CUDA/C++ rebuild, new harness, healthy baseline rerun, or Figure 13 rerun.
+source_refs=cache_hub/retroinfer_cache.py; throughput_eval/reproduce_block_cache.py; attempts/opt_attempt_009_stream_index_metadata_staging/OUTCOME.json; attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/OUTCOME.json

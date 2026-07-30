@@ -1,5 +1,84 @@
 {
-  "current_stage": "delivery",
+  "current_stage": "optimize",
+  "rollback_history": [
+    {
+      "at": "2026-07-29T07:43:39.005311Z",
+      "from_stage": "scope",
+      "reason": "operator replaced the standing Manager objective; resetting the superseded 'software' pipeline to the first stage of 'kernel_engineering' instead of preserving incompatible progress.",
+      "rolled_back_by": "manager",
+      "to_stage": "scope"
+    },
+    {
+      "at": "2026-07-29T09:56:16.710079Z",
+      "from_stage": "report",
+      "reason": "The report-stage checklist is satisfied, but the open-ended standing objective is not exhausted: the certified result is an honest memory-saving tradeoff with decode regression and explicitly leaves higher-impact streaming/block-cache mechanisms unexplored. Scope, environment, and baseline evidence remain usable, so the earliest stage needed for the next implementation increment is optimize.",
+      "rolled_back_by": "manager",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T10:55:27.012312Z",
+      "from_stage": "report",
+      "reason": "Final report work is certified, but the open-ended objective remains unresolved and further project-local implementation work belongs to an earlier stage. No evidence says scope, environment, or baseline are stale, so optimize is the earliest needed stage for the next increment.",
+      "rolled_back_by": "manager",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T11:54:48.778300Z",
+      "from_stage": "report",
+      "reason": "Report is certified, but the open-ended streaming block-cache objective remains active and further work belongs to a new implementation increment. No evidence makes scope, environment, or baseline stale, so optimize is the earliest needed rollback target.",
+      "rolled_back_by": "manager",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T13:00:33.202475Z",
+      "from_stage": "report",
+      "reason": "Report is certified complete, but the standing objective remains active and further useful work belongs to a new implementation increment. Earlier scope, environment, and baseline evidence are not reported stale, so optimize is the earliest required rollback target.",
+      "rolled_back_by": "manager",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T16:19:44.825245Z",
+      "from_stage": "report",
+      "reason": "Report is certified complete, but the standing objective remains active and further useful project-local work belongs to a new implementation increment. No evidence indicates scope, environment, or baseline are stale, so optimize is the earliest required rollback target.",
+      "rolled_back_by": "manager",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T17:29:34.426030Z",
+      "from_stage": "report",
+      "reason": "Report-stage work is certified, but the open-ended standing objective remains active and further useful work belongs to a new implementation increment. With no evidence that scope, environment, or baseline are stale, optimize is the earliest required rollback target.",
+      "rolled_back_by": "manager",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T18:18:08.092688Z",
+      "from_stage": "report",
+      "reason": "Report-stage work is certified, but the open-ended standing objective remains active and further useful work belongs to a new implementation increment. No evidence indicates scope, environment, or baseline are stale, so optimize is the earliest required rollback target.",
+      "rolled_back_by": "manager",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T20:33:14.418708Z",
+      "from_stage": "report",
+      "reason": "Report-stage work is certified, but the open-ended standing objective remains active and further useful work belongs to a new implementation increment. No evidence indicates scope, environment, or baseline are stale, so optimize is the earliest required rollback target.",
+      "rolled_back_by": "manager",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T21:15:22.440882Z",
+      "from_stage": "report",
+      "reason": "Report-stage work is certified, but the open-ended standing objective remains active and further useful work belongs to a new implementation increment. No evidence indicates scope, environment, or baseline are stale, so optimize is the earliest required rollback target.",
+      "rolled_back_by": "manager",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-30T07:05:56.315731Z",
+      "from_stage": "optimize",
+      "reason": "operator replaced the standing Manager objective; resetting the superseded 'kernel_engineering' pipeline to the first stage of 'kernel_engineering' instead of preserving incompatible progress.",
+      "rolled_back_by": "manager",
+      "to_stage": "scope"
+    }
+  ],
   "stage_history": [
     {
       "at": "2026-07-29T04:19:35.006816Z",
@@ -48,10 +127,365 @@
       "from_stage": "delivery",
       "reason": "reviewer certified the final-stage checklist, overriding the Manager hold (Delivery checklist is satisfied by reviewer evidence, including the real 120000x8 cache_ratio=0.025 run, updated artifacts, and passing compile/script/artifact )",
       "to_stage": "delivery"
+    },
+    {
+      "at": "2026-07-29T07:43:39.005311Z",
+      "by": "manager",
+      "direction": "reset",
+      "from_stage": "scope",
+      "reason": "operator replaced the standing Manager objective; resetting the superseded 'software' pipeline to the first stage of 'kernel_engineering' instead of preserving incompatible progress.",
+      "to_stage": "scope"
+    },
+    {
+      "at": "2026-07-29T07:57:54.186896Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "scope",
+      "reason": "Scope checklist is satisfied: frontier evidence is current and verifier-bound, the kernel/API/edit/benchmark contract is pinned, and native setup/runtime/toolchain findings are recorded; the CUDA 12.4 rebuild proof is correctly deferred to the environment stage.",
+      "to_stage": "environment"
+    },
+    {
+      "at": "2026-07-29T08:20:51.939000Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "environment",
+      "reason": "Reviewed environment artifacts satisfy the gate: the project venv runtime imports the CUDA 12.4 RetroInfer stack on A100, installed RetroInfer kernels and profiling/sanitizer tools are available, and native reuse/frontier decisions are recorded. The missing CUDA 12.4-compatible nvcc remains a source-rebuild environment/toolchain constraint (environment_rebuild_toolchain_cuda_version_mismatch), not a kernel idea failure.",
+      "to_stage": "baseline"
+    },
+    {
+      "at": "2026-07-29T08:42:16.156333Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "baseline",
+      "reason": "Baseline checklist is satisfied: `research/BASELINE_PROTOCOL.md` and `research/BASELINE_RESULT.json` document the exact unmodified harness command, environment, correctness oracle, raw paths, and 2/2 passing baseline runs with reproducible timing metrics.",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T09:22:59.169831Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "optimize",
+      "reason": "Optimize-stage evidence is sufficient: the accepted attempt starts from measured hit/miss pressure, applies a minimal Python-only layer-residency change, records correctness/timing/raw artifacts, passes the Argus attempt checker, and identifies a retained candidate with a modest memory-saving tradeoff to validate without claiming throughput dominance.",
+      "to_stage": "validate"
+    },
+    {
+      "at": "2026-07-29T09:45:11.435905Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "validate",
+      "reason": "Validate checklist is satisfied: the validation matrix/result bind the retained candidate to raw artifacts, cover correctness, shape/config, bf16 installed-kernel checks, fallback/error behavior, determinism scope, memory and performance, and honestly classify the result as a memory/throughput tradeoff rather than a decode speedup.",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T09:54:44.062884Z",
+      "by": "manager",
+      "direction": "complete",
+      "from_stage": "report",
+      "reason": "reviewer certified the final-stage checklist, overriding the Manager hold (Report-stage checklist is satisfied by the frontier ledger and bounded RESULTS.md, but this is already the final stage with no legal advance target and no evide)",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T09:56:16.710079Z",
+      "by": "manager",
+      "direction": "rollback",
+      "from_stage": "report",
+      "reason": "The report-stage checklist is satisfied, but the open-ended standing objective is not exhausted: the certified result is an honest memory-saving tradeoff with decode regression and explicitly leaves higher-impact streaming/block-cache mechanisms unexplored. Scope, environment, and baseline evidence remain usable, so the earliest stage needed for the next implementation increment is optimize.",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T10:25:31.188693Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "optimize",
+      "reason": "Optimize checklist is satisfied: the fractional layer-capacity attempt has OUTCOME/CHANGES/raw artifacts, correctness-passing real runs, explicit invalid-spec handling, and a retained candidate (`layer1_scale0p75`) with a measured non-dominated memory/decode tradeoff to validate.",
+      "to_stage": "validate"
+    },
+    {
+      "at": "2026-07-29T10:47:02.905196Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "validate",
+      "reason": "Validate checklist is satisfied: `VALIDATION_MATRIX.md` and `VALIDATION_RESULT.json` cover the retained fractional layer-capacity candidate across real-hardware correctness, shape/config, dtype/numerical checks, fallback/error behavior, inference-only scope, determinism/stability, memory, performance, and status separation without weakening the harness.",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T10:54:27.221271Z",
+      "by": "manager",
+      "direction": "complete",
+      "from_stage": "report",
+      "reason": "reviewer certified the final-stage checklist, overriding the Manager hold (Report-stage checklist is satisfied by the fresh frontier ledger and evidence-bounded RESULTS.md, but this is already the final stage with no legal advance targ)",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T10:55:27.012312Z",
+      "by": "manager",
+      "direction": "rollback",
+      "from_stage": "report",
+      "reason": "Final report work is certified, but the open-ended objective remains unresolved and further project-local implementation work belongs to an earlier stage. No evidence says scope, environment, or baseline are stale, so optimize is the earliest needed stage for the next increment.",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T11:24:40.428883Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "optimize",
+      "reason": "Optimize checklist is satisfied: the multi-layer fractional-capacity attempt has frontier binding, CHANGES/OUTCOME, raw correctness-passing artifacts, three valid one-round candidates, and a retained `low6_scale0p75` memory-saving tradeoff to validate without claiming non-telemetry speedup.",
+      "to_stage": "validate"
+    },
+    {
+      "at": "2026-07-29T11:44:39.002950Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "validate",
+      "reason": "Validate checklist is satisfied: `VALIDATION_MATRIX.md` and `VALIDATION_RESULT.json` cover the retained low6 candidate across real-hardware correctness, shape/config, dtype/numerical checks, fallback/error behavior, telemetry-disabled execution, inference-only scope, determinism/stability, memory, performance, and status separation without weakening the harness.",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T11:53:48.991948Z",
+      "by": "manager",
+      "direction": "complete",
+      "from_stage": "report",
+      "reason": "reviewer certified the final-stage checklist, overriding the Manager hold (Report-stage checklist is satisfied by the refreshed frontier record and evidence-bounded RESULTS.md for the validated low6 candidate, but report is the final s)",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T11:54:48.778300Z",
+      "by": "manager",
+      "direction": "rollback",
+      "from_stage": "report",
+      "reason": "Report is certified, but the open-ended streaming block-cache objective remains active and further work belongs to a new implementation increment. No evidence makes scope, environment, or baseline stale, so optimize is the earliest needed rollback target.",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T12:18:29.501731Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "optimize",
+      "reason": "Optimize checklist is satisfied: opt004 has fresh frontier binding, CHANGES/OUTCOME, compatible environment evidence, correctness-passing raw runs, no forbidden rebuild/new harness, and a retained low6+async candidate preserving memory savings with measured decode improvement to validate.",
+      "to_stage": "validate"
+    },
+    {
+      "at": "2026-07-29T12:40:19.815706Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "validate",
+      "reason": "Validate checklist is satisfied: `VALIDATION_MATRIX.md` and `VALIDATION_RESULT.json` cover the retained low6+async candidate across correctness, shape/config, async metadata, telemetry-disabled execution, dtype/numerical checks, fallback/error handling, inference-only scope, determinism/stability, memory, performance, and status separation without weakening the harness.",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T12:59:20.062476Z",
+      "by": "manager",
+      "direction": "complete",
+      "from_stage": "report",
+      "reason": "reviewer certified the final-stage checklist, overriding the Manager hold (Report-stage checklist is satisfied by the accepted L2 review, verified frontier record, and evidence-bounded RESULTS.md, but report is the final stage with no )",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T13:00:33.202475Z",
+      "by": "manager",
+      "direction": "rollback",
+      "from_stage": "report",
+      "reason": "Report is certified complete, but the standing objective remains active and further useful work belongs to a new implementation increment. Earlier scope, environment, and baseline evidence are not reported stale, so optimize is the earliest required rollback target.",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T15:41:02.441379Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "optimize",
+      "reason": "Opt008 satisfies optimize.mechanistic_attempt: it starts from execution-buffer sizing, makes a default-off Python-only surface change, records correctness/timing/metadata, passes attempt_outcome check, and retains buffer_mult_3p0 as a candidate with unchanged low6 block-cache footprint, 68 MiB lower peak GPU memory than validated low6+async, slightly higher e2e, zero buffer warnings, and decode still above canonical baseline.",
+      "to_stage": "validate"
+    },
+    {
+      "at": "2026-07-29T16:03:03.094999Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "validate",
+      "reason": "validate.full_contract is satisfied by research/VALIDATION_MATRIX.md and research/VALIDATION_RESULT.json: correctness passes, supported shape/dtype/numerical checks pass, inference-only scope is explicit, determinism/fallback/error behavior is covered, memory and performance are measured on native hardware, and execution_status/failure_class are separated from idea_status. No earlier-stage rollback evidence is present.",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T16:18:32.937288Z",
+      "by": "manager",
+      "direction": "complete",
+      "from_stage": "report",
+      "reason": "reviewer certified the final-stage checklist, overriding the Manager hold (report.frontier_current and report.evidence_bounded_claim are satisfied by fresh report frontier evidence and RESULTS.md, but report is the terminal stage with )",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T16:19:44.825245Z",
+      "by": "manager",
+      "direction": "rollback",
+      "from_stage": "report",
+      "reason": "Report is certified complete, but the standing objective remains active and further useful project-local work belongs to a new implementation increment. No evidence indicates scope, environment, or baseline are stale, so optimize is the earliest required rollback target.",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T17:11:32.964522Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "optimize",
+      "reason": "optimize.mechanistic_attempt is satisfied: opt010 starts from block-cache lifecycle residency, makes a default-preserving runtime-policy change, records correctness/timing/allocation metadata in OUTCOME.json, passes the checker, and supports forced_late_low6_async_buffer_mult_3p0 as a validate-ready candidate with 2/2 correctness, unchanged 5673.0 MiB block cache, peak GPU memory reduced from 41604.0 to 29884.0 MiB versus retained validation, and decode essentially tied while e2e is honestly reported as slightly lower.",
+      "to_stage": "validate"
+    },
+    {
+      "at": "2026-07-29T17:19:47.232331Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "validate",
+      "reason": "validate.full_contract is satisfied by research/VALIDATION_MATRIX.md and research/VALIDATION_RESULT.json: the retained forced_late_low6_async_buffer_mult_3p0 candidate has 2/2 correctness, stable late-allocation metadata, supported shape/dtype/inference-only coverage, memory and performance measurements, fallback/default behavior coverage, and explicit separation of the CUDA 12.4 rebuild blocker from idea status. No earlier-stage rollback evidence is present.",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T17:28:15.949560Z",
+      "by": "manager",
+      "direction": "complete",
+      "from_stage": "report",
+      "reason": "reviewer certified the final-stage checklist, overriding the Manager hold (report.frontier_current and report.evidence_bounded_claim are satisfied: the frontier record is rebound to forced-late opt010 and RESULTS.md reports the validat)",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T17:29:34.426030Z",
+      "by": "manager",
+      "direction": "rollback",
+      "from_stage": "report",
+      "reason": "Report-stage work is certified, but the open-ended standing objective remains active and further useful work belongs to a new implementation increment. With no evidence that scope, environment, or baseline are stale, optimize is the earliest required rollback target.",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T17:59:24.845262Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "optimize",
+      "reason": "optimize.mechanistic_attempt is satisfied: opt011 starts from the measured opt010 e2e tradeoff, changes a narrow default-preserving metadata residency surface, records correctness/timing and OUTCOME.json, and yields a retained intermediate memory/throughput candidate: 2/2 correctness, 35610 MiB peak GPU memory (-6350 MiB vs baseline), unchanged 5673 MiB block cache, near-tied baseline e2e, and +0.447% e2e versus opt010 while honestly not claiming decode speedup or opt010 replacement.",
+      "to_stage": "validate"
+    },
+    {
+      "at": "2026-07-29T18:07:12.351244Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "validate",
+      "reason": "validate.full_contract is satisfied by research/VALIDATION_MATRIX.md and research/VALIDATION_RESULT.json: opt011 binds real 2-round A100 120000x8 evidence, covers correctness/config/dtype reuse/inference scope/determinism/fallback/default/error behavior/memory/performance comparisons, and honestly classifies the result as an intermediate tradeoff rather than a decode speedup or opt010 replacement. No rollback trigger is present.",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T18:15:40.906453Z",
+      "by": "manager",
+      "direction": "complete",
+      "from_stage": "report",
+      "reason": "reviewer certified the final-stage checklist, overriding the Manager hold (report.frontier_current and report.evidence_bounded_claim are satisfied: research/frontier/report.json binds opt011 record 4d7d411344c69bd1, RESULTS.md reports )",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T18:18:08.092688Z",
+      "by": "manager",
+      "direction": "rollback",
+      "from_stage": "report",
+      "reason": "Report-stage work is certified, but the open-ended standing objective remains active and further useful work belongs to a new implementation increment. No evidence indicates scope, environment, or baseline are stale, so optimize is the earliest required rollback target.",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T20:12:07.726481Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "optimize",
+      "reason": "optimize.mechanistic_attempt is satisfied: opt012 starts from the forced-late metadata migration bottleneck, changes a narrow default-preserving policy surface, records correctness/timing/metadata in OUTCOME.json, passes review/checker evidence, and retains pinned_side_stream as a validate-ready candidate with 2/2 correctness, 5673.0 MiB block cache, 29884 MiB peak GPU memory, 201.132 tok/s decode, and 3.264410 tok/s e2e while avoiding unsupported overlap claims.",
+      "to_stage": "validate"
+    },
+    {
+      "at": "2026-07-29T20:22:42.933382Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "validate",
+      "reason": "validate.full_contract is satisfied: research/VALIDATION_MATRIX.md and research/VALIDATION_RESULT.json bind the retained opt012 pinned_side_stream candidate to 2/2 correctness-passing A100 120000x8 runs with memory, performance, metadata, fallback/default behavior, dtype reuse, inference scope, determinism, and environment/toolchain boundaries covered. No rollback trigger is present.",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T20:31:36.475932Z",
+      "by": "manager",
+      "direction": "complete",
+      "from_stage": "report",
+      "reason": "reviewer certified the final-stage checklist, overriding the Manager hold (report.frontier_current and report.evidence_bounded_claim are satisfied: research/frontier/report.json binds opt012 record 2e1d2c94c39d5afa, RESULTS.md reports )",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T20:33:14.418708Z",
+      "by": "manager",
+      "direction": "rollback",
+      "from_stage": "report",
+      "reason": "Report-stage work is certified, but the open-ended standing objective remains active and further useful work belongs to a new implementation increment. No evidence indicates scope, environment, or baseline are stale, so optimize is the earliest required rollback target.",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-29T20:58:07.067358Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "optimize",
+      "reason": "optimize.mechanistic_attempt is satisfied: opt013 starts from late block-cache initialization cost, makes a narrow default-off Python-only change, records correctness/timing/safety metadata in OUTCOME.json, passes attempt_outcome check, and retains uninitialized_late_block_cache_allocation as a validate-ready candidate with 2/2 correctness, unchanged 5673.0 MiB block cache, unchanged 29884 MiB peak GPU memory, and improved e2e versus opt012, while clearly reporting the decode regression and no broad speedup/overlap claim.",
+      "to_stage": "validate"
+    },
+    {
+      "at": "2026-07-29T21:05:53.702607Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "validate",
+      "reason": "validate.full_contract is satisfied: research/VALIDATION_MATRIX.md and research/VALIDATION_RESULT.json bind opt013 to 2/2 correctness-passing raw A100 120000x8 evidence, cover environment/toolchain separation, shape/config, dtype/numerical reuse, inference-only scope, determinism, fallback/default/error behavior, memory/performance comparisons, and explicitly bound the claim as same-memory e2e improvement versus opt012 with a decode regression and no broad speedup/overlap claim. No rollback trigger is present.",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T21:14:11.070728Z",
+      "by": "manager",
+      "direction": "complete",
+      "from_stage": "report",
+      "reason": "reviewer certified the final-stage checklist, overriding the Manager hold (report.frontier_current and report.evidence_bounded_claim are satisfied: research/frontier/report.json binds fresh opt013 record e139a3500c1ef270, RESULTS.md re)",
+      "to_stage": "report"
+    },
+    {
+      "at": "2026-07-29T21:15:22.440882Z",
+      "by": "manager",
+      "direction": "rollback",
+      "from_stage": "report",
+      "reason": "Report-stage work is certified, but the open-ended standing objective remains active and further useful work belongs to a new implementation increment. No evidence indicates scope, environment, or baseline are stale, so optimize is the earliest required rollback target.",
+      "to_stage": "optimize"
+    },
+    {
+      "at": "2026-07-30T07:05:56.315731Z",
+      "by": "manager",
+      "direction": "reset",
+      "from_stage": "optimize",
+      "reason": "operator replaced the standing Manager objective; resetting the superseded 'kernel_engineering' pipeline to the first stage of 'kernel_engineering' instead of preserving incompatible progress.",
+      "to_stage": "scope"
+    },
+    {
+      "at": "2026-07-30T07:17:22.679131Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "scope",
+      "reason": "All scope gates are satisfied with concrete artifacts: `research/frontier/scope.json` records current frontier impact, `research/KERNEL_SCOPE.md` pins the exact target architecture/API/correctness/benchmark contract, and `research/PROJECT_NATIVE_SETUP.md` records native setup, runtime reuse, profiler availability, and CUDA 12.4 rebuild blocker separation.",
+      "to_stage": "environment"
+    },
+    {
+      "at": "2026-07-30T07:26:00.316191Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "environment",
+      "reason": "Environment gates are satisfied: `research/ENVIRONMENT_AUDIT.json` proves the fresh `.venv`/A100 runtime and required installed-kernel/profiling capabilities, while `TOOLCHAIN_CANDIDATES.md` and `INFRASTRUCTURE_REUSE_PLAN.md` record the specialist stack, reuse plan, and CUDA 12.4 source-rebuild blocker separately from the slot-rotation idea status.",
+      "to_stage": "baseline"
+    },
+    {
+      "at": "2026-07-30T07:33:01.667975Z",
+      "by": "manager",
+      "direction": "advance",
+      "from_stage": "baseline",
+      "reason": "Baseline gates are satisfied: `research/BASELINE_PROTOCOL.md` and `research/BASELINE_RESULT.json` document the exact unmodified command, environment, correctness oracle, raw artifacts, 2/2 passing runs, and canonical metrics for the CPU full-KV rotating GPU-slot campaign, with source rebuild still separately classified as an environment/toolchain blocker.",
+      "to_stage": "optimize"
     }
   ],
   "stages": {
     "analysis": {
+      "status": "done"
+    },
+    "baseline": {
       "status": "done"
     },
     "benchmark": {
@@ -62,16 +496,33 @@
       "completion_contract_version": 1,
       "status": "done"
     },
+    "environment": {
+      "failure_class": "environment_rebuild_toolchain_cuda_version_mismatch",
+      "source_rebuild_status": "blocked_for_source_rebuild",
+      "status": "done"
+    },
+    "optimize": {
+      "status": "pending"
+    },
     "plan": {
       "status": "done"
+    },
+    "report": {
+      "status": "pending"
     },
     "research": {
       "status": "done"
     },
     "run": {
       "status": "done"
+    },
+    "scope": {
+      "status": "done"
+    },
+    "validate": {
+      "status": "pending"
     }
   },
-  "vertical": "software",
-  "workflow_mode": "direct"
+  "vertical": "kernel_engineering",
+  "workflow_mode": "staged"
 }

@@ -1,0 +1,11 @@
+# Environment audit: opt_attempt_029_stream_only_layer31_lowhit_screen
+generated_at_utc=2026-07-30T04:27:49Z
+cwd=/home/v-xuchuanluo/RetroInfer
+target_python=/home/v-xuchuanluo/RetroInfer/.venv/bin/python
+{"ready": true, "blocking_findings": []}
+# environment_audit check
+kernel environment audit: ready
+# runtime imports
+/home/v-xuchuanluo/RetroInfer/.venv/lib/python3.11/site-packages/transformers/utils/hub.py:106: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+ENV_AUDIT_JSON={"flash_attn": "2.7.3", "flashinfer": "0.2.4+cu124torch2.5", "gpu0_capability": [8, 0], "gpu0_name": "NVIDIA A100 80GB PCIe", "nsys_path": "/usr/local/bin/nsys", "nvcc_path": "/usr/bin/nvcc", "nvcc_version": ["nvcc: NVIDIA (R) Cuda compiler driver", "Copyright (c) 2005-2023 NVIDIA Corporation", "Built on Fri_Jan__6_16:45:21_PST_2023", "Cuda compilation tools, release 12.0, V12.0.140", "Build cuda_12.0.r12.0/compiler.32267302_0"], "nvidia_smi_path": "/usr/bin/nvidia-smi", "nvidia_smi_version": ["NVIDIA A100 80GB PCIe, 81920 MiB, 580.173.02"], "pybind11": "2.12.0", "python_executable": "/home/v-xuchuanluo/RetroInfer/.venv/bin/python", "python_version": "3.11.15", "retroinfer_kernel_symbols": {"ThreadPool": true, "WaveBufferCPU": true, "batch_gemm_softmax": true, "gather_copy_and_concat": true, "gather_copy_and_scatter": true, "gather_copy_vectors": true}, "retroinfer_kernels": "imported", "torch": "2.5.1+cu124", "torch_cuda_available": true, "torch_cuda_version": "12.4", "transformers": "4.49.0", "triton": "3.1.0", "vllm": "0.6.5", "weighted_flash_decoding": "0.1"}

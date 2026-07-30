@@ -1,0 +1,22 @@
+{
+  "candidate": {
+    "environment": {
+      "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+      "RETROINFER_ASYNC_STREAM_ONLY_GATHER": "unset",
+      "RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY": "late",
+      "RETROINFER_BUFFER_NPROBE_MULTIPLIER": "3.0",
+      "RETROINFER_CACHE_TELEMETRY": "unset",
+      "RETROINFER_LATE_BLOCK_CACHE_INIT": "uninitialized",
+      "RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY": "pinned_side_stream",
+      "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "2-3=0.75,25=0.75,28-29=0.75",
+      "RETROINFER_STREAM_ONLY_LAYERS": "1"
+    },
+    "mechanism": "Disable GPU block-cache residency for layer 1 through RETROINFER_STREAM_ONLY_LAYERS=1 and use project-native fused gather from CPU/list KV for that layer.",
+    "name": "stream_only_layer1_latest_stack",
+    "shape": "context_len=120000,batch_size=8,gen_len=100,cache_ratio=0.05,rounds=1,seed=2025,A100_80GB"
+  },
+  "node_key": "opt018_stream_only_layer1_latest_stack",
+  "schema_version": 1,
+  "stage": "optimize",
+  "trigger": "mechanism_pivot_to_layer1_stream_only_block_cache_residency"
+}

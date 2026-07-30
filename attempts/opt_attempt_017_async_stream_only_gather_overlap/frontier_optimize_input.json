@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "stage": "optimize",
+  "searched_at": "2026-07-29T23:07:47Z",
+  "frontier_as_of": "2026-07-29",
+  "network_status": "online",
+  "queries": [
+    {
+      "query": "PyTorch CUDA Graph replay side stream wait_event wait_stream documentation",
+      "channel": "web_search",
+      "purpose": "Confirm that a CUDA graph/gather launched on a side stream can be ordered with current-stream estimation and later weighted decoding via events."
+    },
+    {
+      "query": "RetroInfer stream-only fused gather cache_hub retroinfer_cache.py local source inspection",
+      "channel": "target_repository",
+      "purpose": "Identify the concrete fused gather and CUDA graph capture surfaces to split without rebuilding native kernels."
+    }
+  ],
+  "checked_surfaces": ["official_toolchains", "research_frontier", "target_repository"],
+  "sources": [
+    {
+      "url": "https://docs.pytorch.org/docs/main/generated/torch.cuda.Stream_class.html",
+      "title": "PyTorch torch.cuda.Stream API documentation",
+      "source_type": "official_docs",
+      "relevance": "Defines wait_event/wait_stream stream-ordering primitives used to order side-stream gather before weighted decoding."
+    },
+    {
+      "url": "https://docs.pytorch.org/docs/2.13/generated/torch.cuda.graph.html",
+      "title": "PyTorch torch.cuda.graph API documentation",
+      "source_type": "official_docs",
+      "relevance": "Documents CUDA graph capture with explicit stream argument and static replay assumptions relevant to splitting graph-captured gather from attention."
+    },
+    {
+      "url": "https://docs.nvidia.com/dl-cuda-graph/torch-integration.html",
+      "title": "NVIDIA PyTorch CUDA Graph Integration documentation",
+      "source_type": "official_docs",
+      "relevance": "Official NVIDIA integration guidance for PyTorch CUDA Graph capture/replay semantics."
+    },
+    {
+      "url": "https://github.com/River861/RetrievalAttention",
+      "title": "RetrievalAttention / RetroInfer target repository",
+      "source_type": "official_repo",
+      "relevance": "Target source contains cache_hub/retroinfer_cache.py stream-only gather and harness metadata surfaces patched in this attempt."
+    }
+  ],
+  "no_material_update": true,
+  "material_updates": [],
+  "decision_impact": "Proceed with a default-off Python/runtime side-stream split of stream-only fused gather using PyTorch Stream/Event ordering; do not rebuild CUDA/C++ kernels because the fresh env audit proves cu124 runtime compatibility but no CUDA 12.4 nvcc."
+}

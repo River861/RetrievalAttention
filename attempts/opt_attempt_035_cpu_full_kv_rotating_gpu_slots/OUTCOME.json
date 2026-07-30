@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "attempt_id": "opt_attempt_035_cpu_full_kv_rotating_gpu_slots",
+  "generated_at": "2026-07-30T07:38:01+00:00",
+  "execution_status": "completed",
+  "failure_class": "performance",
+  "idea_status": "refuted",
+  "summary": "Default-off CPU full-K/V plus rotating GPU block-cache slots was implemented and ran correctly on the canonical 120K x batch 8 x cache_ratio 0.05 x gen_len 100 A100 shape. The path proved CPU full block-cache ownership (6241124352 bytes), actual GPU slot residency of 8 slots / 1488.0 MiB, path_executed=true, zero pending transfers at metadata, and no ownership violations. It reduced peak process GPU memory to 28010 MiB but decode throughput fell to 25.0386 tokens/s, making PCIe full-layer K/V rotation a negative performance tradeoff for this shape.",
+  "baseline_identity": "Reused certified canonical baseline research/BASELINE_RESULT.json: A100 80GB, context_len=120000, batch_size=8, gen_len=100, cache_ratio=0.05, seed=2025, use_cuda_graph=true.",
+  "candidate_identity": "Dirty source diff limited to cache_hub/retroinfer_cache.py, model_hub/LLM.py, and throughput_eval/reproduce_block_cache.py for opt035; SOURCE_DIFF.patch sha256=ee77f93494c8f3f3b6ceeac70b7ca7e09970dfe7576ba7ce71f4283f0e472192.",
+  "evidence": "Primary raw artifacts: attempts/opt_attempt_035_cpu_full_kv_rotating_gpu_slots/raw/harness_120k_b8_cr0p05/{results.jsonl,summary.csv,raw_logs/,memory_samples/}; mechanism probe log: raw/mechanism_probe/test_30k_b1_g20_slot_rotation.log; raw canonical log contains RETROINFER_RESULT_JSON path_executed=true, 8 slots, CPU owner bytes 6241124352, zero pending transfers, zero violations, and RETROINFER_OUTPUT_JSON all_outputs_contain_groundtruth=true.",
+  "candidate": {
+    "name": "cpu_full_kv_rotating_gpu_slots",
+    "env": {
+      "RETROINFER_BLOCK_CACHE_SLOT_ROTATION": "1",
+      "RETROINFER_BLOCK_CACHE_GPU_SLOTS": "8",
+      "RETROINFER_INDEX_METADATA_PREFILL_RESIDENCY": "unset",
+      "RETROINFER_STAGE_INDEX_METADATA_LAYERS": "unset",
+      "RETROINFER_STREAM_ONLY_LAYERS": "unset",
+      "RETROINFER_LAYER_CACHE_RESIDENCY": "unset",
+      "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "unset",
+      "RETROINFER_ASYNC_STREAM_ONLY_GATHER": "unset",
+      "RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY": "unset",
+      "RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY": "unset",
+      "RETROINFER_LATE_BLOCK_CACHE_INIT": "unset",
+      "RETROINFER_ASYNC_CACHE_ADMISSION": "unset",
+      "RETROINFER_ASYNC_WAVE_BATCH_ACCESS": "unset",
+      "RETROINFER_ASYNC_CLUSTER_ID_COPY": "unset"
+    },
+    "raw_artifact_dir": "attempts/opt_attempt_035_cpu_full_kv_rotating_gpu_slots/raw/harness_120k_b8_cr0p05",
+    "mechanism_probe_log": "attempts/opt_attempt_035_cpu_full_kv_rotating_gpu_slots/raw/mechanism_probe/test_30k_b1_g20_slot_rotation.log"
+  },
+  "implementation": {
+    "changed_source_surfaces": [
+      "cache_hub/retroinfer_cache.py",
+      "model_hub/LLM.py",
+      "throughput_eval/reproduce_block_cache.py"
+    ],
+    "default_api_behavior": "Unset RETROINFER_BLOCK_CACHE_SLOT_ROTATION preserves existing per-layer GPU block-cache allocation and existing public generate_config/llm.generate/test harness APIs.",
+    "slot_rotation_behavior": "When RETROINFER_BLOCK_CACHE_SLOT_ROTATION=1, prepare_cache allocates pinned CPU full logical block-cache K/V for all layers, allocates <= RETROINFER_BLOCK_CACHE_GPU_SLOTS physical GPU K/V slots, aliases layer cache tensors to fixed slot addresses layer_idx % m for CUDA graph capture, and uses separate H2D/D2H streams and events with generation/ownership checks.",
+    "cuda_graph_behavior": "fixed_slot_address_graph",
+    "no_cuda_cpp_rebuild": true,
+    "no_new_benchmark_harness": true,
+    "non_approximations": "The enabled path rotates the block-cache K/V body itself; it rejects layer capacity scaling, layer residency pruning, stream-only layers, and index-metadata staging combinations."
+  },
+  "mechanism_probe": {
+    "status": "pass",
+    "shape": {
+      "context_len": 30000,
+      "batch_size": 1,
+      "gen_len": 20,
+      "cache_ratio": 0.05,
+      "use_cuda_graph": true
+    },
+    "path_executed": true,
+    "actual_gpu_slot_count": 8,
+    "cpu_owner_bytes": 197132288,
+    "gpu_slot_resident_bytes": 49283072,
+    "h2d_total_count": 623,
+    "d2h_total_count": 608,
+    "final_pending_transfer_count": 0,
+    "ownership_violation_count": 0,
+    "all_outputs_contain_groundtruth": true,
+    "decode_tokens_per_s": 27.79414030688316
+  },
+  "correctness": {
+    "status": "pass",
+    "oracle": "RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+    "all_runs_contain_groundtruth": true,
+    "all_child_returncodes_zero": true,
+    "all_harness_status_passed": true,
+    "per_run": [
+      {
+        "run_id": "opt035_cpu_full_kv_rotating_gpu_slots_retroinfer_ctx120000_bsz8_cr0p05_r1",
+        "round": 1,
+        "returncode": 0,
+        "status": "passed",
+        "failure_class": "success",
+        "all_outputs_contain_groundtruth": true,
+        "log_path": "attempts/opt_attempt_035_cpu_full_kv_rotating_gpu_slots/raw/harness_120k_b8_cr0p05/raw_logs/opt035_cpu_full_kv_rotating_gpu_slots_retroinfer_ctx120000_bsz8_cr0p05_r1.txt"
+      }
+    ]
+  },
+  "metrics": {
+    "total_runs": 1,
+    "passed_runs": 1,
+    "failed_runs": 0,
+    "block_cache": {
+      "logical_cpu_full_kv_bytes": 6241124352,
+      "logical_cpu_full_kv_mib": 5952.0,
+      "host_pinned_bytes": 6241124352,
+      "host_pageable_bytes": 0,
+      "actual_gpu_slot_count": 8,
+      "requested_gpu_slots": 8,
+      "actual_gpu_slot_count_le_m": true,
+      "gpu_slot_total_bytes": 1560281088,
+      "gpu_slot_total_mib": 1488.0,
+      "reported_block_cache_total_mib": 1488.0,
+      "nominal_bytes_per_layer": 195035136,
+      "h2d_total_count": 3183,
+      "h2d_total_bytes": 620796837888,
+      "d2h_total_count": 3168,
+      "d2h_total_bytes": 617871310848,
+      "final_pending_transfer_count": 0,
+      "overwrite_prevention_count": 3152,
+      "dirty_read_prevention_count": 0,
+      "generation_mismatch_count": 0,
+      "ownership_violation_count": 0,
+      "event_wait_count": 3160,
+      "explicit_sync_elapsed_ms": 125.24589913664386,
+      "slot_states_at_metadata": [
+        {"slot_id": 0, "resident_layer": 0, "generation": 99, "state": "resident"},
+        {"slot_id": 1, "resident_layer": 1, "generation": 99, "state": "resident"},
+        {"slot_id": 2, "resident_layer": 2, "generation": 99, "state": "resident"},
+        {"slot_id": 3, "resident_layer": 3, "generation": 99, "state": "resident"},
+        {"slot_id": 4, "resident_layer": 4, "generation": 99, "state": "resident"},
+        {"slot_id": 5, "resident_layer": 5, "generation": 99, "state": "resident"},
+        {"slot_id": 6, "resident_layer": 6, "generation": 99, "state": "resident"},
+        {"slot_id": 7, "resident_layer": 31, "generation": 99, "state": "resident"}
+      ],
+      "host_meminfo": {
+        "mem_total_kb": 226765912,
+        "mem_available_kb": 218623888,
+        "memlock_soft_bytes": 29026033664,
+        "memlock_hard_bytes": 29026033664
+      }
+    },
+    "gpu_memory": {
+      "peak_process_gpu_memory_mib": 28010.0,
+      "torch_cuda_peak_allocated_mib": 28331.369140625,
+      "torch_cuda_peak_reserved_mib": 28674.0
+    },
+    "throughput": {
+      "decode_tokens_per_s": 25.03855756436534,
+      "decode_latency_s": 31.631208896636963,
+      "decode_steps": 99,
+      "decode_ms_per_step": 319.5071605720905,
+      "e2e_latency_s": 277.1486074924469,
+      "e2e_generated_tokens_per_s": 2.8865380462783032,
+      "e2e_generated_tokens_per_s_formula": "batch_size * gen_len / e2e_latency_s"
+    }
+  },
+  "comparisons": {
+    "baseline": {
+      "reference_name": "canonical_baseline",
+      "reference_block_cache_total_mib": 5952.0,
+      "reference_mean_peak_process_gpu_memory_mib": 41960.0,
+      "reference_decode_tokens_per_s_mean": 198.8364143870935,
+      "reference_e2e_generated_tokens_per_s_mean": 3.277045618,
+      "block_cache_total_mib_delta": -4464.0,
+      "block_cache_total_mib_delta_pct": -75.0,
+      "mean_peak_process_gpu_memory_delta_mib": -13950.0,
+      "mean_peak_process_gpu_memory_delta_pct": -33.24594852240229,
+      "decode_tokens_per_s_delta": -173.79785682272816,
+      "decode_tokens_per_s_delta_pct": -87.40745871849187,
+      "e2e_generated_tokens_per_s_delta": -0.3905075717216966,
+      "e2e_generated_tokens_per_s_delta_pct": -11.916452110911585
+    },
+    "opt013": {
+      "reference_name": "opt013_uninitialized_late_block_cache_allocation",
+      "reference_block_cache_total_mib": 5673.0,
+      "reference_mean_peak_process_gpu_memory_mib": 29884.0,
+      "reference_decode_tokens_per_s_mean": 198.03657186276942,
+      "reference_e2e_generated_tokens_per_s_mean": 3.2688875244650957,
+      "block_cache_total_mib_delta": -4185.0,
+      "block_cache_total_mib_delta_pct": -73.77049180327869,
+      "mean_peak_process_gpu_memory_delta_mib": -1874.0,
+      "mean_peak_process_gpu_memory_delta_pct": -6.270914201579441,
+      "decode_tokens_per_s_delta": -172.9980142984041,
+      "decode_tokens_per_s_delta_pct": -87.35659917314871,
+      "e2e_generated_tokens_per_s_delta": -0.38234947818679244,
+      "e2e_generated_tokens_per_s_delta_pct": -11.696623861335155
+    }
+  },
+  "path_coverage": "Canonical raw log printed RETROINFER_RESULT_JSON with block_cache_slot_rotation_path_executed=true, CPU owner bytes=6241124352, block_cache_actual_gpu_slot_count=8<=m, H2D count/bytes=3183/620796837888, D2H count/bytes=3168/617871310848, fixed_slot_address_graph mode, final_pending_transfer_count=0, and ownership_violation_count=0. RETROINFER_OUTPUT_JSON reports all_outputs_contain_groundtruth=true.",
+  "limitations": [
+    "Only one canonical round was run because this was a bounded inserted mechanism test; baseline and opt013 comparators are reused from existing certified artifacts.",
+    "The performance result is negative: full-layer K/V H2D+D2H traffic is the bottleneck at this shape, and no speed claim is made.",
+    "No CUDA/C++ source was rebuilt; the implementation uses installed project kernels and Python-level tensor slot ownership.",
+    "No broad m-matrix was run; m=8 was used as preregistered, and m=12 was not run because m=8 already exposes a clear transfer bottleneck."
+  ],
+  "artifact_manifest": {
+    "changes": "attempts/opt_attempt_035_cpu_full_kv_rotating_gpu_slots/CHANGES.md",
+    "source_diff": "attempts/opt_attempt_035_cpu_full_kv_rotating_gpu_slots/SOURCE_DIFF.patch",
+    "source_diff_sha256": "ee77f93494c8f3f3b6ceeac70b7ca7e09970dfe7576ba7ce71f4283f0e472192",
+    "frontier_refresh_raw": "attempts/opt_attempt_035_cpu_full_kv_rotating_gpu_slots/frontier_refresh.raw.txt",
+    "mechanism_probe_raw_log": "attempts/opt_attempt_035_cpu_full_kv_rotating_gpu_slots/raw/mechanism_probe/test_30k_b1_g20_slot_rotation.log",
+    "main_raw_artifact_dir": "attempts/opt_attempt_035_cpu_full_kv_rotating_gpu_slots/raw/harness_120k_b8_cr0p05",
+    "results_jsonl_sha256": "f34a78460865c1b0c8765d1fe7f9424f2cd421b5b4b93a229d0369fca5b56584",
+    "summary_csv_sha256": "c0b50b662bf53d545f737e3648e5e95b6182dc35237f7384a626608f697d8f70",
+    "environment_audit": "research/ENVIRONMENT_AUDIT.md",
+    "baseline_result": "research/BASELINE_RESULT.json",
+    "opt013_comparator": "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/OUTCOME.json"
+  },
+  "independent_review_status": "required_pending_external_reviewer"
+}

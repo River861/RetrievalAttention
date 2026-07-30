@@ -1,0 +1,52 @@
+{
+  "cuda_home_env": null,
+  "generated_at": "2026-07-29T15:11:00Z",
+  "gpu0": {
+    "capability": "8.0",
+    "memory_total_mib": 81151,
+    "name": "NVIDIA A100 80GB PCIe"
+  },
+  "nvcc_version": {
+    "output": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2023 NVIDIA Corporation\nBuilt on Fri_Jan__6_16:45:21_PST_2023\nCuda compilation tools, release 12.0, V12.0.140\nBuild cuda_12.0.r12.0/compiler.32267302_0",
+    "returncode": 0
+  },
+  "nvidia_smi_query": {
+    "output": "0, NVIDIA A100 80GB PCIe, 8.0, 81920, 580.173.02",
+    "returncode": 0
+  },
+  "platform": "Linux-6.17.0-1020-azure-x86_64-with-glibc2.39",
+  "python_executable": "/home/v-xuchuanluo/RetroInfer/.venv/bin/python",
+  "python_version": "3.11.15",
+  "retroinfer_kernels": {
+    "ThreadPool": true,
+    "WaveBufferCPU": true,
+    "batch_gemm_softmax": true,
+    "gather_copy_and_concat": true,
+    "gather_copy_and_scatter": true,
+    "gather_copy_cluster_and_concat_fuse": true,
+    "gather_copy_vectors": true
+  },
+  "runtime_packages": {
+    "flashinfer": "0.2.4+cu124torch2.5",
+    "pybind11": "2.12.0",
+    "transformers": "4.49.0",
+    "triton": "3.1.0",
+    "vllm": "0.6.5"
+  },
+  "schema_version": 1,
+  "source_rebuild_status": {
+    "execution_status": "blocked_for_source_rebuild",
+    "failure_class": "environment_rebuild_toolchain_cuda_version_mismatch",
+    "idea_status": "not_evaluated",
+    "notes": "Runtime wheels/extensions are audited for Python-only execution; CUDA/C++ rebuild remains blocked unless a CUDA 12.4-compatible nvcc/CUDA_HOME is proven."
+  },
+  "torch": "2.5.1+cu124",
+  "torch_cpp_extension_cuda_home": "/usr",
+  "torch_cuda": "12.4",
+  "torch_cuda_available": true,
+  "usr_local_cuda_13_3_nvcc": {
+    "output": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2026 NVIDIA Corporation\nBuilt on Tue_Jun_09_02:43:40_PM_PDT_2026\nCuda compilation tools, release 13.3, V13.3.73\nBuild cuda_13.3.r13.3/compiler.38244171_0",
+    "returncode": 0
+  },
+  "which_nvcc": "/usr/bin/nvcc"
+}

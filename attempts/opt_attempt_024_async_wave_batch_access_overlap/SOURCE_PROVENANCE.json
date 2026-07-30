@@ -1,0 +1,17 @@
+{
+  "changed_source_surfaces": [
+    "cache_hub/retroinfer_cache.py",
+    "throughput_eval/reproduce_block_cache.py"
+  ],
+  "diff_path": "attempts/opt_attempt_024_async_wave_batch_access_overlap/SOURCE_DIFF.patch",
+  "files": {
+    "cache_hub/retroinfer_cache.py": {
+      "sha256": "e0f4b8f0186ff80cf0f7aab7b59ed747754458c18cbb758fc28b1293dc3189fa"
+    },
+    "throughput_eval/reproduce_block_cache.py": {
+      "sha256": "16d7569d4bd00a50f1909b078760404c21a24031663e5c8385e25af624ff2164"
+    }
+  },
+  "git_head": "7096eab9190da389bbc75c1992140d1432d9d8ec",
+  "source_diff_sha256": "14597b18d69f8e7f258578dc5549dbc389d8cd6df073f686d8d4a0a197734c55"
+}

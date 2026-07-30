@@ -1,0 +1,70 @@
+{
+  "candidate": {
+    "environment": {
+      "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+      "RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY": "late",
+      "RETROINFER_BUFFER_NPROBE_MULTIPLIER": "3.0",
+      "RETROINFER_LATE_BLOCK_CACHE_INIT": "uninitialized",
+      "RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY": "pinned_side_stream",
+      "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.75,2-3=0.75,25=0.75,28-29=0.75,31=0.75",
+      "RETROINFER_SCRATCH_BUFFER_INIT": "uninitialized"
+    },
+    "name": "scratch_empty_layer31_0p75_latest_stack",
+    "node_key": "opt022_scratch_empty_layer31_recovery",
+    "shape": "context_len=120000,batch_size=8,gen_len=100,cache_ratio=0.05,seed=2025,A100_80GB,use_cuda_graph=true"
+  },
+  "checked_surfaces": [
+    "official_toolchains",
+    "target_repository",
+    "prior_attempt_evidence"
+  ],
+  "decision_impact": "Proceed with a default-off Python scratch-buffer init policy limited to decode scratch tensors whose writers are batch_gemm_softmax, torch.sum/topk, gather_copy_vectors, gather_copy_and_concat, CUDA graph query copies, or weighted_flash_decoding output copies. Compare one candidate against opt013 and rerun automatically only if the first round passes.",
+  "frontier_as_of": "2026-07-30",
+  "material_updates": [
+    "torch.empty remains uninitialized unless deterministic fill_uninitialized_memory is active; do not read before overwrite.",
+    "CUDA graph replay is safe only when static graph input/output tensors are explicitly overwritten before use."
+  ],
+  "network_status": "online",
+  "queries": [
+    {
+      "channel": "web_search",
+      "purpose": "Refresh torch.empty uninitialized memory and CUDA graph semantics before using empty scratch tensors.",
+      "query": "Current PyTorch documentation for torch.empty uninitialized memory behavior, deterministic fill_uninitialized_memory, and CUDA graph capture/replay semantics relevant to CUDA tensors"
+    },
+    {
+      "channel": "target_repository",
+      "paths": [
+        "cache_hub/retroinfer_cache.py",
+        "throughput_eval/reproduce_block_cache.py",
+        "library/retroinfer/retroinfer_kernels/src/gather_copy.cu",
+        "library/retroinfer/retroinfer_kernels/src/batch_gemm_softmax.cu"
+      ],
+      "purpose": "Confirm decode scratch buffers are output destinations before weighted attention reads them."
+    }
+  ],
+  "schema_version": 1,
+  "sources": [
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch torch.empty",
+      "url": "https://docs.pytorch.org/docs/main/generated/torch.empty.html"
+    },
+    {
+      "source_type": "official_docs",
+      "title": "torch.utils.deterministic",
+      "url": "https://docs.pytorch.org/docs/main/deterministic.html"
+    },
+    {
+      "source_type": "official_docs",
+      "title": "CUDA Graph Best Practice for PyTorch",
+      "url": "https://docs.nvidia.com/dl-cuda-graph/latest/troubleshooting/introduction.html"
+    },
+    {
+      "source_type": "local_source",
+      "title": "RetroInfer decode scratch allocation",
+      "url": "local:cache_hub/retroinfer_cache.py"
+    }
+  ],
+  "stage": "optimize",
+  "trigger": "bounded_opt022_python_only_scratch_empty_policy_after_layer31_capacity_near_misses"
+}

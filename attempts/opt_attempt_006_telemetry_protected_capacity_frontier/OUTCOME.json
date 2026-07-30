@@ -1,0 +1,273 @@
+{
+  "attempt_id": "opt_attempt_006_telemetry_protected_capacity_frontier",
+  "baseline_identity": "research/BASELINE_RESULT.json canonical 120000x8/cache_ratio=0.05 baseline at repository HEAD 7096eab9190da389bbc75c1992140d1432d9d8ec on A100 80GB; correctness pass with raw RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth=true. Validated comparison point is research/VALIDATION_RESULT.json low6_async_cluster_id_copy, two correctness-passing telemetry-disabled rounds.",
+  "baseline_reference": {
+    "block_cache_total_bytes": 6241124352,
+    "block_cache_total_gib": 5.8125,
+    "block_cache_total_mib": 5952.0,
+    "decode_latency_s": 3.9831738471984863,
+    "decode_throughput_tokens_s": 198.8364143870935,
+    "e2e_generated_tokens_per_s": 3.277045618,
+    "e2e_latency_s": 244.12288427352905,
+    "peak_process_gpu_memory_mib": 41960.0,
+    "torch_cuda_peak_allocated_mib": 38564.56884765625,
+    "torch_cuda_peak_reserved_mib": 41430.0
+  },
+  "candidate_identity": "opt006 reused the existing Python runtime controls in cache_hub/retroinfer_cache.py and throughput_eval/reproduce_block_cache.py without new source edits; measured candidates set RETROINFER_ASYNC_CLUSTER_ID_COPY=1, kept RETROINFER_CACHE_TELEMETRY unset, preserved sensitive layers 1/25/29 unless the mission-specified 0.875 layer-1 cut applied, and varied only RETROINFER_LAYER_CACHE_CAPACITY_SCALE.",
+  "candidate_identity_detail": {
+    "changed_source_surfaces": [],
+    "default_api_behavior": "Preserved; all non-default behavior is gated by environment variables and RETROINFER_CACHE_TELEMETRY remained unset during candidate runs.",
+    "description": "Bounded capacity frontier for telemetry-stable lower-hit layers 2,3,28 under async cluster-id copy; no CUDA/C++ rebuild and no new harness.",
+    "no_cuda_cpp_rebuild": true,
+    "no_new_harness": true,
+    "protected_layers": [1, 25, 29],
+    "reused_source_surfaces": [
+      "cache_hub/retroinfer_cache.py",
+      "throughput_eval/reproduce_block_cache.py"
+    ]
+  },
+  "candidates": [
+    {
+      "candidate_id": "stable_low3_0p5_async",
+      "capacity_spec": "2-3=0.5,28=0.5",
+      "command": "env -u RETROINFER_LAYER_CACHE_RESIDENCY -u RETROINFER_CACHE_TELEMETRY RETROINFER_ASYNC_CLUSTER_ID_COPY=1 RETROINFER_LAYER_CACHE_CAPACITY_SCALE='2-3=0.5,28=0.5' .venv/bin/python throughput_eval/reproduce_block_cache.py --suite opt_attempt_006_stable_low3_0p5_async --context-batch-groups 120000x8 --cache-ratios 0.05 --baseline-cache-ratio 0.05 --rounds 1 --gen-len 100 --retrieval-budget 0.018 --estimation-budget 0.232 --seed 2025 --cuda-visible-devices 0 --require-idle-gpu --stop-on-error --output-dir attempts/opt_attempt_006_telemetry_protected_capacity_frontier/stable_low3_0p5_async_120k_b8_cr0p05",
+      "correctness": {
+        "all_outputs_contain_groundtruth": true,
+        "groundtruth": "9879991",
+        "harness_status": "passed",
+        "oracle": "raw RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+        "returncode": 0,
+        "status": "pass"
+      },
+      "deltas_vs_baseline": {
+        "block_cache_total_gib": {"candidate": 5.5400390625, "delta": -0.2724609375, "delta_pct": -4.6875, "reference": 5.8125},
+        "block_cache_total_mib": {"candidate": 5673.0, "delta": -279.0, "delta_pct": -4.6875, "reference": 5952.0},
+        "decode_throughput_tokens_s": {"candidate": 194.57267948788535, "delta": -4.263734899208146, "delta_pct": -2.1443430834090242, "reference": 198.8364143870935},
+        "e2e_generated_tokens_per_s": {"candidate": 3.285281927405386, "delta": 0.008236309405386333, "delta_pct": 0.2513333766288246, "reference": 3.277045618},
+        "peak_process_gpu_memory_mib": {"candidate": 41684.0, "delta": -276.0, "delta_pct": -0.657769304099142, "reference": 41960.0}
+      },
+      "deltas_vs_validated_low6_async": {
+        "block_cache_total_gib": {"candidate": 5.5400390625, "delta": 0.0, "delta_pct": 0.0, "reference": 5.5400390625},
+        "block_cache_total_mib": {"candidate": 5673.0, "delta": 0.0, "delta_pct": 0.0, "reference": 5673.0},
+        "decode_throughput_tokens_s": {"candidate": 194.57267948788535, "delta": -6.6072890512794515, "delta_pct": -3.284267861883662, "reference": 201.1799685391648},
+        "e2e_generated_tokens_per_s": {"candidate": 3.285281927405386, "delta": 0.00545381084916885, "delta_pct": 0.16628343484338715, "reference": 3.2798281165562173},
+        "peak_process_gpu_memory_mib": {"candidate": 41684.0, "delta": 12.0, "delta_pct": 0.02879631407179881, "reference": 41672.0}
+      },
+      "env": {
+        "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+        "RETROINFER_CACHE_TELEMETRY": "unset",
+        "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "2-3=0.5,28=0.5",
+        "RETROINFER_LAYER_CACHE_RESIDENCY": "unset/all"
+      },
+      "execution_status": "completed",
+      "failure_class": "none",
+      "idea_status": "refuted",
+      "idea_status_detail": "correctness_passed_same_block_cache_as_validated_low6_async_but_peak_and_decode_regressed",
+      "metrics": {
+        "block_cache_layer_capacity_scales_selected": {"1": 1.0, "2": 0.5, "3": 0.5, "25": 1.0, "28": 0.5, "29": 1.0},
+        "block_cache_layer_pages_selected": {"1": 744, "2": 372, "3": 372, "25": 744, "28": 372, "29": 744},
+        "block_cache_total_bytes": 5948571648,
+        "block_cache_total_gib": 5.5400390625,
+        "block_cache_total_mib": 5673.0,
+        "decode_latency_s": 4.07045841217041,
+        "decode_steps": 99,
+        "decode_throughput_tokens_s": 194.57267948788535,
+        "e2e_generated_tokens_per_s": 3.285281927405386,
+        "e2e_latency_s": 243.51030373573303,
+        "gpu_memory_sample_count": 701,
+        "gpu_memory_sampler_error_count": 0,
+        "peak_process_gpu_memory_mib": 41684.0,
+        "torch_cuda_peak_allocated_mib": 38279.56884765625,
+        "torch_cuda_peak_reserved_mib": 41154.0
+      },
+      "raw_artifacts": {
+        "commands_jsonl": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/stable_low3_0p5_async_120k_b8_cr0p05/commands.jsonl",
+        "config_json": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/stable_low3_0p5_async_120k_b8_cr0p05/config.json",
+        "environment_json": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/stable_low3_0p5_async_120k_b8_cr0p05/environment.json",
+        "harness_returncode_txt": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/stable_low3_0p5_async_120k_b8_cr0p05/harness_returncode.txt",
+        "harness_stdout_log": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/stable_low3_0p5_async_120k_b8_cr0p05/harness_stdout.log",
+        "log_path": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/stable_low3_0p5_async_120k_b8_cr0p05/raw_logs/opt_attempt_006_stable_low3_0p5_async_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+        "memory_samples_path": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/stable_low3_0p5_async_120k_b8_cr0p05/memory_samples/opt_attempt_006_stable_low3_0p5_async_retroinfer_ctx120000_bsz8_cr0p05_r1.jsonl",
+        "results_jsonl": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/stable_low3_0p5_async_120k_b8_cr0p05/results.jsonl"
+      }
+    },
+    {
+      "candidate_id": "l1_0p875_low3_0p5_async",
+      "capacity_spec": "1=0.875,2-3=0.5,28=0.5",
+      "command": "env -u RETROINFER_LAYER_CACHE_RESIDENCY -u RETROINFER_CACHE_TELEMETRY RETROINFER_ASYNC_CLUSTER_ID_COPY=1 RETROINFER_LAYER_CACHE_CAPACITY_SCALE='1=0.875,2-3=0.5,28=0.5' .venv/bin/python throughput_eval/reproduce_block_cache.py --suite opt_attempt_006_l1_0p875_low3_0p5_async --context-batch-groups 120000x8 --cache-ratios 0.05 --baseline-cache-ratio 0.05 --rounds 1 --gen-len 100 --retrieval-budget 0.018 --estimation-budget 0.232 --seed 2025 --cuda-visible-devices 0 --require-idle-gpu --stop-on-error --output-dir attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p5_async_120k_b8_cr0p05",
+      "correctness": {
+        "all_outputs_contain_groundtruth": true,
+        "groundtruth": "9879991",
+        "harness_status": "passed",
+        "oracle": "raw RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+        "returncode": 0,
+        "status": "pass"
+      },
+      "deltas_vs_baseline": {
+        "block_cache_total_gib": {"candidate": 5.517578125, "delta": -0.294921875, "delta_pct": -5.073924731182796, "reference": 5.8125},
+        "block_cache_total_mib": {"candidate": 5650.0, "delta": -302.0, "delta_pct": -5.073924731182796, "reference": 5952.0},
+        "decode_throughput_tokens_s": {"candidate": 194.69287477582023, "delta": -4.143539611273269, "delta_pct": -2.083893749565737, "reference": 198.8364143870935},
+        "e2e_generated_tokens_per_s": {"candidate": 3.2719776098589883, "delta": -0.005068008141011493, "delta_pct": -0.15465174220261627, "reference": 3.277045618},
+        "peak_process_gpu_memory_mib": {"candidate": 41660.0, "delta": -300.0, "delta_pct": -0.7149666348903718, "reference": 41960.0}
+      },
+      "deltas_vs_validated_low6_async": {
+        "block_cache_total_gib": {"candidate": 5.517578125, "delta": -0.0224609375, "delta_pct": -0.4054292261589988, "reference": 5.5400390625},
+        "block_cache_total_mib": {"candidate": 5650.0, "delta": -23.0, "delta_pct": -0.4054292261589988, "reference": 5673.0},
+        "decode_throughput_tokens_s": {"candidate": 194.69287477582023, "delta": -6.487093763344575, "delta_pct": -3.224522704944005, "reference": 201.1799685391648},
+        "e2e_generated_tokens_per_s": {"candidate": 3.2719776098589883, "delta": -0.007850506697228976, "delta_pct": -0.23935725953443926, "reference": 3.2798281165562173},
+        "peak_process_gpu_memory_mib": {"candidate": 41660.0, "delta": -12.0, "delta_pct": -0.02879631407179881, "reference": 41672.0}
+      },
+      "env": {
+        "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+        "RETROINFER_CACHE_TELEMETRY": "unset",
+        "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.875,2-3=0.5,28=0.5",
+        "RETROINFER_LAYER_CACHE_RESIDENCY": "unset/all"
+      },
+      "execution_status": "completed",
+      "failure_class": "none",
+      "idea_status": "refuted",
+      "idea_status_detail": "correctness_passed_more_memory_saving_but_decode_regressed_vs_validated_low6_async",
+      "metrics": {
+        "block_cache_layer_capacity_scales_selected": {"1": 0.8763440860215054, "2": 0.5, "3": 0.5, "25": 1.0, "28": 0.5, "29": 1.0},
+        "block_cache_layer_pages_selected": {"1": 652, "2": 372, "3": 372, "25": 744, "28": 372, "29": 744},
+        "block_cache_total_bytes": 5924454400,
+        "block_cache_total_gib": 5.517578125,
+        "block_cache_total_mib": 5650.0,
+        "decode_latency_s": 4.06794548034668,
+        "decode_steps": 99,
+        "decode_throughput_tokens_s": 194.69287477582023,
+        "e2e_generated_tokens_per_s": 3.2719776098589883,
+        "e2e_latency_s": 244.5004506111145,
+        "gpu_memory_sample_count": 694,
+        "gpu_memory_sampler_error_count": 0,
+        "peak_process_gpu_memory_mib": 41660.0,
+        "torch_cuda_peak_allocated_mib": 38255.56884765625,
+        "torch_cuda_peak_reserved_mib": 41130.0
+      },
+      "raw_artifacts": {
+        "commands_jsonl": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p5_async_120k_b8_cr0p05/commands.jsonl",
+        "config_json": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p5_async_120k_b8_cr0p05/config.json",
+        "environment_json": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p5_async_120k_b8_cr0p05/environment.json",
+        "harness_returncode_txt": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p5_async_120k_b8_cr0p05/harness_returncode.txt",
+        "harness_stdout_log": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p5_async_120k_b8_cr0p05/harness_stdout.log",
+        "log_path": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p5_async_120k_b8_cr0p05/raw_logs/opt_attempt_006_l1_0p875_low3_0p5_async_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+        "memory_samples_path": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p5_async_120k_b8_cr0p05/memory_samples/opt_attempt_006_l1_0p875_low3_0p5_async_retroinfer_ctx120000_bsz8_cr0p05_r1.jsonl",
+        "results_jsonl": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p5_async_120k_b8_cr0p05/results.jsonl"
+      }
+    },
+    {
+      "candidate_id": "l1_0p875_low3_0p375_async",
+      "capacity_spec": "1=0.875,2-3=0.375,28=0.375",
+      "command": "env -u RETROINFER_LAYER_CACHE_RESIDENCY -u RETROINFER_CACHE_TELEMETRY RETROINFER_ASYNC_CLUSTER_ID_COPY=1 RETROINFER_LAYER_CACHE_CAPACITY_SCALE='1=0.875,2-3=0.375,28=0.375' .venv/bin/python throughput_eval/reproduce_block_cache.py --suite opt_attempt_006_l1_0p875_low3_0p375_async --context-batch-groups 120000x8 --cache-ratios 0.05 --baseline-cache-ratio 0.05 --rounds 1 --gen-len 100 --retrieval-budget 0.018 --estimation-budget 0.232 --seed 2025 --cuda-visible-devices 0 --require-idle-gpu --stop-on-error --output-dir attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p375_async_120k_b8_cr0p05",
+      "correctness": {
+        "all_outputs_contain_groundtruth": true,
+        "groundtruth": "9879991",
+        "harness_status": "passed",
+        "oracle": "raw RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+        "returncode": 0,
+        "status": "pass"
+      },
+      "deltas_vs_baseline": {
+        "block_cache_total_gib": {"candidate": 5.4501953125, "delta": -0.3623046875, "delta_pct": -6.233198924731183, "reference": 5.8125},
+        "block_cache_total_mib": {"candidate": 5581.0, "delta": -371.0, "delta_pct": -6.233198924731183, "reference": 5952.0},
+        "decode_throughput_tokens_s": {"candidate": 193.1814755906858, "delta": -5.654938796407691, "delta_pct": -2.844015676826022, "reference": 198.8364143870935},
+        "e2e_generated_tokens_per_s": {"candidate": 3.2700822706301325, "delta": -0.006963347369867368, "delta_pct": -0.21248856993687928, "reference": 3.277045618},
+        "peak_process_gpu_memory_mib": {"candidate": 41588.0, "delta": -372.0, "delta_pct": -0.886558627264061, "reference": 41960.0}
+      },
+      "deltas_vs_validated_low6_async": {
+        "block_cache_total_gib": {"candidate": 5.4501953125, "delta": -0.08984375, "delta_pct": -1.6217169046359952, "reference": 5.5400390625},
+        "block_cache_total_mib": {"candidate": 5581.0, "delta": -92.0, "delta_pct": -1.6217169046359952, "reference": 5673.0},
+        "decode_throughput_tokens_s": {"candidate": 193.1814755906858, "delta": -7.998492948478997, "delta_pct": -3.975789939007713, "reference": 201.1799685391648},
+        "e2e_generated_tokens_per_s": {"candidate": 3.2700822706301325, "delta": -0.00974584592608485, "delta_pct": -0.29714502040179713, "reference": 3.2798281165562173},
+        "peak_process_gpu_memory_mib": {"candidate": 41588.0, "delta": -84.0, "delta_pct": -0.20157419850259167, "reference": 41672.0}
+      },
+      "env": {
+        "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+        "RETROINFER_CACHE_TELEMETRY": "unset",
+        "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.875,2-3=0.375,28=0.375",
+        "RETROINFER_LAYER_CACHE_RESIDENCY": "unset/all"
+      },
+      "execution_status": "completed",
+      "failure_class": "none",
+      "idea_status": "refuted",
+      "idea_status_detail": "correctness_passed_more_memory_saving_but_decode_regressed_vs_validated_low6_async",
+      "metrics": {
+        "block_cache_layer_capacity_scales_selected": {"1": 0.8763440860215054, "2": 0.3763440860215054, "3": 0.3763440860215054, "25": 1.0, "28": 0.3763440860215054, "29": 1.0},
+        "block_cache_layer_pages_selected": {"1": 652, "2": 280, "3": 280, "25": 744, "28": 280, "29": 744},
+        "block_cache_total_bytes": 5852102656,
+        "block_cache_total_gib": 5.4501953125,
+        "block_cache_total_mib": 5581.0,
+        "decode_latency_s": 4.099771976470947,
+        "decode_steps": 99,
+        "decode_throughput_tokens_s": 193.1814755906858,
+        "e2e_generated_tokens_per_s": 3.2700822706301325,
+        "e2e_latency_s": 244.64216303825378,
+        "gpu_memory_sample_count": 694,
+        "gpu_memory_sampler_error_count": 0,
+        "peak_process_gpu_memory_mib": 41588.0,
+        "torch_cuda_peak_allocated_mib": 38192.56884765625,
+        "torch_cuda_peak_reserved_mib": 41058.0
+      },
+      "raw_artifacts": {
+        "commands_jsonl": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p375_async_120k_b8_cr0p05/commands.jsonl",
+        "config_json": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p375_async_120k_b8_cr0p05/config.json",
+        "environment_json": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p375_async_120k_b8_cr0p05/environment.json",
+        "harness_returncode_txt": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p375_async_120k_b8_cr0p05/harness_returncode.txt",
+        "harness_stdout_log": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p375_async_120k_b8_cr0p05/harness_stdout.log",
+        "log_path": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p375_async_120k_b8_cr0p05/raw_logs/opt_attempt_006_l1_0p875_low3_0p375_async_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+        "memory_samples_path": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p375_async_120k_b8_cr0p05/memory_samples/opt_attempt_006_l1_0p875_low3_0p375_async_retroinfer_ctx120000_bsz8_cr0p05_r1.jsonl",
+        "results_jsonl": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/l1_0p875_low3_0p375_async_120k_b8_cr0p05/results.jsonl"
+      }
+    }
+  ],
+  "environment": {
+    "audit_log": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/environment_audit.log",
+    "installed_runtime_status": "usable",
+    "python_executable": "/home/v-xuchuanluo/RetroInfer/.venv/bin/python",
+    "python_version": "3.11.15",
+    "source_rebuild_status": {
+      "evidence": "environment_audit.log and research/GROUND_TRUTH.md: runtime imports installed CUDA 12.4 RetroInfer stack successfully, but only /usr/bin/nvcc CUDA 12.0 and /usr/local/cuda-13.3/bin/nvcc CUDA 13.3 were found.",
+      "execution_status": "blocked_for_source_rebuild",
+      "failure_class": "environment_rebuild_toolchain_cuda_version_mismatch",
+      "idea_status": "not_evaluated"
+    },
+    "torch": "2.5.1+cu124",
+    "torch_cuda": "12.4"
+  },
+  "evidence": "Raw candidate artifacts are under attempts/opt_attempt_006_telemetry_protected_capacity_frontier/{stable_low3_0p5_async,l1_0p875_low3_0p5_async,l1_0p875_low3_0p375_async}_120k_b8_cr0p05/ with results.jsonl, raw_logs, memory_samples, commands.jsonl, config.json, environment.json, run_context.log, and harness_returncode.txt. Each raw log contains RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth=true and # returncode: 0. Attempt-level frontier and environment evidence are attempts/opt_attempt_006_telemetry_protected_capacity_frontier/frontier_binding.json and environment_audit.log.",
+  "execution_status": "completed",
+  "failure_class": "performance",
+  "frontier_binding": {
+    "log": "research/FRONTIER_WATCH.jsonl",
+    "path": "attempts/opt_attempt_006_telemetry_protected_capacity_frontier/frontier_binding.json",
+    "snapshot_path": "research/frontier/optimize_telemetry_protected_capacity_frontier.json",
+    "trigger": "bounded_telemetry_protected_capacity_frontier_after_opt005_decode_regression"
+  },
+  "generated_at": "2026-07-29T14:05:00Z",
+  "idea_status": "refuted",
+  "independent_review_status": "required_pending_external_reviewer",
+  "repository_head": "7096eab9190da389bbc75c1992140d1432d9d8ec",
+  "path_coverage": "The measured runs executed throughput_eval/reproduce_block_cache.py with attn_type RetroInfer at 120000x8/gen_len=100/cache_ratio=0.05 and set RETROINFER_ASYNC_CLUSTER_ID_COPY=1 plus RETROINFER_LAYER_CACHE_CAPACITY_SCALE for each assigned candidate. results.jsonl records async_cluster_id_copy_enabled=true, block_cache_telemetry_enabled=false, block_cache_capacity_scale_spec matching each candidate, and changed block_cache_layer_pages for layers 2/3/28 and layer 1 where specified.",
+  "retained_candidate": null,
+  "schema_version": 1,
+  "result_summary": {
+    "best_decode_candidate": "l1_0p875_low3_0p5_async",
+    "lowest_block_cache_candidate": "l1_0p875_low3_0p375_async",
+    "lowest_peak_memory_candidate": "l1_0p875_low3_0p375_async",
+    "reason_no_candidate_retained": "All three candidates passed execution and correctness, but each had lower decode throughput than both research/BASELINE_RESULT.json and the validated low6+async reference. The extra memory saved by the two layer-1 0.875 schedules did not improve the measured memory-throughput Pareto frontier under the decode-throughput criterion.",
+    "validated_low6_async_decode_reference_tokens_s": 201.1799685391648
+  },
+  "summary": "Opt006 completed all three bounded telemetry-disabled async-enabled 120000x8 candidates with returncode 0 and groundtruth correctness pass. The extra capacity cuts saved up to 0.089844 GiB block cache and 84 MiB peak GPU memory versus validated low6+async, but every candidate regressed decode throughput by at least 6.487 tok/s versus that validated reference, so the bounded idea is refuted for retention and no new candidate is selected.",
+  "validated_low6_async_reference": {
+    "block_cache_total_bytes": 5948571648,
+    "block_cache_total_gib": 5.5400390625,
+    "block_cache_total_mib": 5673.0,
+    "decode_latency_s": 3.936858057975769,
+    "decode_throughput_tokens_s": 201.1799685391648,
+    "e2e_generated_tokens_per_s": 3.2798281165562173,
+    "e2e_latency_s": 243.9163657426834,
+    "peak_process_gpu_memory_mib": 41672.0,
+    "torch_cuda_peak_allocated_mib": 38276.56884765625,
+    "torch_cuda_peak_reserved_mib": 41142.0
+  }
+}

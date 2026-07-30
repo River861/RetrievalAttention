@@ -1,0 +1,8 @@
+# opt021 frontier check
+generated_at=2026-07-30T00:57:22Z
+frontier watch: fresh optimize check for bounded no-source layer31 conservative capacity probe
+network_status=online
+checked_surfaces=official_toolchains,research_frontier,target_repository
+official_docs=PyTorch torch.cuda.graph/CUDAGraph/CUDA semantics/torch.empty versioned 2.13 pages (stable docs redirected there; CUDA semantics page last updated Jun 01 2026)
+material_updates=[]
+decision_impact=No mechanism pivot or new implementation surface. Proceed only with the two preregistered capacity schedules on the opt013 stack; compare against opt013 and do not rerun healthy baseline.

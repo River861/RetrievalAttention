@@ -1,0 +1,85 @@
+# opt020 environment/capability audit
+generated_at=2026-07-30T00:20:35Z
+git_head=7096eab9190da389bbc75c1992140d1432d9d8ec
+ M cache_hub/retroinfer_cache.py
+ M model_hub/llama.py
+ M research/PIPELINE_STATE.json
+ M throughput_eval/reproduce_block_cache.py
+?? RESULTS.md
+?? attempts/
+?? research/BASELINE_PROTOCOL.md
+?? research/BASELINE_RESULT.json
+?? research/ENVIRONMENT_AUDIT.json
+?? research/ENVIRONMENT_AUDIT.md
+?? research/FRONTIER_WATCH.jsonl
+?? research/GROUND_TRUTH.md
+?? research/INFRASTRUCTURE_REUSE_PLAN.md
+?? research/KERNEL_SCOPE.md
+?? research/PROJECT_NATIVE_SETUP.md
+?? research/TOOLCHAIN_CANDIDATES.md
+?? research/VALIDATION_MATRIX.md
+?? research/VALIDATION_RESULT.json
+?? research/baseline_block_cache_single_a100_120k_b8_cr0p05/
+?? research/frontier/
+?? research/validation_fractional_layer_capacity_120k_b8_cr0p05/
+?? research/validation_layer_cache_residency_120k_b8_cr0p05/
+?? research/validation_low6_async_buffer_mult_3p0_120k_b8_cr0p05/
+?? research/validation_low6_async_cluster_id_copy_120k_b8_cr0p05/
+?? research/validation_low6_multilayer_fractional_capacity_120k_b8_cr0p05/
+python_runtime=/home/v-xuchuanluo/RetroInfer/.venv/bin/python
+/home/v-xuchuanluo/RetroInfer/.venv/lib/python3.11/site-packages/transformers/utils/hub.py:106: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+python_executable=/home/v-xuchuanluo/RetroInfer/.venv/bin/python
+python_version=3.11.15
+platform=Linux-6.17.0-1020-azure-x86_64-with-glibc2.39
+package.torch=2.5.1+cu124
+package.vllm=0.6.5
+package.transformers=4.49.0
+package.flash_attn=2.7.3
+package.flashinfer=0.2.4+cu124torch2.5
+package.triton=3.1.0
+package.pybind11=2.12.0
+package.numpy=1.26.4
+torch.cuda.is_available=True
+torch.version.cuda=12.4
+gpu.index=0
+gpu.name=NVIDIA A100 80GB PCIe
+gpu.compute_capability=8.0
+gpu.total_memory_mib=81151
+retroinfer_kernels.import=ok
+retroinfer_kernels.required_symbols_missing=[]
+weighted_flash_decoding.import=ok
+weighted_flash_decoding.version=0.1
+CUDA_HOME=unset
+PATH_nvcc=/usr/bin/nvcc
+# nvidia-smi
+0, NVIDIA A100 80GB PCIe, 580.173.02, 81920 MiB, 8.0
+# nvcc probes
+## /usr/bin/nvcc
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2023 NVIDIA Corporation
+Built on Fri_Jan__6_16:45:21_PST_2023
+Cuda compilation tools, release 12.0, V12.0.140
+Build cuda_12.0.r12.0/compiler.32267302_0
+## /usr/bin/nvcc
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2023 NVIDIA Corporation
+Built on Fri_Jan__6_16:45:21_PST_2023
+Cuda compilation tools, release 12.0, V12.0.140
+Build cuda_12.0.r12.0/compiler.32267302_0
+## /usr/local/cuda/bin/nvcc
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2026 NVIDIA Corporation
+Built on Tue_Jun_09_02:43:40_PM_PDT_2026
+Cuda compilation tools, release 13.3, V13.3.73
+Build cuda_13.3.r13.3/compiler.38244171_0
+## /usr/local/cuda-13.3/bin/nvcc
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2026 NVIDIA Corporation
+Built on Tue_Jun_09_02:43:40_PM_PDT_2026
+Cuda compilation tools, release 13.3, V13.3.73
+Build cuda_13.3.r13.3/compiler.38244171_0
+runtime_status=valid_installed_cu124_extensions
+source_rebuild_status=blocked_for_source_rebuild
+source_rebuild_failure_class=environment_rebuild_toolchain_cuda_version_mismatch
+source_rebuild_idea_status=not_evaluated

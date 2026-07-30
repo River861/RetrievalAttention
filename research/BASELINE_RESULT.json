@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "execution_status": "success",
+  "failure_class": "success",
+  "idea_status": "baseline_measured_no_optimization_idea_evaluated",
+  "harness_returncode": 0,
+  "generated_from": {
+    "harness": "throughput_eval/reproduce_block_cache.py",
+    "raw_artifact_dir": "research/baseline_block_cache_single_a100_120k_b8_cr0p05",
+    "harness_generated_at": "2026-07-29T08:38:26+00:00",
+    "repository_head": "7096eab9190da389bbc75c1992140d1432d9d8ec"
+  },
+  "post_reset_binding": {
+    "verified_at": "2026-07-30T07:27:54+00:00",
+    "status": "applicable_no_rerun_needed",
+    "campaign_scope": "CPU full-KV owner plus <=m rotating GPU block-cache slots",
+    "rationale": [
+      "The reset scope changes the next optimize-stage mechanism but does not alter the canonical unmodified/default RetroInfer comparator shape or API.",
+      "Current repository HEAD still matches the measured baseline source revision 7096eab9190da389bbc75c1992140d1432d9d8ec.",
+      "research/PIPELINE_STATE.json is at current_stage=baseline after the post-reset environment advance.",
+      "The existing artifact directory contains exactly two 120000x8, cache_ratio=0.05, gen_len=100, seed=2025, use_cuda_graph=true runs; both child logs end with returncode 0 and RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth=true.",
+      "Per-run memory samples independently peak at the recorded 41960.0 MiB process GPU memory, and both parsed rows retain the recorded 5952.0 MiB / 5.8125 GiB block-cache footprint.",
+      "Watched RETROINFER optimization and slot-rotation environment variables were unset for the binding check, so the default-off path remains the relevant comparator.",
+      "No slot-rotation implementation, opt013 rerun, Figure 13 run, or new benchmark harness was performed for this baseline closeout."
+    ],
+    "verifier_summary": {
+      "current_head_matches_baseline": true,
+      "current_stage_baseline": true,
+      "two_result_rows": true,
+      "all_rows_passed": true,
+      "shape_bound": {
+        "context_len": 120000,
+        "batch_size": 8,
+        "cache_ratio": 0.05,
+        "gen_len": 100,
+        "seed": 2025
+      },
+      "cuda_graph_bound": true,
+      "block_cache_total_mib": 5952.0,
+      "block_cache_total_gib": 5.8125,
+      "peak_process_gpu_memory_mib": 41960.0,
+      "decode_tokens_per_s_mean": 198.8364143870935,
+      "e2e_generated_tokens_per_s_mean": 3.277045618,
+      "raw_logs_returncode_zero_and_groundtruth": true,
+      "memory_sample_peaks_match_results": true,
+      "watched_retroinfer_env_unset": true
+    }
+  },
+  "command": ".venv/bin/python throughput_eval/reproduce_block_cache.py --suite block_cache_baseline_single_a100 --context-batch-groups 120000x8 --cache-ratios 0.05 --baseline-cache-ratio 0.05 --rounds 2 --gen-len 100 --retrieval-budget 0.018 --estimation-budget 0.232 --seed 2025 --cuda-visible-devices 0 --require-idle-gpu --stop-on-error --output-dir research/baseline_block_cache_single_a100_120k_b8_cr0p05",
+  "parameters": {
+    "suite": "block_cache_baseline_single_a100",
+    "model_name": "gradientai/Llama-3-8B-Instruct-Gradient-1048k",
+    "task_name": "NIAH",
+    "context_len": 120000,
+    "batch_size": 8,
+    "cache_ratio": 0.05,
+    "baseline_cache_ratio": 0.05,
+    "rounds": 2,
+    "gen_len": 100,
+    "retrieval_budget": 0.018,
+    "estimation_budget": 0.232,
+    "seed": 2025,
+    "cuda_visible_devices": "0",
+    "use_cuda_graph": true,
+    "prefill_bsz": 1,
+    "require_idle_gpu": true,
+    "stop_on_error": true
+  },
+  "environment": {
+    "python_executable": "/home/v-xuchuanluo/RetroInfer/.venv/bin/python",
+    "python_version": "3.11.15",
+    "platform": "Linux-6.17.0-1020-azure-x86_64-with-glibc2.39",
+    "gpu": {
+      "index": 0,
+      "name": "NVIDIA A100 80GB PCIe",
+      "compute_capability": "8.0",
+      "memory_total_mib": 81920,
+      "driver_version": "580.173.02"
+    },
+    "runtime": {
+      "torch": "2.5.1+cu124",
+      "torch_cuda": "12.4",
+      "vllm": "0.6.5",
+      "transformers": "4.49.0",
+      "flash_attn": "2.7.3",
+      "flashinfer": "0.2.4+cu124torch2.5",
+      "triton": "3.1.0",
+      "pybind11": "2.12.0",
+      "retroinfer_kernels": "import_ok",
+      "weighted_flash_decoding": "0.1"
+    },
+    "source_rebuild_status": {
+      "execution_status": "blocked_for_source_rebuild",
+      "failure_class": "environment_rebuild_toolchain_cuda_version_mismatch",
+      "idea_status": "not_evaluated",
+      "notes": "Runtime baseline uses installed wheels/extensions successfully; CUDA-extension source rebuild remains blocked because no CUDA 12.4-compatible nvcc/CUDA_HOME was proven."
+    }
+  },
+  "correctness": {
+    "status": "pass",
+    "oracle": "RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+    "groundtruth": "9879991",
+    "all_runs_contain_groundtruth": true,
+    "all_child_returncodes_zero": true,
+    "all_harness_status_passed": true,
+    "per_run": [
+      {
+        "run_id": "block_cache_baseline_single_a100_retroinfer_ctx120000_bsz8_cr0p05_r1",
+        "all_outputs_contain_groundtruth": true,
+        "task_contains_groundtruth": [true, true, true, true, true, true, true, true],
+        "returncode": 0,
+        "status": "passed",
+        "failure_class": "success"
+      },
+      {
+        "run_id": "block_cache_baseline_single_a100_retroinfer_ctx120000_bsz8_cr0p05_r2",
+        "all_outputs_contain_groundtruth": true,
+        "task_contains_groundtruth": [true, true, true, true, true, true, true, true],
+        "returncode": 0,
+        "status": "passed",
+        "failure_class": "success"
+      }
+    ]
+  },
+  "metrics": {
+    "total_runs": 2,
+    "passed_runs": 2,
+    "failed_runs": 0,
+    "block_cache": {
+      "source": "cache_ratio",
+      "ratio": 0.05,
+      "index_clusters": 7440,
+      "retrieval_clusters": 134,
+      "clusters_per_layer": 372,
+      "pages_per_cluster": 2,
+      "pages_per_layer": 744,
+      "page_size_vectors": 8,
+      "vectors_per_layer": 5952,
+      "layer_count": 32,
+      "total_pages": 23808,
+      "total_vectors": 190464,
+      "dtype_bytes": 2,
+      "bytes_per_layer": 195035136,
+      "total_bytes": 6241124352,
+      "total_mib": 5952.0,
+      "total_gib": 5.8125,
+      "percent_of_a100_80gb": 7.265625,
+      "mean_percent_of_peak_process_memory": 14.184938036224976
+    },
+    "gpu_memory": {
+      "mean_peak_process_gpu_memory_mib": 41960.0,
+      "max_peak_process_gpu_memory_mib": 41960.0,
+      "mean_torch_cuda_peak_allocated_mib": 38564.56884765625,
+      "mean_torch_cuda_peak_reserved_mib": 41430.0,
+      "mean_non_block_cache_peak_process_memory_mib": 36008.0,
+      "sample_interval_s": 0.5,
+      "sampler_error_count_total": 0
+    },
+    "throughput": {
+      "decode_tokens_per_s_mean": 198.8364143870935,
+      "decode_tokens_per_s_stdev": 0.023766019606736907,
+      "decode_tokens_per_s_variance": 0.0005648236879478031,
+      "decode_latency_s_mean": 3.9831738471984863,
+      "decode_steps_per_run": 99,
+      "e2e_latency_s_mean": 244.12288427352905,
+      "e2e_generated_tokens_per_s_mean": 3.277045618,
+      "e2e_generated_tokens_per_s_formula": "batch_size * gen_len / e2e_latency_s"
+    }
+  },
+  "runs": [
+    {
+      "run_id": "block_cache_baseline_single_a100_retroinfer_ctx120000_bsz8_cr0p05_r1",
+      "round": 1,
+      "status": "passed",
+      "failure_class": "success",
+      "returncode": 0,
+      "duration_s": 371.1555333137512,
+      "input_length": 119957,
+      "prefill_latency_s": 239.77101135253906,
+      "decode_latency_s": 3.982837200164795,
+      "decode_steps": 99,
+      "decode_ms_per_step": 40.23067878954338,
+      "decode_throughput_tokens_s": 198.85321950071923,
+      "e2e_latency_s": 243.75384855270386,
+      "e2e_generated_tokens_per_s": 3.281999462,
+      "torch_cuda_peak_allocated_mib": 38564.56884765625,
+      "torch_cuda_peak_reserved_mib": 41430.0,
+      "peak_process_gpu_memory_mib": 41960.0,
+      "block_cache_total_gib": 5.8125,
+      "block_cache_total_mib": 5952.0,
+      "block_cache_percent_of_peak_process_memory": 14.184938036224976,
+      "gpu_memory_sample_count": 692,
+      "gpu_memory_sampler_error_count": 0,
+      "log_path": "research/baseline_block_cache_single_a100_120k_b8_cr0p05/raw_logs/block_cache_baseline_single_a100_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+      "gpu_memory_samples_path": "research/baseline_block_cache_single_a100_120k_b8_cr0p05/memory_samples/block_cache_baseline_single_a100_retroinfer_ctx120000_bsz8_cr0p05_r1.jsonl"
+    },
+    {
+      "run_id": "block_cache_baseline_single_a100_retroinfer_ctx120000_bsz8_cr0p05_r2",
+      "round": 2,
+      "status": "passed",
+      "failure_class": "success",
+      "returncode": 0,
+      "duration_s": 374.19180035591125,
+      "input_length": 119957,
+      "prefill_latency_s": 240.50840950012207,
+      "decode_latency_s": 3.9835104942321777,
+      "decode_steps": 99,
+      "decode_ms_per_step": 40.237479739718964,
+      "decode_throughput_tokens_s": 198.81960927346776,
+      "e2e_latency_s": 244.49191999435425,
+      "e2e_generated_tokens_per_s": 3.272091774,
+      "torch_cuda_peak_allocated_mib": 38564.56884765625,
+      "torch_cuda_peak_reserved_mib": 41430.0,
+      "peak_process_gpu_memory_mib": 41960.0,
+      "block_cache_total_gib": 5.8125,
+      "block_cache_total_mib": 5952.0,
+      "block_cache_percent_of_peak_process_memory": 14.184938036224976,
+      "gpu_memory_sample_count": 698,
+      "gpu_memory_sampler_error_count": 0,
+      "log_path": "research/baseline_block_cache_single_a100_120k_b8_cr0p05/raw_logs/block_cache_baseline_single_a100_retroinfer_ctx120000_bsz8_cr0p05_r2.txt",
+      "gpu_memory_samples_path": "research/baseline_block_cache_single_a100_120k_b8_cr0p05/memory_samples/block_cache_baseline_single_a100_retroinfer_ctx120000_bsz8_cr0p05_r2.jsonl"
+    }
+  ],
+  "raw_artifacts": {
+    "environment": "research/baseline_block_cache_single_a100_120k_b8_cr0p05/environment.json",
+    "config": "research/baseline_block_cache_single_a100_120k_b8_cr0p05/config.json",
+    "commands": "research/baseline_block_cache_single_a100_120k_b8_cr0p05/commands.jsonl",
+    "results_jsonl": "research/baseline_block_cache_single_a100_120k_b8_cr0p05/results.jsonl",
+    "results_csv": "research/baseline_block_cache_single_a100_120k_b8_cr0p05/results.csv",
+    "summary_csv": "research/baseline_block_cache_single_a100_120k_b8_cr0p05/summary.csv",
+    "per_round_table_csv": "research/baseline_block_cache_single_a100_120k_b8_cr0p05/per_round_table.csv",
+    "deltas_csv": "research/baseline_block_cache_single_a100_120k_b8_cr0p05/deltas.csv",
+    "report": "research/baseline_block_cache_single_a100_120k_b8_cr0p05/REPORT.md"
+  }
+}

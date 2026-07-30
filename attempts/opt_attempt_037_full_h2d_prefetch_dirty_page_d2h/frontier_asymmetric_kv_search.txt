@@ -1,0 +1,13 @@
+Fresh frontier trigger: selecting opt037 scope after opt035 full-transfer and opt036 page-delta failures.
+
+Search query: "Recent asymmetric KV cache offload policies for LLM inference using full-layer or page-level read prefetch and dirty page writeback over CPU GPU memory, 2024 2025"
+
+Search result summary:
+- LMCache-style tiered KV systems emphasize GPU/CPU/disk KV cache managers with prefetch and writeback/eviction policies rather than keeping all KV resident on GPU.
+- NVIDIA unified/heterogeneous memory discussions emphasize read-ahead/prefetch and dirty writeback or eviction across CPU/GPU tiers, especially when host/GPU interconnects can hide transfer latency.
+- ShadowKV and distributed KV-cache systems favor selective or page/block-granular movement to avoid full bidirectional layer migration where possible.
+
+Opt037 implication:
+- The relevant mechanism pivot is asymmetric movement: keep opt035's full-layer H2D read-prefetch to preserve CUDA graph fixed slot addresses and avoid opt036's page-H2D Python slice overhead, but replace opt035's full-layer post-admission D2H with dirty-page D2H driven by `WaveBuffer.update_cache_indices`.
+- This is not a speed claim. Real A100 correctness and timing are still required after the bounded mechanism probe.
+

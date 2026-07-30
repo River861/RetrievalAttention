@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "stage": "optimize",
+  "trigger": "bounded_opt021_layer31_conservative_capacity_frontier_after_opt020_negative_buffer_rightsize_screen",
+  "frontier_as_of": "2026-07-30",
+  "network_status": "online",
+  "checked_surfaces": [
+    "official_toolchains",
+    "research_frontier",
+    "target_repository"
+  ],
+  "queries": [
+    {
+      "channel": "web_search",
+      "purpose": "Refresh official CUDA graph and allocation semantics for no-source environment-gated capacity measurements on the project-native CUDA graph path.",
+      "query": "PyTorch CUDA Graph and CUDA memory allocation semantics relevant to existing CUDA graph defaults and tensor allocation sizes, July 2026."
+    },
+    {
+      "channel": "web_fetch",
+      "purpose": "Pin official versioned PyTorch documentation after stable docs redirected to 2.13 pages.",
+      "urls": [
+        "https://docs.pytorch.org/docs/2.13/generated/torch.cuda.graph.html",
+        "https://docs.pytorch.org/docs/2.13/generated/torch.cuda.CUDAGraph.html",
+        "https://docs.pytorch.org/docs/2.13/notes/cuda.html#cuda-graphs",
+        "https://docs.pytorch.org/docs/2.13/generated/torch.empty.html"
+      ]
+    },
+    {
+      "channel": "target_repository",
+      "purpose": "Confirm existing env-gated layer capacity surface and harness CUDA graph metadata.",
+      "paths": [
+        "cache_hub/retroinfer_cache.py",
+        "throughput_eval/reproduce_block_cache.py"
+      ]
+    }
+  ],
+  "material_updates": [],
+  "no_material_update": true,
+  "decision_impact": "Proceed with the bounded no-source layer-31 capacity schedules only. Use opt013 stack, keep project-native CUDA graph default, and retain only if raw correctness, memory reduction, zero buffer-overflow warnings, and decode/e2e no-regression all hold versus opt013.",
+  "sources": [
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch torch.cuda.graph",
+      "url": "https://docs.pytorch.org/docs/2.13/generated/torch.cuda.graph.html",
+      "relevance": "Documents graph capture context, stream argument, graph memory pool sharing, and capture constraints."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch CUDA semantics",
+      "url": "https://docs.pytorch.org/docs/2.13/notes/cuda.html#cuda-graphs",
+      "relevance": "Documents asynchronous CUDA execution, stream synchronization requirements, caching allocator behavior, and memory measurement caveats."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch torch.empty",
+      "url": "https://docs.pytorch.org/docs/2.13/generated/torch.empty.html",
+      "relevance": "Confirms uninitialized allocation semantics already used by the opt013 stack; opt021 does not alter this mechanism."
+    },
+    {
+      "source_type": "official_repo",
+      "title": "RetroInfer target repository local source",
+      "url": "local:cache_hub/retroinfer_cache.py",
+      "relevance": "Existing RETROINFER_LAYER_CACHE_CAPACITY_SCALE parser applies cluster-aligned per-layer capacity scales without source changes."
+    }
+  ],
+  "candidate": {
+    "name": "layer31_conservative_capacity_frontier",
+    "node_key": "opt021_layer31_conservative_capacity_frontier",
+    "shape": "context_len=120000,batch_size=8,gen_len=100,cache_ratio=0.05,rounds=1,seed=2025,A100_80GB",
+    "environment": {
+      "RETROINFER_ASYNC_CACHE_ADMISSION": "unset",
+      "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+      "RETROINFER_ASYNC_STREAM_ONLY_GATHER": "unset",
+      "RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY": "late",
+      "RETROINFER_BUFFER_NPROBE_MULTIPLIER": "3.0",
+      "RETROINFER_CACHE_TELEMETRY": "unset",
+      "RETROINFER_LATE_BLOCK_CACHE_INIT": "uninitialized",
+      "RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY": "pinned_side_stream",
+      "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.75,2-3=0.75,25=0.75,28-29=0.75,31=0.875",
+      "RETROINFER_LAYER_CACHE_RESIDENCY": "unset",
+      "RETROINFER_STAGE_INDEX_METADATA_LAYERS": "unset",
+      "RETROINFER_STREAM_ONLY_LAYERS": "unset"
+    }
+  }
+}

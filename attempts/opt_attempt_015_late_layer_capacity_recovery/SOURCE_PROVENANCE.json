@@ -1,0 +1,11 @@
+{
+  "git_head": "7096eab9190da389bbc75c1992140d1432d9d8ec",
+  "git_status_short_captured_in": "attempts/opt_attempt_015_late_layer_capacity_recovery/ENV_AUDIT.raw.txt",
+  "opt015_source_code_changes": "none; reused opt013/opt014 environment-gated runtime controls",
+  "relevant_source_surfaces": [
+    "cache_hub/retroinfer_cache.py",
+    "throughput_eval/reproduce_block_cache.py"
+  ],
+  "source_diff_path": "attempts/opt_attempt_015_late_layer_capacity_recovery/SOURCE_DIFF.patch",
+  "source_diff_sha256": "3e66848a8981311e7619d6567547afba0dd5d675097c25a8c071627a7952f215"
+}

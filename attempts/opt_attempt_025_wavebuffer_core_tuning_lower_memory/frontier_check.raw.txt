@@ -1,0 +1,22 @@
+# Frontier check: opt_attempt_025_wavebuffer_core_tuning_lower_memory
+generated_at_utc=2026-07-30T02:37:30Z
+scope=bounded optimize node; event trigger=mechanism pivot from async WaveBuffer overlap to native WaveBufferCPU/ThreadPool core-count scheduling on the opt023 lower-memory stack
+reference=attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/OUTCOME.json and latest reviewed negative attempts/opt_attempt_024_async_wave_batch_access_overlap/OUTCOME.json
+frontier conclusion=Proceed only with a default-off Python/runtime env override for the existing offload-path ThreadPool/WaveBufferCPU core argument; no CUDA/C++ rebuild, new native kernels, new benchmark harness, Figure 13 rerun, healthy-baseline rerun, or broad grid search.
+
+# mechanism evidence reused/refreshed for this pivot
+- Current code constructs `ThreadPool(core)` and each `WaveBufferCPU(..., core, thread_pool_pointer)` in `cache_hub/retroinfer_cache.py`; the model loaders already pass `config["core"]`, so an internal env override preserves the public API.
+- Host audit/default-behavior check measured `get_numa_node_core_count(0)=22`; tested override values are bounded below that default to reduce possible thread scheduling/oversubscription overhead without changing block-cache capacity.
+- opt023 is the lower-memory non-async stack to reuse: late/uninitialized block cache, pinned side-stream metadata migration, async cluster-id copy, layer31 0.75 capacity, buffer multiplier 2.75, scratch uninitialized. It saved memory but missed the opt013 e2e gate by 0.000999 generated tok/s in one round.
+- opt024 async WaveBuffer evidence showed Python-worker overlap was functionally correct but failed the final e2e gate; this supports trying native ThreadPool scheduling before stopping the lower-memory branch, not adding more overlap mechanisms.
+
+# predeclared core override values
+RETROINFER_WAVE_BUFFER_CORE_OVERRIDE=16
+RETROINFER_WAVE_BUFFER_CORE_OVERRIDE=12
+RETROINFER_WAVE_BUFFER_CORE_OVERRIDE=8
+
+# sources
+- Target repository source: cache_hub/retroinfer_cache.py, config/config.py, throughput_eval/reproduce_block_cache.py, model_hub/llama.py, model_hub/qwen.py
+- Reference outcome: attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/OUTCOME.json
+- Lower-memory reference: attempts/opt_attempt_023_scratch_empty_buffer_2p75_layer31_screen/OUTCOME.json
+- Latest async negative: attempts/opt_attempt_024_async_wave_batch_access_overlap/OUTCOME.json

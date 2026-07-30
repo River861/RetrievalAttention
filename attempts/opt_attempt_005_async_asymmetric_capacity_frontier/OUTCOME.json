@@ -1,0 +1,879 @@
+{
+  "attempt_id": "opt_attempt_005_async_asymmetric_capacity_frontier",
+  "baseline_identity": "research/BASELINE_RESULT.json canonical 120000x8/cache_ratio=0.05 baseline at repository HEAD 7096eab9190da389bbc75c1992140d1432d9d8ec on A100 80GB; correctness pass with raw RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth=true. Validated comparison point is research/VALIDATION_RESULT.json low6_async_cluster_id_copy, two correctness-passing rounds with telemetry disabled.",
+  "baseline_reference": {
+    "block_cache_total_bytes": 6241124352,
+    "block_cache_total_gib": 5.8125,
+    "block_cache_total_mib": 5952.0,
+    "decode_latency_s": 3.9831738471984863,
+    "decode_throughput_tokens_s": 198.8364143870935,
+    "e2e_generated_tokens_per_s": 3.277045618,
+    "e2e_latency_s": 244.12288427352905,
+    "peak_process_gpu_memory_mib": 41960.0,
+    "source": "research/BASELINE_RESULT.json",
+    "torch_cuda_peak_allocated_mib": 38564.56884765625,
+    "torch_cuda_peak_reserved_mib": 41430.0
+  },
+  "candidate_identity": "opt005 reused the existing Python runtime controls in cache_hub/retroinfer_cache.py and throughput_eval/reproduce_block_cache.py without new source edits; reused-surface diff sha256=10a0ce27f5564b5f626b756b36524763d817fd075f027303a232bb4b6a7ba462. The measured candidates set RETROINFER_ASYNC_CLUSTER_ID_COPY=1, kept RETROINFER_CACHE_TELEMETRY unset, and varied only RETROINFER_LAYER_CACHE_CAPACITY_SCALE.",
+  "candidate_identity_detail": {
+    "changed_source_surfaces": [],
+    "default_api_behavior": "Preserved; all non-default behavior is gated by environment variables and RETROINFER_CACHE_TELEMETRY remained unset during candidate runs.",
+    "description": "No new source change in opt005; reused existing default-off RETROINFER_LAYER_CACHE_CAPACITY_SCALE and RETROINFER_ASYNC_CLUSTER_ID_COPY controls already present in cache_hub/retroinfer_cache.py and throughput_eval/reproduce_block_cache.py. This attempt adds only frontier/evidence/outcome artifacts and measurements.",
+    "no_cuda_cpp_rebuild": true,
+    "no_new_harness": true,
+    "reused_source_surfaces": [
+      "cache_hub/retroinfer_cache.py",
+      "throughput_eval/reproduce_block_cache.py"
+    ],
+    "source_diff_sha256_for_reused_surfaces": "10a0ce27f5564b5f626b756b36524763d817fd075f027303a232bb4b6a7ba462"
+  },
+  "candidates": [
+    {
+      "candidate_id": "l1_0p25_low5_0p75_async",
+      "capacity_spec": "1=0.25,2-3=0.75,25=0.75,28-29=0.75",
+      "command": "{\"batch_size\": 8, \"cache_ratio\": 0.05, \"cache_role\": \"paper_default_5pct\", \"command\": [\"/home/v-xuchuanluo/RetroInfer/.venv/bin/python\", \"-u\", \"test.py\", \"--model_name\", \"gradientai/Llama-3-8B-Instruct-Gradient-1048k\", \"--attn_type\", \"RetroInfer\", \"--context_len\", \"120000\", \"--task_name\", \"NIAH\", \"--gen_len\", \"100\", \"--batch_size\", \"8\", \"--prefill_bsz\", \"1\", \"--retrieval_budget\", \"0.018\", \"--estimation_budget\", \"0.232\", \"--cache_ratio\", \"0.05\", \"--use_cuda_graph\"], \"context_len\": 120000, \"gen_len\": 100, \"method\": \"RetroInfer\", \"model_name\": \"gradientai/Llama-3-8B-Instruct-Gradient-1048k\", \"retroinfer_env\": {\"RETROINFER_ASYNC_CLUSTER_ID_COPY\": \"1\", \"RETROINFER_CACHE_TELEMETRY\": \"unset\", \"RETROINFER_LAYER_CACHE_CAPACITY_SCALE\": \"1=0.25,2-3=0.75,25=0.75,28-29=0.75\", \"RETROINFER_LAYER_CACHE_RESIDENCY\": \"unset\"}, \"round\": 1, \"run_id\": \"opt_attempt_005_l1_0p25_low5_0p75_async_retroinfer_ctx120000_bsz8_cr0p05_r1\", \"seed\": 2025, \"suite\": \"opt_attempt_005_l1_0p25_low5_0p75_async\", \"task_name\": \"NIAH\"}",
+      "correctness": {
+        "all_outputs_contain_groundtruth": true,
+        "groundtruth": "9879991",
+        "harness_status": "passed",
+        "oracle": "raw RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+        "returncode": 0,
+        "status": "pass",
+        "task_contains_groundtruth": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      "deltas_vs_baseline": {
+        "block_cache_total_bytes": {
+          "candidate": 5851054080,
+          "delta": -390070272,
+          "delta_pct": -6.25,
+          "reference": 6241124352
+        },
+        "block_cache_total_gib": {
+          "candidate": 5.44921875,
+          "delta": -0.36328125,
+          "delta_pct": -6.25,
+          "reference": 5.8125
+        },
+        "block_cache_total_mib": {
+          "candidate": 5580.0,
+          "delta": -372.0,
+          "delta_pct": -6.25,
+          "reference": 5952.0
+        },
+        "decode_latency_s": {
+          "candidate": 4.0857532024383545,
+          "delta": 0.10257935523986816,
+          "delta_pct": 2.5753170505479197,
+          "reference": 3.9831738471984863
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 193.84430746510554,
+          "delta": -4.992106921987954,
+          "delta_pct": -2.5106603020256397,
+          "reference": 198.8364143870935
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.2929365564468727,
+          "delta": 0.015890938446872838,
+          "delta_pct": 0.48491660780026524,
+          "reference": 3.277045618
+        },
+        "e2e_latency_s": {
+          "candidate": 242.9442493915558,
+          "delta": -1.1786348819732666,
+          "delta_pct": -0.4828039310942507,
+          "reference": 244.12288427352905
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41580.0,
+          "delta": -380.0,
+          "delta_pct": -0.9056244041944709,
+          "reference": 41960.0
+        },
+        "torch_cuda_peak_allocated_mib": {
+          "candidate": 38184.56884765625,
+          "delta": -380.0,
+          "delta_pct": -0.9853604263051274,
+          "reference": 38564.56884765625
+        },
+        "torch_cuda_peak_reserved_mib": {
+          "candidate": 41050.0,
+          "delta": -380.0,
+          "delta_pct": -0.9172097513878832,
+          "reference": 41430.0
+        }
+      },
+      "deltas_vs_validated_low6_async": {
+        "block_cache_total_bytes": {
+          "candidate": 5851054080,
+          "delta": -97517568,
+          "delta_pct": -1.639344262295082,
+          "reference": 5948571648
+        },
+        "block_cache_total_gib": {
+          "candidate": 5.44921875,
+          "delta": -0.0908203125,
+          "delta_pct": -1.639344262295082,
+          "reference": 5.5400390625
+        },
+        "block_cache_total_mib": {
+          "candidate": 5580.0,
+          "delta": -93.0,
+          "delta_pct": -1.639344262295082,
+          "reference": 5673.0
+        },
+        "decode_latency_s": {
+          "candidate": 4.0857532024383545,
+          "delta": 0.14889514446258545,
+          "delta_pct": 3.7820805898992327,
+          "reference": 3.936858057975769
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 193.84430746510554,
+          "delta": -7.33566107405926,
+          "delta_pct": -3.6463178353818995,
+          "reference": 201.1799685391648
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.2929365564468727,
+          "delta": 0.013108439890655355,
+          "delta_pct": 0.3996685016658455,
+          "reference": 3.2798281165562173
+        },
+        "e2e_latency_s": {
+          "candidate": 242.9442493915558,
+          "delta": -0.9721163511276245,
+          "delta_pct": -0.39854494722717654,
+          "reference": 243.9163657426834
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41580.0,
+          "delta": -92.0,
+          "delta_pct": -0.2207717412171242,
+          "reference": 41672.0
+        },
+        "torch_cuda_peak_allocated_mib": {
+          "candidate": 38184.56884765625,
+          "delta": -92.0,
+          "delta_pct": -0.24035592209470819,
+          "reference": 38276.56884765625
+        },
+        "torch_cuda_peak_reserved_mib": {
+          "candidate": 41050.0,
+          "delta": -92.0,
+          "delta_pct": -0.2236157697729814,
+          "reference": 41142.0
+        }
+      },
+      "description": "Layer 1 cut to 25%; layers 2,3,25,28,29 kept at the prior 75% cut; async cluster-id copy enabled.",
+      "env": {
+        "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+        "RETROINFER_CACHE_TELEMETRY": "unset",
+        "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.25,2-3=0.75,25=0.75,28-29=0.75",
+        "RETROINFER_LAYER_CACHE_RESIDENCY": "unset/all"
+      },
+      "execution_status": "success",
+      "failure_class": "success",
+      "idea_status": "correctness_passed_more_memory_saving_but_decode_regressed_vs_low6_async",
+      "metrics": {
+        "block_cache_layer_capacity_scales": [
+          1.0,
+          0.25,
+          0.75,
+          0.75,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.75,
+          1.0,
+          1.0,
+          0.75,
+          0.75,
+          1.0,
+          1.0
+        ],
+        "block_cache_layer_pages": [
+          744,
+          186,
+          558,
+          558,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          558,
+          744,
+          744,
+          558,
+          558,
+          744,
+          744
+        ],
+        "block_cache_total_bytes": 5851054080,
+        "block_cache_total_gib": 5.44921875,
+        "block_cache_total_mib": 5580.0,
+        "decode_latency_s": 4.0857532024383545,
+        "decode_steps": 99,
+        "decode_throughput_tokens_s": 193.84430746510554,
+        "e2e_generated_tokens_per_s": 3.2929365564468727,
+        "e2e_latency_s": 242.9442493915558,
+        "gpu_memory_sample_count": 693,
+        "gpu_memory_sampler_error_count": 0,
+        "peak_process_gpu_memory_mib": 41580.0,
+        "torch_cuda_peak_allocated_mib": 38184.56884765625,
+        "torch_cuda_peak_reserved_mib": 41050.0
+      },
+      "output_dir": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/l1_0p25_low5_0p75_async_120k_b8_cr0p05",
+      "raw_artifacts": {
+        "commands_jsonl": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/l1_0p25_low5_0p75_async_120k_b8_cr0p05/commands.jsonl",
+        "config_json": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/l1_0p25_low5_0p75_async_120k_b8_cr0p05/config.json",
+        "environment_json": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/l1_0p25_low5_0p75_async_120k_b8_cr0p05/environment.json",
+        "log_path": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/l1_0p25_low5_0p75_async_120k_b8_cr0p05/raw_logs/opt_attempt_005_l1_0p25_low5_0p75_async_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+        "memory_samples_path": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/l1_0p25_low5_0p75_async_120k_b8_cr0p05/memory_samples/opt_attempt_005_l1_0p25_low5_0p75_async_retroinfer_ctx120000_bsz8_cr0p05_r1.jsonl",
+        "per_round_table_csv": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/l1_0p25_low5_0p75_async_120k_b8_cr0p05/per_round_table.csv",
+        "results_jsonl": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/l1_0p25_low5_0p75_async_120k_b8_cr0p05/results.jsonl",
+        "run_dir": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/l1_0p25_low5_0p75_async_120k_b8_cr0p05",
+        "summary_csv": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/l1_0p25_low5_0p75_async_120k_b8_cr0p05/summary.csv"
+      },
+      "relative_assessment": {
+        "decode_delta_vs_low6_async_tokens_s": -7.33566107405926,
+        "e2e_delta_vs_low6_async_tokens_s": 0.013108439890655355,
+        "incremental_block_cache_saving_vs_low6_async_gib": 0.0908203125,
+        "incremental_peak_memory_saving_vs_low6_async_mib": 92.0,
+        "strictly_better_memory_than_low6_async": true
+      },
+      "suite": "opt_attempt_005_l1_0p25_low5_0p75_async"
+    },
+    {
+      "candidate_id": "mixed_0p5_0p75_async",
+      "capacity_spec": "1=0.5,2-3=0.75,25=0.5,28=0.75,29=0.5",
+      "command": "{\"batch_size\": 8, \"cache_ratio\": 0.05, \"cache_role\": \"paper_default_5pct\", \"command\": [\"/home/v-xuchuanluo/RetroInfer/.venv/bin/python\", \"-u\", \"test.py\", \"--model_name\", \"gradientai/Llama-3-8B-Instruct-Gradient-1048k\", \"--attn_type\", \"RetroInfer\", \"--context_len\", \"120000\", \"--task_name\", \"NIAH\", \"--gen_len\", \"100\", \"--batch_size\", \"8\", \"--prefill_bsz\", \"1\", \"--retrieval_budget\", \"0.018\", \"--estimation_budget\", \"0.232\", \"--cache_ratio\", \"0.05\", \"--use_cuda_graph\"], \"context_len\": 120000, \"gen_len\": 100, \"method\": \"RetroInfer\", \"model_name\": \"gradientai/Llama-3-8B-Instruct-Gradient-1048k\", \"retroinfer_env\": {\"RETROINFER_ASYNC_CLUSTER_ID_COPY\": \"1\", \"RETROINFER_CACHE_TELEMETRY\": \"unset\", \"RETROINFER_LAYER_CACHE_CAPACITY_SCALE\": \"1=0.5,2-3=0.75,25=0.5,28=0.75,29=0.5\", \"RETROINFER_LAYER_CACHE_RESIDENCY\": \"unset\"}, \"round\": 1, \"run_id\": \"opt_attempt_005_mixed_0p5_0p75_async_retroinfer_ctx120000_bsz8_cr0p05_r1\", \"seed\": 2025, \"suite\": \"opt_attempt_005_mixed_0p5_0p75_async\", \"task_name\": \"NIAH\"}",
+      "correctness": {
+        "all_outputs_contain_groundtruth": true,
+        "groundtruth": "9879991",
+        "harness_status": "passed",
+        "oracle": "raw RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+        "returncode": 0,
+        "status": "pass",
+        "task_contains_groundtruth": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      "deltas_vs_baseline": {
+        "block_cache_total_bytes": {
+          "candidate": 5802295296,
+          "delta": -438829056,
+          "delta_pct": -7.03125,
+          "reference": 6241124352
+        },
+        "block_cache_total_gib": {
+          "candidate": 5.40380859375,
+          "delta": -0.40869140625,
+          "delta_pct": -7.03125,
+          "reference": 5.8125
+        },
+        "block_cache_total_mib": {
+          "candidate": 5533.5,
+          "delta": -418.5,
+          "delta_pct": -7.03125,
+          "reference": 5952.0
+        },
+        "decode_latency_s": {
+          "candidate": 4.057043075561523,
+          "delta": 0.07386922836303711,
+          "delta_pct": 1.8545318682234286,
+          "reference": 3.9831738471984863
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 195.2160687597288,
+          "delta": -3.620345627364685,
+          "delta_pct": -1.8207658987033526,
+          "reference": 198.8364143870935
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.2722484302557184,
+          "delta": -0.004797187744281395,
+          "delta_pct": -0.14638757904167188,
+          "reference": 3.277045618
+        },
+        "e2e_latency_s": {
+          "candidate": 244.48021507263184,
+          "delta": 0.3573307991027832,
+          "delta_pct": 0.14637333167930688,
+          "reference": 244.12288427352905
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41540.0,
+          "delta": -420.0,
+          "delta_pct": -1.0009532888465205,
+          "reference": 41960.0
+        },
+        "torch_cuda_peak_allocated_mib": {
+          "candidate": 38135.56884765625,
+          "delta": -429.0,
+          "delta_pct": -1.1124200602234202,
+          "reference": 38564.56884765625
+        },
+        "torch_cuda_peak_reserved_mib": {
+          "candidate": 41010.0,
+          "delta": -420.0,
+          "delta_pct": -1.0137581462708183,
+          "reference": 41430.0
+        }
+      },
+      "deltas_vs_validated_low6_async": {
+        "block_cache_total_bytes": {
+          "candidate": 5802295296,
+          "delta": -146276352,
+          "delta_pct": -2.459016393442623,
+          "reference": 5948571648
+        },
+        "block_cache_total_gib": {
+          "candidate": 5.40380859375,
+          "delta": -0.13623046875,
+          "delta_pct": -2.459016393442623,
+          "reference": 5.5400390625
+        },
+        "block_cache_total_mib": {
+          "candidate": 5533.5,
+          "delta": -139.5,
+          "delta_pct": -2.459016393442623,
+          "reference": 5673.0
+        },
+        "decode_latency_s": {
+          "candidate": 4.057043075561523,
+          "delta": 0.1201850175857544,
+          "delta_pct": 3.0528156163077527,
+          "reference": 3.936858057975769
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 195.2160687597288,
+          "delta": -5.963899779435991,
+          "delta_pct": -2.964460041793359,
+          "reference": 201.1799685391648
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.2722484302557184,
+          "delta": -0.007579686300498878,
+          "delta_pct": -0.23110010741835652,
+          "reference": 3.2798281165562173
+        },
+        "e2e_latency_s": {
+          "candidate": 244.48021507263184,
+          "delta": 0.5638493299484253,
+          "delta_pct": 0.23116502586105733,
+          "reference": 243.9163657426834
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41540.0,
+          "delta": -132.0,
+          "delta_pct": -0.3167594547897869,
+          "reference": 41672.0
+        },
+        "torch_cuda_peak_allocated_mib": {
+          "candidate": 38135.56884765625,
+          "delta": -141.0,
+          "delta_pct": -0.36837157625384626,
+          "reference": 38276.56884765625
+        },
+        "torch_cuda_peak_reserved_mib": {
+          "candidate": 41010.0,
+          "delta": -132.0,
+          "delta_pct": -0.3208400175003646,
+          "reference": 41142.0
+        }
+      },
+      "description": "Layers 1,25,29 cut to 50%; layers 2,3,28 cut to 75%; async cluster-id copy enabled.",
+      "env": {
+        "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+        "RETROINFER_CACHE_TELEMETRY": "unset",
+        "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.5,2-3=0.75,25=0.5,28=0.75,29=0.5",
+        "RETROINFER_LAYER_CACHE_RESIDENCY": "unset/all"
+      },
+      "execution_status": "success",
+      "failure_class": "success",
+      "idea_status": "correctness_passed_more_memory_saving_but_decode_regressed_vs_low6_async",
+      "metrics": {
+        "block_cache_layer_capacity_scales": [
+          1.0,
+          0.5,
+          0.75,
+          0.75,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.5,
+          1.0,
+          1.0,
+          0.75,
+          0.5,
+          1.0,
+          1.0
+        ],
+        "block_cache_layer_pages": [
+          744,
+          372,
+          558,
+          558,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          372,
+          744,
+          744,
+          558,
+          372,
+          744,
+          744
+        ],
+        "block_cache_total_bytes": 5802295296,
+        "block_cache_total_gib": 5.40380859375,
+        "block_cache_total_mib": 5533.5,
+        "decode_latency_s": 4.057043075561523,
+        "decode_steps": 99,
+        "decode_throughput_tokens_s": 195.2160687597288,
+        "e2e_generated_tokens_per_s": 3.2722484302557184,
+        "e2e_latency_s": 244.48021507263184,
+        "gpu_memory_sample_count": 695,
+        "gpu_memory_sampler_error_count": 0,
+        "peak_process_gpu_memory_mib": 41540.0,
+        "torch_cuda_peak_allocated_mib": 38135.56884765625,
+        "torch_cuda_peak_reserved_mib": 41010.0
+      },
+      "output_dir": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/mixed_0p5_0p75_async_120k_b8_cr0p05",
+      "raw_artifacts": {
+        "commands_jsonl": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/mixed_0p5_0p75_async_120k_b8_cr0p05/commands.jsonl",
+        "config_json": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/mixed_0p5_0p75_async_120k_b8_cr0p05/config.json",
+        "environment_json": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/mixed_0p5_0p75_async_120k_b8_cr0p05/environment.json",
+        "log_path": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/mixed_0p5_0p75_async_120k_b8_cr0p05/raw_logs/opt_attempt_005_mixed_0p5_0p75_async_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+        "memory_samples_path": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/mixed_0p5_0p75_async_120k_b8_cr0p05/memory_samples/opt_attempt_005_mixed_0p5_0p75_async_retroinfer_ctx120000_bsz8_cr0p05_r1.jsonl",
+        "per_round_table_csv": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/mixed_0p5_0p75_async_120k_b8_cr0p05/per_round_table.csv",
+        "results_jsonl": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/mixed_0p5_0p75_async_120k_b8_cr0p05/results.jsonl",
+        "run_dir": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/mixed_0p5_0p75_async_120k_b8_cr0p05",
+        "summary_csv": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/mixed_0p5_0p75_async_120k_b8_cr0p05/summary.csv"
+      },
+      "relative_assessment": {
+        "decode_delta_vs_low6_async_tokens_s": -5.963899779435991,
+        "e2e_delta_vs_low6_async_tokens_s": -0.007579686300498878,
+        "incremental_block_cache_saving_vs_low6_async_gib": 0.13623046875,
+        "incremental_peak_memory_saving_vs_low6_async_mib": 132.0,
+        "strictly_better_memory_than_low6_async": true
+      },
+      "suite": "opt_attempt_005_mixed_0p5_0p75_async"
+    },
+    {
+      "candidate_id": "low6_0p625_async",
+      "capacity_spec": "1=0.625,2-3=0.625,25=0.625,28-29=0.625",
+      "command": "{\"batch_size\": 8, \"cache_ratio\": 0.05, \"cache_role\": \"paper_default_5pct\", \"command\": [\"/home/v-xuchuanluo/RetroInfer/.venv/bin/python\", \"-u\", \"test.py\", \"--model_name\", \"gradientai/Llama-3-8B-Instruct-Gradient-1048k\", \"--attn_type\", \"RetroInfer\", \"--context_len\", \"120000\", \"--task_name\", \"NIAH\", \"--gen_len\", \"100\", \"--batch_size\", \"8\", \"--prefill_bsz\", \"1\", \"--retrieval_budget\", \"0.018\", \"--estimation_budget\", \"0.232\", \"--cache_ratio\", \"0.05\", \"--use_cuda_graph\"], \"context_len\": 120000, \"gen_len\": 100, \"method\": \"RetroInfer\", \"model_name\": \"gradientai/Llama-3-8B-Instruct-Gradient-1048k\", \"retroinfer_env\": {\"RETROINFER_ASYNC_CLUSTER_ID_COPY\": \"1\", \"RETROINFER_CACHE_TELEMETRY\": \"unset\", \"RETROINFER_LAYER_CACHE_CAPACITY_SCALE\": \"1=0.625,2-3=0.625,25=0.625,28-29=0.625\", \"RETROINFER_LAYER_CACHE_RESIDENCY\": \"unset\"}, \"round\": 1, \"run_id\": \"opt_attempt_005_low6_0p625_async_retroinfer_ctx120000_bsz8_cr0p05_r1\", \"seed\": 2025, \"suite\": \"opt_attempt_005_low6_0p625_async\", \"task_name\": \"NIAH\"}",
+      "correctness": {
+        "all_outputs_contain_groundtruth": true,
+        "groundtruth": "9879991",
+        "harness_status": "passed",
+        "oracle": "raw RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+        "returncode": 0,
+        "status": "pass",
+        "task_contains_groundtruth": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      "deltas_vs_baseline": {
+        "block_cache_total_bytes": {
+          "candidate": 5800722432,
+          "delta": -440401920,
+          "delta_pct": -7.056451612903226,
+          "reference": 6241124352
+        },
+        "block_cache_total_gib": {
+          "candidate": 5.40234375,
+          "delta": -0.41015625,
+          "delta_pct": -7.056451612903226,
+          "reference": 5.8125
+        },
+        "block_cache_total_mib": {
+          "candidate": 5532.0,
+          "delta": -420.0,
+          "delta_pct": -7.056451612903226,
+          "reference": 5952.0
+        },
+        "decode_latency_s": {
+          "candidate": 4.0457823276519775,
+          "delta": 0.06260848045349121,
+          "delta_pct": 1.5718239488222707,
+          "reference": 3.9831738471984863
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 195.7594195285458,
+          "delta": -3.0769948585476925,
+          "delta_pct": -1.5475006768918182,
+          "reference": 198.8364143870935
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.272763190427209,
+          "delta": -0.004282427572790848,
+          "delta_pct": -0.13067952271608713,
+          "reference": 3.277045618
+        },
+        "e2e_latency_s": {
+          "candidate": 244.44176173210144,
+          "delta": 0.3188774585723877,
+          "delta_pct": 0.1306216987896552,
+          "reference": 244.12288427352905
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41528.0,
+          "delta": -432.0,
+          "delta_pct": -1.0295519542421354,
+          "reference": 41960.0
+        },
+        "torch_cuda_peak_allocated_mib": {
+          "candidate": 38132.56884765625,
+          "delta": -432.0,
+          "delta_pct": -1.1201992214837238,
+          "reference": 38564.56884765625
+        },
+        "torch_cuda_peak_reserved_mib": {
+          "candidate": 40998.0,
+          "delta": -432.0,
+          "delta_pct": -1.0427226647356989,
+          "reference": 41430.0
+        }
+      },
+      "deltas_vs_validated_low6_async": {
+        "block_cache_total_bytes": {
+          "candidate": 5800722432,
+          "delta": -147849216,
+          "delta_pct": -2.4854574299312535,
+          "reference": 5948571648
+        },
+        "block_cache_total_gib": {
+          "candidate": 5.40234375,
+          "delta": -0.1376953125,
+          "delta_pct": -2.4854574299312535,
+          "reference": 5.5400390625
+        },
+        "block_cache_total_mib": {
+          "candidate": 5532.0,
+          "delta": -141.0,
+          "delta_pct": -2.4854574299312535,
+          "reference": 5673.0
+        },
+        "decode_latency_s": {
+          "candidate": 4.0457823276519775,
+          "delta": 0.1089242696762085,
+          "delta_pct": 2.7667817348795793,
+          "reference": 3.936858057975769
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 195.7594195285458,
+          "delta": -5.420549010618998,
+          "delta_pct": -2.694378098366066,
+          "reference": 201.1799685391648
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.272763190427209,
+          "delta": -0.007064926129008331,
+          "delta_pct": -0.21540537729234494,
+          "reference": 3.2798281165562173
+        },
+        "e2e_latency_s": {
+          "candidate": 244.44176173210144,
+          "delta": 0.5253959894180298,
+          "delta_pct": 0.21540005641617746,
+          "reference": 243.9163657426834
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41528.0,
+          "delta": -144.0,
+          "delta_pct": -0.34555576886158573,
+          "reference": 41672.0
+        },
+        "torch_cuda_peak_allocated_mib": {
+          "candidate": 38132.56884765625,
+          "delta": -144.0,
+          "delta_pct": -0.3762092693656302,
+          "reference": 38276.56884765625
+        },
+        "torch_cuda_peak_reserved_mib": {
+          "candidate": 40998.0,
+          "delta": -144.0,
+          "delta_pct": -0.35000729181857954,
+          "reference": 41142.0
+        }
+      },
+      "description": "All six low-hit layers 1,2,3,25,28,29 cut uniformly to 62.5%; async cluster-id copy enabled.",
+      "env": {
+        "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+        "RETROINFER_CACHE_TELEMETRY": "unset",
+        "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.625,2-3=0.625,25=0.625,28-29=0.625",
+        "RETROINFER_LAYER_CACHE_RESIDENCY": "unset/all"
+      },
+      "execution_status": "success",
+      "failure_class": "success",
+      "idea_status": "correctness_passed_more_memory_saving_but_decode_regressed_vs_low6_async",
+      "metrics": {
+        "block_cache_layer_capacity_scales": [
+          1.0,
+          0.6236559139784946,
+          0.6236559139784946,
+          0.6236559139784946,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.6236559139784946,
+          1.0,
+          1.0,
+          0.6236559139784946,
+          0.6236559139784946,
+          1.0,
+          1.0
+        ],
+        "block_cache_layer_pages": [
+          744,
+          464,
+          464,
+          464,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          464,
+          744,
+          744,
+          464,
+          464,
+          744,
+          744
+        ],
+        "block_cache_total_bytes": 5800722432,
+        "block_cache_total_gib": 5.40234375,
+        "block_cache_total_mib": 5532.0,
+        "decode_latency_s": 4.0457823276519775,
+        "decode_steps": 99,
+        "decode_throughput_tokens_s": 195.7594195285458,
+        "e2e_generated_tokens_per_s": 3.272763190427209,
+        "e2e_latency_s": 244.44176173210144,
+        "gpu_memory_sample_count": 695,
+        "gpu_memory_sampler_error_count": 0,
+        "peak_process_gpu_memory_mib": 41528.0,
+        "torch_cuda_peak_allocated_mib": 38132.56884765625,
+        "torch_cuda_peak_reserved_mib": 40998.0
+      },
+      "output_dir": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/low6_0p625_async_120k_b8_cr0p05",
+      "raw_artifacts": {
+        "commands_jsonl": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/low6_0p625_async_120k_b8_cr0p05/commands.jsonl",
+        "config_json": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/low6_0p625_async_120k_b8_cr0p05/config.json",
+        "environment_json": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/low6_0p625_async_120k_b8_cr0p05/environment.json",
+        "log_path": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/low6_0p625_async_120k_b8_cr0p05/raw_logs/opt_attempt_005_low6_0p625_async_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+        "memory_samples_path": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/low6_0p625_async_120k_b8_cr0p05/memory_samples/opt_attempt_005_low6_0p625_async_retroinfer_ctx120000_bsz8_cr0p05_r1.jsonl",
+        "per_round_table_csv": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/low6_0p625_async_120k_b8_cr0p05/per_round_table.csv",
+        "results_jsonl": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/low6_0p625_async_120k_b8_cr0p05/results.jsonl",
+        "run_dir": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/low6_0p625_async_120k_b8_cr0p05",
+        "summary_csv": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/low6_0p625_async_120k_b8_cr0p05/summary.csv"
+      },
+      "relative_assessment": {
+        "decode_delta_vs_low6_async_tokens_s": -5.420549010618998,
+        "e2e_delta_vs_low6_async_tokens_s": -0.007064926129008331,
+        "incremental_block_cache_saving_vs_low6_async_gib": 0.1376953125,
+        "incremental_peak_memory_saving_vs_low6_async_mib": 144.0,
+        "strictly_better_memory_than_low6_async": true
+      },
+      "suite": "opt_attempt_005_low6_0p625_async"
+    }
+  ],
+  "conclusion": {
+    "candidate_id": null,
+    "reason": "All assigned stronger asymmetric capacity schedules passed correctness and saved more memory, but each regressed decode throughput versus the validated low6+async reference; none is retained as an incremental Pareto improvement for validation.",
+    "status": "exhausted_for_this_bounded_frontier"
+  },
+  "environment": {
+    "audit_log": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier/environment_audit.log",
+    "runtime_status": "project .venv imports torch==2.5.1+cu124, CUDA runtime 12.4, A100 80GB, and installed retroinfer_kernels symbols successfully when torch is imported first.",
+    "source_rebuild_status": {
+      "execution_status": "blocked_for_source_rebuild",
+      "failure_class": "environment_rebuild_toolchain_cuda_version_mismatch",
+      "idea_status": "not_evaluated",
+      "notes": "CUDA_HOME is unset; torch cpp_extension resolves /usr; /usr/bin/nvcc is CUDA 12.0 and /usr/local/cuda-13.3/bin/nvcc is CUDA 13.3. No CUDA 12.4-compatible nvcc was proven, so no CUDA/C++ rebuild was attempted."
+    }
+  },
+  "evidence": "Frontier binding: attempts/opt_attempt_005_async_asymmetric_capacity_frontier/frontier_binding.json and research/frontier/optimize_async_asymmetric_capacity_frontier.json; environment audit: attempts/opt_attempt_005_async_asymmetric_capacity_frontier/environment_audit.log; raw candidate artifacts: attempts/opt_attempt_005_async_asymmetric_capacity_frontier/l1_0p25_low5_0p75_async_120k_b8_cr0p05/results.jsonl, attempts/opt_attempt_005_async_asymmetric_capacity_frontier/mixed_0p5_0p75_async_120k_b8_cr0p05/results.jsonl, attempts/opt_attempt_005_async_asymmetric_capacity_frontier/low6_0p625_async_120k_b8_cr0p05/results.jsonl, their raw_logs/*.txt, and memory_samples/*.jsonl; summary in CHANGES.md.",
+  "execution_status": "completed",
+  "failure_class": "performance",
+  "frontier_binding": {
+    "ledger": "research/FRONTIER_WATCH.jsonl",
+    "path": "research/frontier/optimize_async_asymmetric_capacity_frontier.json",
+    "record_id": "4f155718a58ba176",
+    "sha256": "c40ee5cdf0eb366a36c572ab37dac65c933fb2bd81ac803018dd909bb2a99190"
+  },
+  "generated_at": "2026-07-29T13:26:14Z",
+  "idea_status": "refuted",
+  "independent_review_status": "required_pending_external_reviewer",
+  "low_hit_layer_evidence": {
+    "source": "attempts/opt_attempt_001_layer_cache_residency/telemetry_probe_120k_b8_cr0p05/results.jsonl",
+    "summary": "Layer 1 was coldest at 0.737696 hit rate vs total 0.928702; layers 25,29,2,3,28 were also lower-hit targets used in prior low6 schedule."
+  },
+  "measurement_protocol": {
+    "async_cluster_id_copy_required": true,
+    "cuda_visible_devices": "0",
+    "estimation_budget": 0.232,
+    "require_idle_gpu": true,
+    "retrieval_budget": 0.018,
+    "rounds_per_candidate": 1,
+    "seed": 2025,
+    "shape": {
+      "batch_size": 8,
+      "cache_ratio": 0.05,
+      "context_len": 120000,
+      "gen_len": 100
+    },
+    "telemetry_disabled": true,
+    "throughput_interpretation": "Script e2e values are latency; e2e generated-token throughput is computed as batch_size * gen_len / e2e_latency_s when needed."
+  },
+  "path_coverage": "Each measured raw results.jsonl reports async_cluster_id_copy_enabled=true, async_cluster_id_copy_mode=separate_stream_d2h_non_blocking, RETROINFER_LAYER_CACHE_RESIDENCY unset/all, and the assigned block_cache_layer_capacity_scales/layer_pages; raw logs for all three runs contain RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth=true, so the changed runtime-control path was exercised by the 120000x8/gen_len=100/cache_ratio=0.05 CUDA-graph benchmark path.",
+  "raw_logs_results_memory_samples": "attempts/opt_attempt_005_async_asymmetric_capacity_frontier",
+  "repository_head": "7096eab9190da389bbc75c1992140d1432d9d8ec",
+  "schema_version": 1,
+  "summary": "All three assigned stronger asymmetric async capacity schedules completed and passed the raw correctness oracle while saving more block-cache/peak GPU memory than validated low6+async, but all regressed decode throughput versus the validated low6+async reference; this bounded frontier is exhausted with no retained incremental Pareto candidate. l1_0p25_low5_0p75_async: correctness=pass, block_cache=5.449219 GiB, peak=41580 MiB, decode=193.844307 tok/s, e2e=3.292937 tok/s, decode_delta_vs_validated_low6_async=-7.335661 tok/s | mixed_0p5_0p75_async: correctness=pass, block_cache=5.403809 GiB, peak=41540 MiB, decode=195.216069 tok/s, e2e=3.272248 tok/s, decode_delta_vs_validated_low6_async=-5.963900 tok/s | low6_0p625_async: correctness=pass, block_cache=5.402344 GiB, peak=41528 MiB, decode=195.759420 tok/s, e2e=3.272763 tok/s, decode_delta_vs_validated_low6_async=-5.420549 tok/s",
+  "validated_low6_async_reference": {
+    "block_cache_total_bytes": 5948571648,
+    "block_cache_total_gib": 5.5400390625,
+    "block_cache_total_mib": 5673.0,
+    "candidate_name": "low6_async_cluster_id_copy",
+    "decode_latency_s": 3.936858057975769,
+    "decode_throughput_tokens_s": 201.1799685391648,
+    "e2e_generated_tokens_per_s": 3.2798281165562173,
+    "e2e_latency_s": 243.9163657426834,
+    "peak_process_gpu_memory_mib": 41672.0,
+    "source": "research/VALIDATION_RESULT.json",
+    "torch_cuda_peak_allocated_mib": 38276.56884765625,
+    "torch_cuda_peak_reserved_mib": 41142.0
+  }
+}

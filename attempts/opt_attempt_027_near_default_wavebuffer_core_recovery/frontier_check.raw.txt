@@ -1,0 +1,11 @@
+# Frontier check: opt_attempt_027_near_default_wavebuffer_core_recovery
+generated_at_utc=2026-07-30T03:24:00Z
+scope=bounded optimize node; event trigger=near-default WaveBufferCPU core-count recovery after opt025 coarse core overrides 16/12/8 were insufficient
+reference=attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/OUTCOME.json; lower-memory stack=attempts/opt_attempt_023_scratch_empty_buffer_2p75_layer31_screen/OUTCOME.json; latest core negative=attempts/opt_attempt_025_wavebuffer_core_tuning_lower_memory/OUTCOME.json
+frontier conclusion=Proceed only with the existing default-off RETROINFER_WAVE_BUFFER_CORE_OVERRIDE path on the opt023 lower-memory stack. No CUDA/C++ rebuild, no new harness, no metadata staging, no stream-only changes, no healthy baseline rerun, and no Figure 13 work.
+
+# mechanism evidence reused/refreshed for this bounded node
+- Current code resolves RETROINFER_WAVE_BUFFER_CORE_OVERRIDE in cache_hub/retroinfer_cache.py and exports wave_buffer_cpu_core_* fields through throughput_eval/reproduce_block_cache.py.
+- opt023 showed the lower-memory stack at block_cache_total_mib=5626.5 and peak_process_gpu_memory_mib=29820.0, but missed the opt013 e2e gate by 0.000999 generated tok/s in one round.
+- opt025 showed coarse lower core counts did not recover both gates: core=16 improved e2e but regressed decode; core=8 improved decode but regressed e2e; core=12 regressed both.
+- This node tests near-default values 21, 20, 18 against opt013 without altering source or broadening the matrix.

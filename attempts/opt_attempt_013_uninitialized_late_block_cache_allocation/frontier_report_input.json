@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "stage": "report",
+  "trigger": "report_refresh_after_validated_opt013_uninitialized_late_block_cache_allocation",
+  "frontier_as_of": "2026-07-29",
+  "network_status": "online",
+  "checked_surfaces": [
+    "target_repository",
+    "official_toolchains",
+    "research_frontier",
+    "adjacent_implementations"
+  ],
+  "queries": [
+    {
+      "channel": "web_search",
+      "purpose": "Refresh report-stage claim boundaries after the validated candidate changed from opt012 pinned side-stream late metadata migration to opt013 uninitialized late block-cache allocation.",
+      "query": "Official PyTorch and CUDA guidance relevant to torch.empty uninitialized tensor allocation safety, torch.zeros zero-fill behavior, pinned host memory non_blocking H2D copies on side streams with synchronization, profiler evidence before transfer-compute overlap claims, and KV-cache offload or paged/tiered residency memory-throughput tradeoffs."
+    }
+  ],
+  "no_material_update": false,
+  "material_updates": [
+    {
+      "action": "Rebind report-stage claim from opt012 pinned late metadata migration to validated opt013 uninitialized late block-cache allocation.",
+      "finding": "The latest validation result reports opt013 2/2 correctness, 5948571648 bytes / 5673.0 MiB resident block cache, 5948571648 bytes across 64 late K/V tensors allocated with torch.empty, 29884.0 MiB peak process GPU memory, 198.036572 tok/s decode throughput, and 3.268888 tok/s e2e generated throughput.",
+      "impact": "RESULTS.md should present opt013 only as a bounded same-memory, small-e2e-improvement tradeoff versus opt012, while explicitly reporting the opt012 decode regression and avoiding broad speedup or overlap claims."
+    },
+    {
+      "action": "Keep torch.empty safety boundaries explicit for the new allocation mechanism.",
+      "finding": "Official PyTorch documentation treats torch.empty as uninitialized memory and torch.zeros as zero-filled allocation; uninitialized memory is valid only when the program guarantees writes before reads.",
+      "impact": "The report may claim opt013's opt-in torch.empty path only for forced-late block-cache K/V tensors under the recorded WaveBuffer miss-before-admission-write invariant. Default/unset behavior remains zero-filled."
+    },
+    {
+      "action": "Keep pinned side-stream and async transfer boundaries unchanged from opt012.",
+      "finding": "Official CUDA and PyTorch guidance supports pinned host memory, non_blocking copies, side streams, and explicit synchronization as mechanisms that can enable asynchronous transfer, but timeline or profiler evidence is required before claiming actual transfer/compute overlap.",
+      "impact": "The report may state measured copy bytes, copy mode, sync point, and host-side timings; it must not claim profiler-proven overlap or overlap-derived speedup."
+    },
+    {
+      "action": "Use adjacent KV-cache offload and paged/tiered residency work as context only.",
+      "finding": "Maintained inference systems and adjacent research continue to frame KV-cache offload, paging, and tiered residency as hardware- and workload-dependent memory-throughput tradeoffs.",
+      "impact": "The opt013 report remains bounded to RetroInfer native A100 80GB, context_len=120000, batch_size=8, gen_len=100, cache_ratio=0.05, two rounds, seed 2025."
+    }
+  ],
+  "decision_impact": "Fresh report-stage evidence supports rebinding the final report to validated opt013. The report should claim only preserved opt012 resident block-cache and peak process GPU memory, small e2e generated throughput improvement versus opt012, decode throughput regression versus opt012, default-off allocation semantics, and no profiler-proven overlap or broad speedup.",
+  "sources": [
+    {
+      "source_type": "official_repo",
+      "title": "River861/RetrievalAttention",
+      "url": "https://github.com/River861/RetrievalAttention",
+      "relevance": "Target repository containing the RetroInfer block-cache allocation, late-init policy, WaveBuffer admission invariant, harness metadata, and retained opt013 artifacts."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch torch.empty",
+      "url": "https://docs.pytorch.org/docs/stable/generated/torch.empty.html",
+      "relevance": "Documents that torch.empty returns tensors filled with uninitialized data, motivating default-off use only when writes before reads are guaranteed."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch torch.zeros",
+      "url": "https://docs.pytorch.org/docs/stable/generated/torch.zeros.html",
+      "relevance": "Documents zero-filled allocation behavior preserved by opt013 for unset/default/zero policy values."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch reproducibility: filling uninitialized memory",
+      "url": "https://docs.pytorch.org/docs/stable/notes/randomness.html#filling-uninitialized-memory",
+      "relevance": "Supports the boundary that uninitialized memory must not be consumed before initialization."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch: A guide on good usage of non_blocking and pin_memory()",
+      "url": "https://docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html",
+      "relevance": "Official pinned-memory and non_blocking transfer guidance; supports requiring pinned source tensors and explicit synchronization while not proving overlap by API use alone."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "CUDA C++ Programming Guide: Asynchronous Execution",
+      "url": "https://docs.nvidia.com/cuda/cuda-programming-guide/02-basics/asynchronous-execution.html",
+      "relevance": "Official CUDA asynchronous execution semantics for stream dependencies and synchronization boundaries."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch CUDA semantics",
+      "url": "https://pytorch.org/docs/stable/notes/cuda.html",
+      "relevance": "Official PyTorch CUDA stream and memory semantics relevant to side-stream copy synchronization and CUDA memory behavior."
+    },
+    {
+      "source_type": "author_repo",
+      "title": "LMCache",
+      "url": "https://github.com/LMCache/LMCache",
+      "relevance": "Adjacent maintained KV-cache tiering/offload implementation; comparison context only, not direct RetroInfer performance proof."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "vLLM Paged Attention design documentation",
+      "url": "https://docs.vllm.ai/en/latest/design/paged_attention.html",
+      "relevance": "Official vLLM design context for block/page cache management and memory-throughput tradeoffs in adjacent inference systems."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "Accelerate Large-Scale LLM Inference and KV Cache Offload with CPU-GPU Memory Sharing",
+      "url": "https://developer.nvidia.com/blog/accelerate-large-scale-llm-inference-and-kv-cache-offload-with-cpu-gpu-memory-sharing/",
+      "relevance": "NVIDIA engineering context for KV-cache offload and CPU-GPU memory sharing; supports treating host residency as a bandwidth/latency tradeoff."
+    }
+  ],
+  "validated_candidate": {
+    "name": "uninitialized_late_block_cache_allocation",
+    "node_key": "validate_opt013_uninitialized_late_block_cache",
+    "shape": "context_len=120000,batch_size=8,gen_len=100,cache_ratio=0.05,rounds=2,seed=2025,A100_80GB",
+    "environment": {
+      "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+      "RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY": "late",
+      "RETROINFER_BUFFER_NPROBE_MULTIPLIER": "3.0",
+      "RETROINFER_CACHE_TELEMETRY": "unset",
+      "RETROINFER_INDEX_METADATA_PREFILL_RESIDENCY": "unset",
+      "RETROINFER_LATE_BLOCK_CACHE_INIT": "uninitialized",
+      "RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY": "pinned_side_stream",
+      "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.75,2-3=0.75,25=0.75,28-29=0.75",
+      "RETROINFER_LAYER_CACHE_RESIDENCY": "unset",
+      "RETROINFER_STAGE_INDEX_METADATA_LAYERS": "unset",
+      "RETROINFER_STREAM_ONLY_LAYERS": "unset"
+    },
+    "metrics": {
+      "correctness": "2/2 pass",
+      "block_cache_bytes": 5948571648,
+      "block_cache_mib": 5673.0,
+      "block_cache_late_init_mode": "uninitialized_empty",
+      "block_cache_late_uninitialized_tensor_count": 64,
+      "block_cache_late_uninitialized_bytes": 5948571648,
+      "peak_process_gpu_memory_mib": 29884.0,
+      "decode_tokens_per_s_mean": 198.03657186276942,
+      "e2e_latency_s_mean": 244.7342621088028,
+      "e2e_generated_tokens_per_s_mean": 3.2688875244650957,
+      "delta_vs_opt012_block_cache_mib": 0.0,
+      "delta_vs_opt012_peak_process_gpu_memory_mib": 0.0,
+      "delta_vs_opt012_decode_tokens_per_s": -3.0950988230951566,
+      "delta_vs_opt012_decode_tokens_per_s_pct": -1.5388420990790679,
+      "delta_vs_opt012_e2e_generated_tokens_per_s": 0.004477884540234012,
+      "delta_vs_opt012_e2e_generated_tokens_per_s_pct": 0.13717287455189237,
+      "index_metadata_prefill_gpu_bytes": 0,
+      "index_metadata_prefill_host_pinned_bytes": 7847116800,
+      "index_metadata_late_migration_copy_bytes": 7847116800
+    },
+    "raw_artifacts": [
+      "research/VALIDATION_RESULT.json",
+      "research/VALIDATION_MATRIX.md",
+      "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/OUTCOME.json",
+      "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/raw/harness_120k_b8_cr0p05/results.jsonl",
+      "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/raw/harness_120k_b8_cr0p05/summary.csv",
+      "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/raw/harness_120k_b8_cr0p05/per_round_table.csv",
+      "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/raw/harness_120k_b8_cr0p05/config.json",
+      "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/raw/harness_120k_b8_cr0p05/environment.json",
+      "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/raw/harness_120k_b8_cr0p05/commands.jsonl",
+      "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/raw/harness_120k_b8_cr0p05/raw_logs/",
+      "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/raw/harness_120k_b8_cr0p05/memory_samples/",
+      "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/ENV_AUDIT.md",
+      "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/ENV_AUDIT.raw.txt",
+      "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/SOURCE_DIFF.patch",
+      "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/CHANGES.md"
+    ]
+  }
+}

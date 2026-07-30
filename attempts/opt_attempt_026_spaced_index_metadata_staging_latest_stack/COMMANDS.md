@@ -1,0 +1,10 @@
+# Command manifest: opt_attempt_026_spaced_index_metadata_staging_latest_stack
+
+## audit_frontier
+See ENV_AUDIT.raw.txt and frontier_check.raw.txt generated before harness execution.
+
+## screen_command
+env -u RETROINFER_INDEX_METADATA_PREFILL_RESIDENCY -u RETROINFER_STREAM_ONLY_LAYERS -u RETROINFER_LAYER_CACHE_RESIDENCY -u RETROINFER_CACHE_TELEMETRY RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY=late RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY=pinned_side_stream RETROINFER_LATE_BLOCK_CACHE_INIT=uninitialized RETROINFER_ASYNC_CLUSTER_ID_COPY=1 RETROINFER_LAYER_CACHE_CAPACITY_SCALE='1=0.75,2-3=0.75,25=0.75,28-29=0.75' RETROINFER_BUFFER_NPROBE_MULTIPLIER=3.0 RETROINFER_STAGE_INDEX_METADATA_LAYERS=4,9,14,19,24,29 .venv/bin/python throughput_eval/reproduce_block_cache.py --suite opt026_spaced_index_metadata_stage_screen --context-batch-groups 120000x8 --cache-ratios 0.05 --baseline-cache-ratio 0.05 --rounds 1 --gen-len 100 --retrieval-budget 0.018 --estimation-budget 0.232 --seed 2025 --cuda-visible-devices 0 --require-idle-gpu --stop-on-error --output-dir attempts/opt_attempt_026_spaced_index_metadata_staging_latest_stack/raw/screen_120k_b8_cr0p05
+
+## confirmation_command
+env -u RETROINFER_INDEX_METADATA_PREFILL_RESIDENCY -u RETROINFER_STREAM_ONLY_LAYERS -u RETROINFER_LAYER_CACHE_RESIDENCY -u RETROINFER_CACHE_TELEMETRY RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY=late RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY=pinned_side_stream RETROINFER_LATE_BLOCK_CACHE_INIT=uninitialized RETROINFER_ASYNC_CLUSTER_ID_COPY=1 RETROINFER_LAYER_CACHE_CAPACITY_SCALE='1=0.75,2-3=0.75,25=0.75,28-29=0.75' RETROINFER_BUFFER_NPROBE_MULTIPLIER=3.0 RETROINFER_STAGE_INDEX_METADATA_LAYERS=4,9,14,19,24,29 .venv/bin/python throughput_eval/reproduce_block_cache.py --suite opt026_spaced_index_metadata_stage_confirm --context-batch-groups 120000x8 --cache-ratios 0.05 --baseline-cache-ratio 0.05 --rounds 2 --gen-len 100 --retrieval-budget 0.018 --estimation-budget 0.232 --seed 2025 --cuda-visible-devices 0 --require-idle-gpu --stop-on-error --output-dir attempts/opt_attempt_026_spaced_index_metadata_staging_latest_stack/raw/confirm_120k_b8_cr0p05

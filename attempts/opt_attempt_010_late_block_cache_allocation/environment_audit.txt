@@ -1,0 +1,88 @@
+# Environment audit: opt_attempt_010_late_block_cache_allocation
+2026-07-29T16:50:25Z
+## Repo setup files
+./benchmark/reasoning/requirements.txt
+./library/cutlass/pyproject.toml
+./library/cutlass/setup.cfg
+./library/retroinfer/setup.py
+./requirements.txt
+## Git status
+ M cache_hub/retroinfer_cache.py
+ M model_hub/llama.py
+ M research/PIPELINE_STATE.json
+ M throughput_eval/reproduce_block_cache.py
+?? RESULTS.md
+?? attempts/
+?? research/BASELINE_PROTOCOL.md
+?? research/BASELINE_RESULT.json
+?? research/ENVIRONMENT_AUDIT.json
+?? research/ENVIRONMENT_AUDIT.md
+?? research/FRONTIER_WATCH.jsonl
+?? research/GROUND_TRUTH.md
+?? research/INFRASTRUCTURE_REUSE_PLAN.md
+?? research/KERNEL_SCOPE.md
+?? research/PROJECT_NATIVE_SETUP.md
+?? research/TOOLCHAIN_CANDIDATES.md
+?? research/VALIDATION_MATRIX.md
+?? research/VALIDATION_RESULT.json
+?? research/baseline_block_cache_single_a100_120k_b8_cr0p05/
+?? research/frontier/
+?? research/validation_fractional_layer_capacity_120k_b8_cr0p05/
+?? research/validation_layer_cache_residency_120k_b8_cr0p05/
+?? research/validation_low6_async_buffer_mult_3p0_120k_b8_cr0p05/
+?? research/validation_low6_async_cluster_id_copy_120k_b8_cr0p05/
+?? research/validation_low6_multilayer_fractional_capacity_120k_b8_cr0p05/
+## Python
+/usr/bin/python
+Python 3.12.3
+## Key Python packages
+torch: NOT INSTALLED
+triton: NOT INSTALLED
+numpy: NOT INSTALLED
+cupy-cuda12x: NOT INSTALLED
+cupy: NOT INSTALLED
+flash-attn: NOT INSTALLED
+transformers: NOT INSTALLED
+## Torch CUDA
+## NVIDIA driver/GPU
+Field "cuda_version" is not a valid field to query.
+
+## nvcc
+/usr/bin/nvcc
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2023 NVIDIA Corporation
+Built on Fri_Jan__6_16:45:21_PST_2023
+Cuda compilation tools, release 12.0, V12.0.140
+Build cuda_12.0.r12.0/compiler.32267302_0
+
+# Project-native runtime audit (selected repair: use pinned .venv, no source rebuild)
+2026-07-29T16:50:55Z
+## Python
+Python 3.11.15
+/home/v-xuchuanluo/RetroInfer/.venv/bin/python
+## Key package imports and versions
+torch: import_ok version=2.5.1
+vllm: import_ok version=0.6.5
+transformers: import_ok version=4.49.0
+flash_attn: import_ok version=2.7.3
+flashinfer: import_ok version=0.2.4+cu124torch2.5
+triton: import_ok version=3.1.0
+pybind11: import_ok version=2.12.0
+retroinfer_kernels: import_ok version=0.1
+weighted_flash_decoding: import_ok version=0.1
+## RetroInfer kernel symbols
+## Torch CUDA
+torch 2.5.1+cu124
+torch.version.cuda 12.4
+cuda_available True
+device_count 1
+gpu[0] name=NVIDIA A100 80GB PCIe capability=8.0 total_memory=85093777408 mem_get_info_free=84644986880 mem_get_info_total=85093777408
+## NVIDIA driver/GPU
+0, NVIDIA A100 80GB PCIe, 580.173.02, 81920 MiB, 81152 MiB
+## Source rebuild status
+not_attempted: CUDA/C++ source rebuild is out of scope; existing installed cu124 runtime/extensions are used.
+
+# RetroInfer extension import repair/proof
+2026-07-29T16:51:09Z
+torch_preload_then_retroinfer_kernels symbols import_ok
+torch_lib_preloaded 2.5.1+cu124 12.4

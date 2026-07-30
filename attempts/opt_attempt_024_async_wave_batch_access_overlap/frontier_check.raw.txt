@@ -1,0 +1,16 @@
+# Frontier check: opt_attempt_024_async_wave_batch_access_overlap
+generated_at_utc=2026-07-30T02:25:49Z
+scope=bounded optimize node; event trigger=mechanism pivot from async cluster-id copy to async CPU WaveBufferCPU.batch_access overlap
+reference=attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/OUTCOME.json and latest negative opt023
+frontier conclusion=Proceed only with a default-off Python/runtime worker path; no CUDA/C++ rebuild, new native kernels, new benchmark harness, Figure 13 rerun, or healthy baseline rerun.
+
+# refreshed mechanism evidence
+- PyTorch/CUDA guidance still requires pinned CPU memory and explicit synchronization before CPU reads a non_blocking D2H result; opt024 keeps cluster_ids pinned and joins the worker before gather_copy_and_concat consumes wave-buffer indices.
+- PyTorch CUDA execution is asynchronous with respect to host code, so scheduling CPU work after top-k while estimation-zone kernels are queued is a plausible bounded mechanism; profiler timeline would still be required for a strong overlap claim.
+- Existing target code already has RETROINFER_ASYNC_CLUSTER_ID_COPY, CUDAGraph split points, and harness telemetry surfaces; opt024 reuses those surfaces instead of rebuilding retroinfer_kernels.
+
+# sources
+- PyTorch tutorial: A guide on good usage of non_blocking and pin_memory(): https://docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html
+- PyTorch CUDA semantics / streams and events: https://pytorch.org/docs/stable/notes/cuda.html
+- NVIDIA/PyTorch sync-free CUDA graph guidance: https://docs.nvidia.com/dl-cuda-graph/torch-cuda-graph/sync-free-code.html
+- Target repository source: cache_hub/retroinfer_cache.py and throughput_eval/reproduce_block_cache.py

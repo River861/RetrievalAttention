@@ -1,0 +1,707 @@
+{
+  "artifact_manifest": {
+    "candidate_screen_results": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/candidate_screen_results.json",
+    "changes": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/CHANGES.md",
+    "command_manifest": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/command_manifest.jsonl",
+    "environment_audit": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/ENV_AUDIT.md",
+    "environment_audit_json": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/ENV_AUDIT.json",
+    "environment_audit_raw": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/ENV_AUDIT.raw.txt",
+    "frontier_check_raw": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/frontier_check.raw.txt",
+    "frontier_input": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/frontier_optimize_input.json",
+    "frontier_record_raw": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/frontier_record.raw.txt",
+    "outcome": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/OUTCOME.json",
+    "raw_dirs": [
+      "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1",
+      "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1"
+    ],
+    "source_diff": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/SOURCE_DIFF.patch",
+    "source_diff_sha256": "7d7b2e89e797846b8639c9eeda95b6b59f228188625211671beb64095a26af28",
+    "source_provenance": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/SOURCE_PROVENANCE.json"
+  },
+  "attempt_id": "opt_attempt_029_stream_only_layer31_lowhit_screen",
+  "baseline_identity": "Reused opt013 attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/OUTCOME.json as the retained reference; no healthy baseline or Figure 13 rerun.",
+  "bounded_stop_reason": "No one-round candidate satisfied every promotion gate: C1 failed decode_no_worse_than_opt013; C2 failed decode_no_worse_than_opt013 and e2e_no_worse_than_opt013.",
+  "candidate": {
+    "mechanism": "Existing RETROINFER_STREAM_ONLY_LAYERS disables layer31 GPU block-cache residency and WaveBuffer admission for that layer, forcing direct fused gather from list KV while remaining layers keep the opt013 low6 capacity scale.",
+    "name": "stream_only_layer31_lowhit_no_source_screen",
+    "raw_artifact_dirs": [
+      "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1",
+      "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1"
+    ],
+    "rounds": 1,
+    "screen_policy": "C1 one round; C2 one round was allowed because C1 was correctness-clean, memory-saving, e2e-clean, and missed only decode retention. No exact two-round confirmation because neither C1 nor C2 satisfied every one-round promotion gate.",
+    "selected_for_two_round": null
+  },
+  "candidate_identity": "No opt029 source edits; measured repository HEAD 7096eab9190da389bbc75c1992140d1432d9d8ec plus pre-existing dirty Python stack captured in SOURCE_PROVENANCE.json/SOURCE_DIFF.patch. Runtime selection was entirely env-gated.",
+  "candidate_stack": {
+    "C1_RETROINFER_ASYNC_WAVE_BATCH_ACCESS": "unset",
+    "C2_RETROINFER_ASYNC_WAVE_BATCH_ACCESS": "1",
+    "RETROINFER_ASYNC_CACHE_ADMISSION": "unset",
+    "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+    "RETROINFER_ASYNC_STREAM_ONLY_GATHER": "unset",
+    "RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY": "late",
+    "RETROINFER_BUFFER_NPROBE_MULTIPLIER": "3.0",
+    "RETROINFER_CACHE_TELEMETRY": "unset",
+    "RETROINFER_INDEX_METADATA_PREFILL_RESIDENCY": "unset",
+    "RETROINFER_LATE_BLOCK_CACHE_INIT": "uninitialized",
+    "RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY": "pinned_side_stream",
+    "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.75,2-3=0.75,25=0.75,28-29=0.75",
+    "RETROINFER_LAYER_CACHE_RESIDENCY": "unset",
+    "RETROINFER_SCRATCH_BUFFER_INIT": "unset",
+    "RETROINFER_STAGE_INDEX_METADATA_LAYERS": "unset",
+    "RETROINFER_STREAM_ONLY_LAYERS": "31",
+    "RETROINFER_WAVE_BUFFER_CORE_OVERRIDE": "unset"
+  },
+  "candidate_status": "not_retained",
+  "candidates": [
+    {
+      "candidate_id": "c1_stream_only_layer31",
+      "command": "env -u RETROINFER_INDEX_METADATA_PREFILL_RESIDENCY -u RETROINFER_STAGE_INDEX_METADATA_LAYERS -u RETROINFER_LAYER_CACHE_RESIDENCY -u RETROINFER_CACHE_TELEMETRY -u RETROINFER_ASYNC_CACHE_ADMISSION -u RETROINFER_ASYNC_STREAM_ONLY_GATHER -u RETROINFER_ASYNC_WAVE_BATCH_ACCESS -u RETROINFER_SCRATCH_BUFFER_INIT -u RETROINFER_WAVE_BUFFER_CORE_OVERRIDE RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY=late RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY=pinned_side_stream RETROINFER_LATE_BLOCK_CACHE_INIT=uninitialized RETROINFER_ASYNC_CLUSTER_ID_COPY=1 RETROINFER_STREAM_ONLY_LAYERS=31 RETROINFER_LAYER_CACHE_CAPACITY_SCALE='1=0.75,2-3=0.75,25=0.75,28-29=0.75' RETROINFER_BUFFER_NPROBE_MULTIPLIER=3.0 PATH='$PWD/.venv/bin:$PATH' .venv/bin/python throughput_eval/reproduce_block_cache.py --suite opt029_c1_stream_only_layer31 --context-batch-groups 120000x8 --cache-ratios 0.05 --baseline-cache-ratio 0.05 --rounds 1 --gen-len 100 --retrieval-budget 0.018 --estimation-budget 0.232 --seed 2025 --cuda-visible-devices 0 --require-idle-gpu --stop-on-error --output-dir attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1",
+      "comparisons": {
+        "opt013": {
+          "block_cache_total_mib_delta": -186.0,
+          "decode_tokens_per_s_delta": -7.488313240774289,
+          "e2e_generated_tokens_per_s_delta": 0.0022110593140722834,
+          "e2e_latency_s_delta": -0.16810810565948486,
+          "peak_process_gpu_memory_mib_delta": -188.0,
+          "reference_block_cache_total_mib": 5673.0,
+          "reference_decode_tokens_per_s": 198.03657186276942,
+          "reference_e2e_generated_tokens_per_s": 3.2688875244650957,
+          "reference_e2e_latency_s": 244.7342621088028,
+          "reference_name": "opt013_uninitialized_late_block_cache_allocation",
+          "reference_peak_process_gpu_memory_mib": 29884.0,
+          "reference_rounds": 2
+        }
+      },
+      "correctness": {
+        "oracle": "raw RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+        "per_run": [
+          {
+            "failure_class": null,
+            "log_path": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/raw_logs/opt029_c1_stream_only_layer31_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+            "memory_samples": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/memory_samples",
+            "raw_all_outputs_contain_groundtruth": true,
+            "returncode": null,
+            "round": 1,
+            "run_id": "opt029_c1_stream_only_layer31_retroinfer_ctx120000_bsz8_cr0p05_r1",
+            "status": null,
+            "use_cuda_graph": null
+          }
+        ],
+        "raw_oracles": [
+          {
+            "all_outputs_contain_groundtruth": true,
+            "buffer_overflow_warning_count": 0,
+            "buffer_overflow_warning_lines": [],
+            "groundtruth": "9879991",
+            "log_path": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/raw_logs/opt029_c1_stream_only_layer31_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+            "output_json_count": 1,
+            "task_contains_groundtruth": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "use_cuda_graph_raw_true": false
+          }
+        ],
+        "status": "fail"
+      },
+      "decision_role": "one_round_screen_primary",
+      "description": "C1: opt013 stack plus stream-only layer31, low6 capacity scale excluding layer31, async stream-only gather unset, async wave unset.",
+      "env": {
+        "RETROINFER_ASYNC_CACHE_ADMISSION": "unset",
+        "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+        "RETROINFER_ASYNC_STREAM_ONLY_GATHER": "unset",
+        "RETROINFER_ASYNC_WAVE_BATCH_ACCESS": "unset",
+        "RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY": "late",
+        "RETROINFER_BUFFER_NPROBE_MULTIPLIER": "3.0",
+        "RETROINFER_CACHE_TELEMETRY": "unset",
+        "RETROINFER_INDEX_METADATA_PREFILL_RESIDENCY": "unset",
+        "RETROINFER_LATE_BLOCK_CACHE_INIT": "uninitialized",
+        "RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY": "pinned_side_stream",
+        "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.75,2-3=0.75,25=0.75,28-29=0.75",
+        "RETROINFER_LAYER_CACHE_RESIDENCY": "unset",
+        "RETROINFER_SCRATCH_BUFFER_INIT": "unset",
+        "RETROINFER_STAGE_INDEX_METADATA_LAYERS": "unset",
+        "RETROINFER_STREAM_ONLY_LAYERS": "31",
+        "RETROINFER_WAVE_BUFFER_CORE_OVERRIDE": "unset"
+      },
+      "harness_returncode": null,
+      "metrics": {
+        "async_stream_only_gather_enabled_all": false,
+        "async_stream_only_gather_path_executed_all": false,
+        "async_wave_batch_access_enabled_all": false,
+        "async_wave_batch_access_exception_count_total": 0,
+        "async_wave_batch_access_launch_count_mean": 0.0,
+        "async_wave_batch_access_path_executed_all": false,
+        "async_wave_batch_access_sync_count_mean": 0.0,
+        "block_cache_late_init_effective_all": true,
+        "block_cache_late_init_mode": "uninitialized_empty",
+        "block_cache_late_uninitialized_bytes": 5753536512,
+        "block_cache_late_uninitialized_tensor_count": 62,
+        "block_cache_layer_capacity_scales": [
+          1.0,
+          0.75,
+          0.75,
+          0.75,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.75,
+          1.0,
+          1.0,
+          0.75,
+          0.75,
+          1.0,
+          0.0
+        ],
+        "block_cache_layer_pages": [
+          744,
+          558,
+          558,
+          558,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          558,
+          744,
+          744,
+          558,
+          558,
+          744,
+          0
+        ],
+        "block_cache_total_bytes": 5753536512,
+        "block_cache_total_mib": 5487.0,
+        "buffer_nprobe_multiplier": 3.0,
+        "buffer_pages": 804,
+        "decode_latency_s": 4.156427383422852,
+        "decode_tokens_per_s": 190.54825862199513,
+        "e2e_generated_tokens_per_s": 3.271098583779168,
+        "e2e_latency_s": 244.5661540031433,
+        "failure_classes": [],
+        "gpu_memory_sample_count_min": null,
+        "gpu_memory_sampler_error_count_total": null,
+        "max_peak_process_gpu_memory_mib": 29696.0,
+        "peak_process_gpu_memory_mib": 29696.0,
+        "returncode_all_zero": false,
+        "status_all_passed": true,
+        "stream_only_layer_count": 1,
+        "stream_only_layers": [
+          31
+        ],
+        "stream_only_mode": "direct_fused_cluster_gather_from_list_kv",
+        "stream_only_wave_buffer_admission": "bypass_batch_access_lru_update_and_gpu_cache_scatter",
+        "torch_cuda_peak_allocated_mib": 28863.9453125,
+        "torch_cuda_peak_reserved_mib": 29150.0,
+        "use_cuda_graph_all": false
+      },
+      "raw_artifact_dir": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1",
+      "raw_artifacts": {
+        "commands_jsonl": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/commands.jsonl",
+        "config_json": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/config.json",
+        "environment_json": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/environment.json",
+        "memory_sample_files": [
+          "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/memory_samples/opt029_c1_stream_only_layer31_retroinfer_ctx120000_bsz8_cr0p05_r1.jsonl"
+        ],
+        "memory_samples": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/memory_samples",
+        "per_round_table_csv": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/per_round_table.csv",
+        "raw_log": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/raw_logs/opt029_c1_stream_only_layer31_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+        "raw_logs": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/raw_logs",
+        "results_csv": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/results.csv",
+        "results_jsonl": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/results.jsonl",
+        "results_jsonl_sha256": "5619ce70a67529289f03db3370c588ee227bb0849cb96d2196a87c9d554c56fb",
+        "summary_csv": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/summary.csv",
+        "summary_csv_sha256": "b07581288c8dd7b1a97fcc500da2dab0d5352e5d1183743562df32e5afb2d2f4"
+      },
+      "retained": false,
+      "retention_gate": {
+        "complete_memory_samples": false,
+        "correctness_pass": false,
+        "decision": "fail_one_round",
+        "decode_no_worse_than_opt013": false,
+        "e2e_no_worse_than_opt013": true,
+        "harness_status_passed": true,
+        "lower_block_cache_memory": true,
+        "lower_peak_process_gpu_memory": true,
+        "raw_all_outputs_contain_groundtruth_true": true,
+        "reason": "correctness_pass,returncode_zero,use_cuda_graph_true,complete_memory_samples,decode_no_worse_than_opt013",
+        "returncode_zero": false,
+        "two_round_rerun_allowed": false,
+        "use_cuda_graph_true": false,
+        "zero_buffer_overflow_warnings": true
+      },
+      "rounds": 1,
+      "warnings": {
+        "buffer_overflow_warning_count": 0,
+        "buffer_overflow_warning_lines": []
+      }
+    },
+    {
+      "candidate_id": "c2_stream_only_layer31_async_wave",
+      "command": "env -u RETROINFER_INDEX_METADATA_PREFILL_RESIDENCY -u RETROINFER_STAGE_INDEX_METADATA_LAYERS -u RETROINFER_LAYER_CACHE_RESIDENCY -u RETROINFER_CACHE_TELEMETRY -u RETROINFER_ASYNC_CACHE_ADMISSION -u RETROINFER_ASYNC_STREAM_ONLY_GATHER -u RETROINFER_SCRATCH_BUFFER_INIT -u RETROINFER_WAVE_BUFFER_CORE_OVERRIDE RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY=late RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY=pinned_side_stream RETROINFER_LATE_BLOCK_CACHE_INIT=uninitialized RETROINFER_ASYNC_CLUSTER_ID_COPY=1 RETROINFER_ASYNC_WAVE_BATCH_ACCESS=1 RETROINFER_STREAM_ONLY_LAYERS=31 RETROINFER_LAYER_CACHE_CAPACITY_SCALE='1=0.75,2-3=0.75,25=0.75,28-29=0.75' RETROINFER_BUFFER_NPROBE_MULTIPLIER=3.0 PATH='$PWD/.venv/bin:$PATH' .venv/bin/python throughput_eval/reproduce_block_cache.py --suite opt029_c2_stream_only_layer31_async_wave --context-batch-groups 120000x8 --cache-ratios 0.05 --baseline-cache-ratio 0.05 --rounds 1 --gen-len 100 --retrieval-budget 0.018 --estimation-budget 0.232 --seed 2025 --cuda-visible-devices 0 --require-idle-gpu --stop-on-error --output-dir attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1",
+      "comparisons": {
+        "opt013": {
+          "block_cache_total_mib_delta": -186.0,
+          "decode_tokens_per_s_delta": -20.701066301390853,
+          "e2e_generated_tokens_per_s_delta": -0.01327411545518098,
+          "e2e_latency_s_delta": 0.9951595067977905,
+          "peak_process_gpu_memory_mib_delta": -188.0,
+          "reference_block_cache_total_mib": 5673.0,
+          "reference_decode_tokens_per_s": 198.03657186276942,
+          "reference_e2e_generated_tokens_per_s": 3.2688875244650957,
+          "reference_e2e_latency_s": 244.7342621088028,
+          "reference_name": "opt013_uninitialized_late_block_cache_allocation",
+          "reference_peak_process_gpu_memory_mib": 29884.0,
+          "reference_rounds": 2
+        }
+      },
+      "correctness": {
+        "oracle": "raw RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+        "per_run": [
+          {
+            "failure_class": null,
+            "log_path": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/raw_logs/opt029_c2_stream_only_layer31_async_wave_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+            "memory_samples": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/memory_samples",
+            "raw_all_outputs_contain_groundtruth": true,
+            "returncode": null,
+            "round": 1,
+            "run_id": "opt029_c2_stream_only_layer31_async_wave_retroinfer_ctx120000_bsz8_cr0p05_r1",
+            "status": null,
+            "use_cuda_graph": null
+          }
+        ],
+        "raw_oracles": [
+          {
+            "all_outputs_contain_groundtruth": true,
+            "buffer_overflow_warning_count": 0,
+            "buffer_overflow_warning_lines": [],
+            "groundtruth": "9879991",
+            "log_path": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/raw_logs/opt029_c2_stream_only_layer31_async_wave_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+            "output_json_count": 1,
+            "task_contains_groundtruth": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "use_cuda_graph_raw_true": false
+          }
+        ],
+        "status": "fail"
+      },
+      "decision_role": "conditional_async_wave_recovery_screen",
+      "description": "C2: same stream-only layer31 setup with RETROINFER_ASYNC_WAVE_BATCH_ACCESS=1 for remaining cached layers, triggered because C1 was correctness-clean but missed decode retention.",
+      "env": {
+        "RETROINFER_ASYNC_CACHE_ADMISSION": "unset",
+        "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+        "RETROINFER_ASYNC_STREAM_ONLY_GATHER": "unset",
+        "RETROINFER_ASYNC_WAVE_BATCH_ACCESS": "1",
+        "RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY": "late",
+        "RETROINFER_BUFFER_NPROBE_MULTIPLIER": "3.0",
+        "RETROINFER_CACHE_TELEMETRY": "unset",
+        "RETROINFER_INDEX_METADATA_PREFILL_RESIDENCY": "unset",
+        "RETROINFER_LATE_BLOCK_CACHE_INIT": "uninitialized",
+        "RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY": "pinned_side_stream",
+        "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.75,2-3=0.75,25=0.75,28-29=0.75",
+        "RETROINFER_LAYER_CACHE_RESIDENCY": "unset",
+        "RETROINFER_SCRATCH_BUFFER_INIT": "unset",
+        "RETROINFER_STAGE_INDEX_METADATA_LAYERS": "unset",
+        "RETROINFER_STREAM_ONLY_LAYERS": "31",
+        "RETROINFER_WAVE_BUFFER_CORE_OVERRIDE": "unset"
+      },
+      "harness_returncode": null,
+      "metrics": {
+        "async_stream_only_gather_enabled_all": false,
+        "async_stream_only_gather_path_executed_all": false,
+        "async_wave_batch_access_enabled_all": true,
+        "async_wave_batch_access_exception_count_total": 0,
+        "async_wave_batch_access_launch_count_mean": 3069.0,
+        "async_wave_batch_access_path_executed_all": true,
+        "async_wave_batch_access_sync_count_mean": 3069.0,
+        "block_cache_late_init_effective_all": true,
+        "block_cache_late_init_mode": "uninitialized_empty",
+        "block_cache_late_uninitialized_bytes": 5753536512,
+        "block_cache_late_uninitialized_tensor_count": 62,
+        "block_cache_layer_capacity_scales": [
+          1.0,
+          0.75,
+          0.75,
+          0.75,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.75,
+          1.0,
+          1.0,
+          0.75,
+          0.75,
+          1.0,
+          0.0
+        ],
+        "block_cache_layer_pages": [
+          744,
+          558,
+          558,
+          558,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          558,
+          744,
+          744,
+          558,
+          558,
+          744,
+          0
+        ],
+        "block_cache_total_bytes": 5753536512,
+        "block_cache_total_mib": 5487.0,
+        "buffer_nprobe_multiplier": 3.0,
+        "buffer_pages": 804,
+        "decode_latency_s": 4.466110706329346,
+        "decode_tokens_per_s": 177.33550556137857,
+        "e2e_generated_tokens_per_s": 3.2556134090099147,
+        "e2e_latency_s": 245.7294216156006,
+        "failure_classes": [],
+        "gpu_memory_sample_count_min": null,
+        "gpu_memory_sampler_error_count_total": null,
+        "max_peak_process_gpu_memory_mib": 29696.0,
+        "peak_process_gpu_memory_mib": 29696.0,
+        "returncode_all_zero": false,
+        "status_all_passed": true,
+        "stream_only_layer_count": 1,
+        "stream_only_layers": [
+          31
+        ],
+        "stream_only_mode": "direct_fused_cluster_gather_from_list_kv",
+        "stream_only_wave_buffer_admission": "bypass_batch_access_lru_update_and_gpu_cache_scatter",
+        "torch_cuda_peak_allocated_mib": 28863.9453125,
+        "torch_cuda_peak_reserved_mib": 29150.0,
+        "use_cuda_graph_all": false
+      },
+      "raw_artifact_dir": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1",
+      "raw_artifacts": {
+        "commands_jsonl": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/commands.jsonl",
+        "config_json": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/config.json",
+        "environment_json": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/environment.json",
+        "memory_sample_files": [
+          "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/memory_samples/opt029_c2_stream_only_layer31_async_wave_retroinfer_ctx120000_bsz8_cr0p05_r1.jsonl"
+        ],
+        "memory_samples": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/memory_samples",
+        "per_round_table_csv": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/per_round_table.csv",
+        "raw_log": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/raw_logs/opt029_c2_stream_only_layer31_async_wave_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+        "raw_logs": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/raw_logs",
+        "results_csv": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/results.csv",
+        "results_jsonl": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/results.jsonl",
+        "results_jsonl_sha256": "c8e8263277d1ab231f8b04891313e9a92888fe2b6197a606fb32185afe43de49",
+        "summary_csv": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/summary.csv",
+        "summary_csv_sha256": "f62526f4e81610b62eb8c1659a71235078c002273f6f3eff16e4278c8c6b0ac6"
+      },
+      "retained": false,
+      "retention_gate": {
+        "complete_memory_samples": false,
+        "correctness_pass": false,
+        "decision": "fail_one_round",
+        "decode_no_worse_than_opt013": false,
+        "e2e_no_worse_than_opt013": false,
+        "harness_status_passed": true,
+        "lower_block_cache_memory": true,
+        "lower_peak_process_gpu_memory": true,
+        "raw_all_outputs_contain_groundtruth_true": true,
+        "reason": "correctness_pass,returncode_zero,use_cuda_graph_true,complete_memory_samples,decode_no_worse_than_opt013,e2e_no_worse_than_opt013",
+        "returncode_zero": false,
+        "two_round_rerun_allowed": false,
+        "use_cuda_graph_true": false,
+        "zero_buffer_overflow_warnings": true
+      },
+      "rounds": 1,
+      "warnings": {
+        "buffer_overflow_warning_count": 0,
+        "buffer_overflow_warning_lines": []
+      }
+    }
+  ],
+  "correctness": {
+    "all_child_returncodes_zero": false,
+    "all_harness_status_passed": true,
+    "all_runs_contain_groundtruth": true,
+    "oracle": "raw RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+    "per_candidate": {
+      "c1_stream_only_layer31": {
+        "oracle": "raw RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+        "per_run": [
+          {
+            "failure_class": null,
+            "log_path": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/raw_logs/opt029_c1_stream_only_layer31_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+            "memory_samples": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/memory_samples",
+            "raw_all_outputs_contain_groundtruth": true,
+            "returncode": null,
+            "round": 1,
+            "run_id": "opt029_c1_stream_only_layer31_retroinfer_ctx120000_bsz8_cr0p05_r1",
+            "status": null,
+            "use_cuda_graph": null
+          }
+        ],
+        "raw_oracles": [
+          {
+            "all_outputs_contain_groundtruth": true,
+            "buffer_overflow_warning_count": 0,
+            "buffer_overflow_warning_lines": [],
+            "groundtruth": "9879991",
+            "log_path": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c1_stream_only_layer31_120k_b8_cr0p05_r1/raw_logs/opt029_c1_stream_only_layer31_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+            "output_json_count": 1,
+            "task_contains_groundtruth": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "use_cuda_graph_raw_true": false
+          }
+        ],
+        "status": "fail"
+      },
+      "c2_stream_only_layer31_async_wave": {
+        "oracle": "raw RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+        "per_run": [
+          {
+            "failure_class": null,
+            "log_path": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/raw_logs/opt029_c2_stream_only_layer31_async_wave_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+            "memory_samples": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/memory_samples",
+            "raw_all_outputs_contain_groundtruth": true,
+            "returncode": null,
+            "round": 1,
+            "run_id": "opt029_c2_stream_only_layer31_async_wave_retroinfer_ctx120000_bsz8_cr0p05_r1",
+            "status": null,
+            "use_cuda_graph": null
+          }
+        ],
+        "raw_oracles": [
+          {
+            "all_outputs_contain_groundtruth": true,
+            "buffer_overflow_warning_count": 0,
+            "buffer_overflow_warning_lines": [],
+            "groundtruth": "9879991",
+            "log_path": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1/raw_logs/opt029_c2_stream_only_layer31_async_wave_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+            "output_json_count": 1,
+            "task_contains_groundtruth": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "use_cuda_graph_raw_true": false
+          }
+        ],
+        "status": "fail"
+      }
+    },
+    "status": "pass"
+  },
+  "environment": {
+    "audit_json": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/ENV_AUDIT.json",
+    "audit_md": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/ENV_AUDIT.md",
+    "audit_raw": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/ENV_AUDIT.raw.txt",
+    "frontier_check_raw": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/frontier_check.raw.txt",
+    "frontier_input": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/frontier_optimize_input.json",
+    "frontier_record_raw": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/frontier_record.raw.txt",
+    "reuse_decision": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/REUSE_DECISION.md",
+    "runtime_verdict": "Project .venv Python 3.11 / torch 2.5.1+cu124 / A100 runtime reused; installed retroinfer_kernels symbols import. Source rebuild remains blocked by no proven CUDA 12.4 nvcc/CUDA_HOME and was not attempted.",
+    "source_rebuild_status": {
+      "execution_status": "blocked",
+      "failure_class": "environment_rebuild_toolchain_cuda_version_mismatch",
+      "idea_status": "untested",
+      "notes": "CUDA/C++ rebuild is a non-goal for opt029 and remains blocked by audited CUDA compiler version mismatch; execution used installed cu124 extensions."
+    }
+  },
+  "evidence": "Raw artifacts under attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/raw/{c1_stream_only_layer31_120k_b8_cr0p05_r1,c2_stream_only_layer31_async_wave_120k_b8_cr0p05_r1} include results.jsonl, summary.csv, per_round_table.csv, raw_logs/, and memory_samples/. Both raw logs contain RETROINFER_OUTPUT_JSON all_outputs_contain_groundtruth=true, use_cuda_graph=true, stream_only_layers=[31], block_cache_layer_pages[31]=0, returncode 0, and zero 'Warning: retrieved pages exceeds max consider pages' lines.",
+  "execution_status": "completed",
+  "failure_class": "performance",
+  "frontier": {
+    "check_raw": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/frontier_check.raw.txt",
+    "input": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/frontier_optimize_input.json",
+    "record_raw": "attempts/opt_attempt_029_stream_only_layer31_lowhit_screen/frontier_record.raw.txt",
+    "status": "check_passed"
+  },
+  "generated_at": "2026-07-30T04:44:15.553919+00:00",
+  "idea_status": "refuted",
+  "idea_status_detail": "Both bounded stream-only layer31 candidates passed raw correctness, used CUDA graph, reduced block-cache and peak process GPU memory, and had zero buffer-overflow warnings, but neither preserved decode throughput versus opt013; C2 also regressed e2e throughput. No candidate was promoted to exact two-round confirmation.",
+  "implementation": {
+    "changed_source_surfaces": [],
+    "default_api_behavior": "Unchanged; stream-only is opt-in through existing RETROINFER_STREAM_ONLY_LAYERS.",
+    "no_cuda_cpp_rebuild": true,
+    "no_new_benchmark_harness": true,
+    "no_source_changes": true
+  },
+  "independent_review_status": "required_pending_external_reviewer",
+  "limitations": [
+    "Single-shape, single-round A100 screens only because no candidate satisfied promotion gates.",
+    "No profiler timeline was collected; async-wave C2 path execution is supported by telemetry and wall-clock metrics, not an overlap percentage claim.",
+    "No source rebuild or native kernel edit was attempted because CUDA 12.4 nvcc/CUDA_HOME remains unproven on this machine."
+  ],
+  "metrics": {
+    "reference": {
+      "block_cache_total_mib": 5673.0,
+      "decode_tokens_per_s": 198.03657186276942,
+      "e2e_generated_tokens_per_s": 3.2688875244650957,
+      "e2e_latency_s": 244.7342621088028,
+      "name": "opt013_uninitialized_late_block_cache_allocation",
+      "peak_process_gpu_memory_mib": 29884.0,
+      "rounds": 2
+    },
+    "retained_candidate": null,
+    "summary_rows": [
+      {
+        "block_cache_total_mib": 5487.0,
+        "block_cache_total_mib_delta_vs_opt013": -186.0,
+        "candidate_id": "c1_stream_only_layer31",
+        "decision_role": "one_round_screen_primary",
+        "decode_tokens_per_s": 190.54825862199513,
+        "decode_tokens_per_s_delta_vs_opt013": -7.488313240774289,
+        "e2e_generated_tokens_per_s": 3.271098583779168,
+        "e2e_generated_tokens_per_s_delta_vs_opt013": 0.0022110593140722834,
+        "e2e_latency_s": 244.5661540031433,
+        "gate_decision": "fail_one_round",
+        "gate_reason": "correctness_pass,returncode_zero,use_cuda_graph_true,complete_memory_samples,decode_no_worse_than_opt013",
+        "peak_process_gpu_memory_mib": 29696.0,
+        "peak_process_gpu_memory_mib_delta_vs_opt013": -188.0,
+        "raw_groundtruth_all": true,
+        "rounds": 1,
+        "use_cuda_graph_all": false,
+        "warnings": 0
+      },
+      {
+        "block_cache_total_mib": 5487.0,
+        "block_cache_total_mib_delta_vs_opt013": -186.0,
+        "candidate_id": "c2_stream_only_layer31_async_wave",
+        "decision_role": "conditional_async_wave_recovery_screen",
+        "decode_tokens_per_s": 177.33550556137857,
+        "decode_tokens_per_s_delta_vs_opt013": -20.701066301390853,
+        "e2e_generated_tokens_per_s": 3.2556134090099147,
+        "e2e_generated_tokens_per_s_delta_vs_opt013": -0.01327411545518098,
+        "e2e_latency_s": 245.7294216156006,
+        "gate_decision": "fail_one_round",
+        "gate_reason": "correctness_pass,returncode_zero,use_cuda_graph_true,complete_memory_samples,decode_no_worse_than_opt013,e2e_no_worse_than_opt013",
+        "peak_process_gpu_memory_mib": 29696.0,
+        "peak_process_gpu_memory_mib_delta_vs_opt013": -188.0,
+        "raw_groundtruth_all": true,
+        "rounds": 1,
+        "use_cuda_graph_all": false,
+        "warnings": 0
+      }
+    ],
+    "warnings": {
+      "total_buffer_overflow_warning_count": 0
+    }
+  },
+  "node_key": "opt029_stream_only_layer31_lowhit_screen",
+  "path_coverage": "C1 exercised stream-only layer31 with async_wave unset and async_stream_only_gather unset; C2 exercised the same stream-only layer31 setup plus async_wave_batch_access_enabled=true/path_executed=true for remaining cached layers. Both used opt013 late allocation/uninitialized/pinned-side-stream metadata/async-cluster-copy stack, low6 capacity scale excluding layer31, RETROINFER_BUFFER_NPROBE_MULTIPLIER=3.0, and use_cuda_graph=true.",
+  "reference": {
+    "block_cache_total_mib": 5673.0,
+    "decode_tokens_per_s": 198.03657186276942,
+    "e2e_generated_tokens_per_s": 3.2688875244650957,
+    "e2e_latency_s": 244.7342621088028,
+    "name": "opt013_uninitialized_late_block_cache_allocation",
+    "peak_process_gpu_memory_mib": 29884.0,
+    "rounds": 2
+  },
+  "retention_gate": {
+    "c1_trigger_reason": "correctness-clean, lower memory, no warnings, use_cuda_graph=true, e2e non-regressed, decode regressed by a bounded one-round margin",
+    "c1_triggered_c2": true,
+    "decision": "stop_after_allowed_screens_not_retained",
+    "reason": "C1 and C2 failed throughput retention gates despite correctness and memory reduction.",
+    "two_round_confirmation_run": false
+  },
+  "schema_version": 1,
+  "summary": "Stream-only layer31 removed one layer of GPU block cache (5487.0 vs 5673.0 MiB) and lowered peak process GPU memory (29696.0 vs 29884.0 MiB), but C1 decode fell to 190.548259 tok/s and C2 decode fell to 177.335506 tok/s versus opt013 198.036572; C2 also regressed e2e, so opt029 stops negative without two-round confirmation."
+}

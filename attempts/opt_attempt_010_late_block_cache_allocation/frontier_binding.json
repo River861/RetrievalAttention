@@ -1,0 +1,51 @@
+{
+  "attempt_id": "opt_attempt_010_late_block_cache_allocation",
+  "decision_impact": "Do not claim generic overlap; this attempt only claims the measured effect of deferring existing GPU cache/index/buffer allocation until after prefill on the local A100 80GB runtime.",
+  "frontier_as_of": "2026-07-29",
+  "material_updates": [
+    {
+      "action": "Evaluate forced post-prefill allocation with the retained low6+async+buffer_mult3.0 configuration and report process peak GPU memory, block-cache bytes, throughput, correctness, and allocation metadata.",
+      "finding": "Recent long-context inference systems emphasize paged/tiered KV residency, CPU-GPU offload, prefetch, and workload-dependent eviction/placement; measured hardware evidence is required for throughput claims.",
+      "impact": "This supports a bounded default-off forced-late allocation pivot that uses RetroInfer existing CPU-prefill/GPU-decode lifecycle instead of rebuilding kernels or staging whole-layer index metadata again."
+    }
+  ],
+  "network_status": "online",
+  "queries": [
+    {
+      "channel": "web_search",
+      "purpose": "Fresh optimize-stage evidence for late/on-demand block-cache GPU residency and host/device streaming policies.",
+      "query": "Recent systems techniques for long-context LLM inference KV cache memory reduction using paged KV cache offloading host to GPU prefetch overlap eviction policies 2024 2025"
+    }
+  ],
+  "recorded_at": "2026-07-29T17:08:11.422358+00:00",
+  "schema_version": 1,
+  "source_diff_sha256": "78189ca06aca8699b6632bb6018667b34deaf900b5ce17cc8dd427d08e3f5855",
+  "sources": [
+    {
+      "relevance": "Target RetroInfer block-cache lifecycle in cache_hub/retroinfer_cache.py.",
+      "source_type": "official_repo",
+      "title": "River861/RetrievalAttention",
+      "url": "https://github.com/River861/RetrievalAttention"
+    },
+    {
+      "relevance": "Confirms offload/prefetch/host-device movement is hardware-sensitive and should be measured on target hardware.",
+      "source_type": "vendor_engineering",
+      "title": "NVIDIA KV cache offload / CPU-GPU memory sharing guidance",
+      "url": "https://developer.nvidia.com/blog/accelerate-large-scale-llm-inference-and-kv-cache-offload-with-cpu-gpu-memory-sharing/"
+    },
+    {
+      "relevance": "Paged/tiered KV allocation is a standard long-context serving mechanism, motivating allocation-lifecycle controls.",
+      "source_type": "system_paper",
+      "title": "vLLM / PagedAttention production KV cache paging context",
+      "url": "https://vllm.ai/"
+    },
+    {
+      "relevance": "Adjacent 2025 work shows sparse/offloaded KV designs trade memory for reconstruction/transfer cost.",
+      "source_type": "recent_research",
+      "title": "ShadowKV: KV Cache in Shadows for High-Throughput Long-Context LLM Inference",
+      "url": "https://openreview.net/forum?id=oa7MYAO6h6"
+    }
+  ],
+  "stage": "optimize",
+  "trigger": "mechanism_pivot_to_late_block_cache_allocation"
+}

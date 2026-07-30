@@ -1,0 +1,43 @@
+[
+  {
+    "block_cache_total_mib": 5673.0,
+    "candidate_id": "stage_l2",
+    "correctness": "pass",
+    "decode_delta_vs_validation_tokens_s": -2.166691765174278,
+    "decode_throughput_tokens_s": 196.4327498064286,
+    "e2e_delta_vs_validation_tokens_s": 0.0007429684652255908,
+    "e2e_generated_tokens_per_s": 3.2857999247189977,
+    "failure_class": "success",
+    "idea_status": "feasibility_pass_no_resident_metadata_saving_decode_regression",
+    "index_metadata_gpu_bytes_saved_vs_nominal": 0,
+    "index_metadata_stage_copy_bytes": 245222400,
+    "index_metadata_stage_prefetch_count": 1,
+    "peak_delta_vs_validation_mib": 0.0,
+    "peak_process_gpu_memory_mib": 41604.0,
+    "staged_layers": [
+      2
+    ],
+    "status": "passed"
+  },
+  {
+    "block_cache_total_mib": 5673.0,
+    "candidate_id": "stage_l2_l3",
+    "correctness": "pass",
+    "decode_delta_vs_validation_tokens_s": -55.53880930856715,
+    "decode_throughput_tokens_s": 143.06063226303573,
+    "e2e_delta_vs_validation_tokens_s": -0.0336452268928813,
+    "e2e_generated_tokens_per_s": 3.251411729360891,
+    "failure_class": "success",
+    "idea_status": "refuted_memory_saving_but_decode_and_e2e_regressed",
+    "index_metadata_gpu_bytes_saved_vs_nominal": 245222400,
+    "index_metadata_stage_copy_bytes": 49044480000,
+    "index_metadata_stage_prefetch_count": 200,
+    "peak_delta_vs_validation_mib": -238.0,
+    "peak_process_gpu_memory_mib": 41366.0,
+    "staged_layers": [
+      2,
+      3
+    ],
+    "status": "passed"
+  }
+]

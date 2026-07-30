@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "stage": "optimize",
+  "network_status": "online",
+  "trigger": "bounded_capacity_frontier_refresh_on_latest_late_block_cache_stack",
+  "checked_surfaces": [
+    "target_repository",
+    "official_toolchains",
+    "research_frontier",
+    "adjacent_implementations"
+  ],
+  "queries": [
+    {
+      "channel": "web_search",
+      "purpose": "Refresh toolchain and PyTorch semantics for the current stack: forced-late block-cache allocation, uninitialized late K/V cache tensors, pinned side-stream H2D metadata migration, CUDA stream synchronization, and CUDA Graph safety.",
+      "query": "As of July 2026, are there official PyTorch CUDA documentation changes about torch.empty uninitialized allocation, pinned host memory non_blocking H2D copies on CUDA streams, or CUDA Graph safety that would affect using environment-gated late KV cache allocation and side-stream metadata migration?"
+    },
+    {
+      "channel": "web_search",
+      "purpose": "Refresh adjacent streaming/block-cache and per-layer KV-cache capacity evidence before selecting bounded lower-capacity schedules on the retained RetroInfer stack.",
+      "query": "Find recent public implementations or documentation for LLM KV cache block-cache residency, per-layer KV cache capacity reduction, streaming/on-demand GPU KV cache, or host-to-device prefetch overlap relevant to preserving throughput while reducing GPU memory."
+    }
+  ],
+  "sources": [
+    {
+      "source_type": "official_repo",
+      "title": "River861/RetrievalAttention",
+      "url": "https://github.com/River861/RetrievalAttention",
+      "relevance": "The local target repository already exposes environment-gated late block-cache allocation, pinned side-stream late metadata migration, uninitialized late block-cache init, async cluster ID copy, buffer multiplier, and per-layer capacity scaling controls used in this bounded opt014 check."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch CUDA semantics and memory APIs",
+      "url": "https://docs.pytorch.org/docs/main/cuda.html",
+      "relevance": "CUDA stream and synchronization semantics remain relevant to the pinned side-stream metadata migration path; no material documentation update required a source mechanism pivot for opt014."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch torch.empty",
+      "url": "https://docs.pytorch.org/docs/stable/generated/torch.empty.html",
+      "relevance": "torch.empty remains an uninitialized allocation primitive, so the retained opt013 uninitialized late block-cache policy stays valid only under the existing write-before-read safety invariant."
+    },
+    {
+      "source_type": "paper",
+      "title": "CAKE: Cascading and Adaptive KV Cache Eviction with Layer Preferences",
+      "url": "https://openreview.net/forum?id=EQgEMAD4kv",
+      "relevance": "Recent per-layer KV-cache allocation evidence supports testing layer-specific capacity schedules, but does not replace the project-native block-cache controls or require a new harness."
+    },
+    {
+      "source_type": "author_repo",
+      "title": "kvcached virtualized elastic KV cache",
+      "url": "https://github.com/kvcached/kvcached",
+      "relevance": "Adjacent streaming/on-demand KV-cache residency work reinforces the objective, but it is a separate serving-system mechanism and not a bounded code pivot for this opt014 schedule check."
+    },
+    {
+      "source_type": "author_repo",
+      "title": "LMCache",
+      "url": "https://github.com/LMCache/LMCache",
+      "relevance": "Tiered KV-cache reuse/offload remains adjacent evidence for streaming residency; opt014 should continue using RetroInfer's existing per-layer block-cache capacity controls rather than importing a new infrastructure stack."
+    }
+  ],
+  "material_updates": [
+    {
+      "action": "Reuse the current opt013 stack and bound the search to at most three prior lower-capacity schedules.",
+      "finding": "The fresh frontier search found adjacent per-layer and streaming KV-cache work, but no project-native or toolchain evidence that justifies a new mechanism or harness pivot for this node.",
+      "impact": "Proceed with RETROINFER_LAYER_CACHE_CAPACITY_SCALE schedules on top of late allocation, pinned side-stream metadata migration, uninitialized late block-cache init, async cluster ID copy, and RETROINFER_BUFFER_NPROBE_MULTIPLIER=3.0."
+    },
+    {
+      "action": "Preserve the canonical correctness-before-speed gate.",
+      "finding": "PyTorch's uninitialized-memory semantics still require that tensors are fully written before read, and side-stream H2D copies still require explicit synchronization before dependent decode work.",
+      "impact": "Only raw runs with clean exit and RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth=true can be compared; no timing claim is made for a schedule that fails this gate."
+    }
+  ],
+  "decision_impact": "Bounded opt014 should measure the requested lower-capacity schedules on real A100 hardware and retain a schedule only if it reduces block-cache/peak memory without worse decode or e2e generated throughput versus opt013; otherwise record the capacity frontier as refuted on the current stack."
+}

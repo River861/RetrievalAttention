@@ -1,0 +1,47 @@
+{
+  "attempt_id": "opt_attempt_017_async_stream_only_gather_overlap",
+  "candidate_behavior": "RETROINFER_ASYNC_STREAM_ONLY_GATHER=1 with RETROINFER_STREAM_ONLY_LAYERS launches stream-only gather on a per-device side stream after top-k and waits before weighted_flash_decoding; --use_cuda_graph captures a gather-only graph and an attention-only graph.",
+  "changed_source_surfaces": [
+    "cache_hub/retroinfer_cache.py",
+    "throughput_eval/reproduce_block_cache.py"
+  ],
+  "default_behavior": "RETROINFER_ASYNC_STREAM_ONLY_GATHER unset/empty/0 preserves existing inline stream-only gather and fused CUDA graph behavior.",
+  "git_status_short_at_packaging": [
+    " M cache_hub/retroinfer_cache.py",
+    " M model_hub/llama.py",
+    " M research/PIPELINE_STATE.json",
+    " M throughput_eval/reproduce_block_cache.py",
+    "?? RESULTS.md",
+    "?? attempts/",
+    "?? research/BASELINE_PROTOCOL.md",
+    "?? research/BASELINE_RESULT.json",
+    "?? research/ENVIRONMENT_AUDIT.json",
+    "?? research/ENVIRONMENT_AUDIT.md",
+    "?? research/FRONTIER_WATCH.jsonl",
+    "?? research/GROUND_TRUTH.md",
+    "?? research/INFRASTRUCTURE_REUSE_PLAN.md",
+    "?? research/KERNEL_SCOPE.md",
+    "?? research/PROJECT_NATIVE_SETUP.md",
+    "?? research/TOOLCHAIN_CANDIDATES.md",
+    "?? research/VALIDATION_MATRIX.md",
+    "?? research/VALIDATION_RESULT.json",
+    "?? research/baseline_block_cache_single_a100_120k_b8_cr0p05/",
+    "?? research/frontier/",
+    "?? research/validation_fractional_layer_capacity_120k_b8_cr0p05/",
+    "?? research/validation_layer_cache_residency_120k_b8_cr0p05/",
+    "?? research/validation_low6_async_buffer_mult_3p0_120k_b8_cr0p05/",
+    "?? research/validation_low6_async_cluster_id_copy_120k_b8_cr0p05/",
+    "?? research/validation_low6_multilayer_fractional_capacity_120k_b8_cr0p05/"
+  ],
+  "no_cuda_cpp_rebuild": true,
+  "repository_head": "7096eab9190da389bbc75c1992140d1432d9d8ec",
+  "schema_version": 1,
+  "source_diff": "attempts/opt_attempt_017_async_stream_only_gather_overlap/SOURCE_DIFF.patch",
+  "source_diff_sha256": "52b05d435131b40da193fde334d8a1e1aea2ea957d5fe96d04855288d69ec9f3",
+  "source_rebuild_status": {
+    "execution_status": "blocked_for_source_rebuild",
+    "failure_class": "environment_rebuild_toolchain_cuda_version_mismatch",
+    "idea_status": "not_evaluated",
+    "notes": "Fresh audit uses installed cu124 Python/runtime extensions; CUDA_HOME is unset/torch points to /usr and proven nvcc is CUDA 12.0, not CUDA 12.4."
+  }
+}

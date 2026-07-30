@@ -1,0 +1,68 @@
+{
+  "checked_surfaces": [
+    "target_repository",
+    "research_frontier",
+    "adjacent_implementations",
+    "official_toolchains"
+  ],
+  "decision_impact": "Proceed with up to three telemetry-disabled, async-enabled one-round 120000x8/gen_len=100/cache_ratio=0.05 measurements for the assigned asymmetric capacity schedules, compared against research/BASELINE_RESULT.json and research/VALIDATION_RESULT.json low6+async.",
+  "frontier_as_of": "2026-07-29",
+  "material_updates": [
+    {
+      "action": "Reuse RetroInfer's existing default-off per-layer capacity and async-copy controls; measure the assigned stronger asymmetric schedules rather than adding a new harness or rebuilding kernels.",
+      "finding": "Current KV-cache systems still treat partial residency, offload, prefetch, and eviction as workload-dependent Pareto tradeoffs.",
+      "impact": "This attempt can classify schedules by raw correctness, block-cache bytes, peak process GPU memory, decode throughput, and computed e2e generated-token throughput at 120000x8/cache_ratio=0.05."
+    },
+    {
+      "action": "Do not rebuild CUDA/C++ or vendor libraries; use .venv, installed retroinfer_kernels, and throughput_eval/reproduce_block_cache.py.",
+      "finding": "No CUDA 12.4-compatible source rebuild compiler has been proven on this machine; installed CUDA 12.4 runtime/extensions are the supported path.",
+      "impact": "Any source-rebuild issue remains an environment/toolchain blocker, not an idea failure."
+    }
+  ],
+  "network_status": "online",
+  "queries": [
+    {
+      "channel": "web_search",
+      "purpose": "Fresh optimize-stage evidence for stronger asymmetric per-layer capacity cuts with async copy enabled.",
+      "query": "2025 2026 LLM inference KV cache GPU memory reduction per-layer partial residency tiered offload streaming cache capacity asynchronous prefetch eviction throughput memory tradeoff evidence"
+    }
+  ],
+  "record_id": "4f155718a58ba176",
+  "recorded_at": "2026-07-29T13:05:36Z",
+  "schema_version": 1,
+  "searched_at": "2026-07-29T13:05:36Z",
+  "sources": [
+    {
+      "relevance": "Target repository and native benchmark/runtime knobs used by this attempt.",
+      "source_type": "official_repo",
+      "title": "River861/RetrievalAttention",
+      "url": "https://github.com/River861/RetrievalAttention"
+    },
+    {
+      "relevance": "Current survey evidence that cache-memory reductions need paired correctness, memory, and throughput measurements.",
+      "source_type": "paper",
+      "title": "KV Cache Optimization Strategies for Scalable and Efficient LLM Inference",
+      "url": "https://arxiv.org/pdf/2603.20397"
+    },
+    {
+      "relevance": "Adjacent maintained KV-cache tiering/offload implementation motivating workload-specific residency tradeoffs, not a drop-in replacement.",
+      "source_type": "author_repo",
+      "title": "LMCache",
+      "url": "https://github.com/LMCache/LMCache"
+    },
+    {
+      "relevance": "Recent tiered KV-cache/offload evidence supporting async/tiering but requiring real-hardware validation.",
+      "source_type": "preprint",
+      "title": "LMCache: An Efficient KV Cache Layer for Enterprise-Scale LLM Inference",
+      "url": "https://arxiv.org/abs/2510.09665"
+    },
+    {
+      "relevance": "Vendor evidence for hybrid memory/offload; reinforces that prefetch/overlap claims need measured evidence.",
+      "source_type": "vendor_blog",
+      "title": "Accelerate Large-Scale LLM Inference and KV Cache Offload with CPU-GPU Memory Sharing",
+      "url": "https://developer.nvidia.com/blog/accelerate-large-scale-llm-inference-and-kv-cache-offload-with-cpu-gpu-memory-sharing/"
+    }
+  ],
+  "stage": "optimize",
+  "trigger": "bounded_async_asymmetric_capacity_frontier_after_validated_low6_async"
+}

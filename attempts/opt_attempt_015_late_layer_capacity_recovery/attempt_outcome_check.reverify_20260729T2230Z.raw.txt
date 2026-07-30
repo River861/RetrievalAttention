@@ -1,0 +1,1 @@
+kernel attempt outcomes: 15 valid

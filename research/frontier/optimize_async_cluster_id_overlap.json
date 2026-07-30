@@ -1,0 +1,74 @@
+{
+  "checked_surfaces": [
+    "target_repository",
+    "official_toolchains",
+    "research_frontier",
+    "adjacent_implementations"
+  ],
+  "decision_impact": "Proceed with a default-off Python-only async cluster-id D2H copy path and measure async-only plus low6+async at 120000x8/cache_ratio=0.05 against research/BASELINE_RESULT.json and research/VALIDATION_RESULT.json.",
+  "frontier_as_of": "2026-07-29",
+  "material_updates": [
+    {
+      "action": "Implement RETROINFER_ASYNC_CLUSTER_ID_COPY as default-off; immediately copy GPU top-k cluster_ids to the existing pinned CPU tensor on a dedicated stream, do independent estimation/weighted-decoding work, then synchronize before WaveBufferCPU.batch_access in both sparse paths.",
+      "finding": "Official CUDA/PyTorch guidance supports a bounded Python-only D2H overlap attempt only if the destination is pinned CPU memory, the copy is launched on a separate CUDA stream with non_blocking=True, and CPU access waits on the copy stream/event.",
+      "impact": "Correctness depends on synchronization before CPU wave-buffer access; speed claims require real A100 measurements, while profiler evidence would be needed for a strong overlap-timeline claim."
+    },
+    {
+      "action": "Stay within cache_hub/retroinfer_cache.py and throughput/evidence scripts; do not rebuild CUDA/C++ or edit WaveBufferCPU/gather_copy sources.",
+      "finding": "The project runtime already has CUDA 12.4 PyTorch and installed retroinfer_kernels, but source rebuild remains blocked by missing CUDA 12.4 nvcc.",
+      "impact": "Any source-rebuild issue remains environment_rebuild_toolchain_cuda_version_mismatch rather than idea failure; this attempt evaluates only Python stream/event orchestration."
+    }
+  ],
+  "network_status": "online",
+  "queries": [
+    {
+      "channel": "web_search",
+      "purpose": "Refresh optimize-stage evidence for a Python-only stream/event overlap pivot after validated capacity-scaling work.",
+      "query": "Current official CUDA and PyTorch guidance for overlapping GPU to pinned CPU tensor copies with CUDA streams/events, pinned memory, non_blocking transfers, and profiler evidence for LLM KV cache offload experiments"
+    }
+  ],
+  "record_id": "08faab6743210363",
+  "recorded_at": "2026-07-29T11:59:30.537635+00:00",
+  "schema_version": 1,
+  "searched_at": "2026-07-29T11:59:30.537635+00:00",
+  "sources": [
+    {
+      "relevance": "Target implementation and harness; async path must preserve RetroInfer API and use existing installed kernels.",
+      "source_type": "official_repo",
+      "title": "River861/RetrievalAttention",
+      "url": "https://github.com/River861/RetrievalAttention"
+    },
+    {
+      "relevance": "Defines stream/event asynchronous execution semantics and synchronization requirements.",
+      "source_type": "official_docs",
+      "title": "CUDA C++ Programming Guide: Asynchronous Execution",
+      "url": "https://docs.nvidia.com/cuda/cuda-programming-guide/02-basics/asynchronous-execution.html"
+    },
+    {
+      "relevance": "Requires pinned CPU memory and explicit synchronization discipline for non-blocking host/device transfers.",
+      "source_type": "official_docs",
+      "title": "PyTorch: A guide on good usage of non_blocking and pin_memory()",
+      "url": "https://docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html"
+    },
+    {
+      "relevance": "Supports using torch.cuda.Stream/Event and waiting before cross-stream consumers.",
+      "source_type": "official_docs",
+      "title": "PyTorch CUDA semantics / streams and events",
+      "url": "https://pytorch.org/docs/stable/notes/cuda.html"
+    },
+    {
+      "relevance": "Profiler/timeline evidence is the appropriate basis for overlap speed claims beyond end-to-end measurements.",
+      "source_type": "official_docs",
+      "title": "PyTorch Profiler",
+      "url": "https://pytorch.org/docs/stable/profiler.html"
+    },
+    {
+      "relevance": "Adjacent maintained KV-cache offload/tiering system motivating pinned asynchronous cache movement, not a drop-in substitute.",
+      "source_type": "author_repo",
+      "title": "LMCache",
+      "url": "https://github.com/LMCache/LMCache"
+    }
+  ],
+  "stage": "optimize",
+  "trigger": "mechanism_pivot_to_async_cluster_id_gpu_to_pinned_cpu_copy_overlap"
+}

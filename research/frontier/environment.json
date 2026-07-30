@@ -1,0 +1,91 @@
+{
+  "checked_surfaces": [
+    "target_repository",
+    "official_toolchains",
+    "research_frontier",
+    "adjacent_implementations"
+  ],
+  "decision_impact": "Environment-stage evidence supports the existing scope: audit and optimize RetroInfer's native GPU-CPU block-cache streaming path first; do not replace it with LMCache/Dynamo/vLLM infrastructure or a custom benchmark/profiler during this objective.",
+  "frontier_as_of": "2026-07-29",
+  "material_updates": [
+    {
+      "action": "Keep H2D-overlap work inside cache_hub/retroinfer_cache.py and existing CUDA extension call sites; use nsys/torch profiler evidence in later profiling stage.",
+      "finding": "Official CUDA and PyTorch guidance still points to pinned/page-locked host memory, non-default CUDA streams, and events as the supported mechanism for H2D overlap; Nsight Systems remains the maintained timeline profiler for verifying memcpy/compute overlap.",
+      "impact": "The environment plan should reuse RetroInfer's existing pinned host buffers and torch.cuda.Stream/event path and verify overlap with installed Nsight Systems rather than creating a custom profiler or transfer runtime."
+    },
+    {
+      "action": "Reuse RetroInfer's WaveBufferCPU, pinned list storage, gather-copy kernels, vLLM dependency, and throughput_eval harness unless a later code-evidence bottleneck proves those canonical paths insufficient.",
+      "finding": "Maintained adjacent KV-cache stacks such as LMCache and NVIDIA Dynamo/KVBM provide block/paged multi-tier KV offload and async migration, but they are serving-engine infrastructure rather than drop-in replacements for RetroInfer's current API and throughput_eval harness.",
+      "impact": "They are useful comparison/rejection references, not first implementation targets for this bounded A100/PyTorch 2.5 RetroInfer objective."
+    }
+  ],
+  "network_status": "online",
+  "no_material_update": false,
+  "queries": [
+    {
+      "channel": "web_search",
+      "purpose": "Verify environment-stage tooling for H2D transfer overlap and profiling before selecting any custom infrastructure.",
+      "query": "For CUDA 12.4 and PyTorch 2.5 on NVIDIA A100, what maintained tools and official guidance are relevant to pinned-memory asynchronous host-to-device transfers, CUDA streams, and profiling overlap with Nsight Systems/Compute?"
+    },
+    {
+      "channel": "web_search",
+      "purpose": "Check adjacent maintained KV-cache/offload stacks before deciding whether RetroInfer should reuse its own block-cache path or replace infrastructure.",
+      "query": "What maintained LLM inference KV-cache tools or libraries are relevant in 2025 for GPU-CPU KV cache offloading, block or paged KV residency, and asynchronous prefetch/streaming mechanisms on NVIDIA GPUs?"
+    }
+  ],
+  "record_id": "facb01773e076f24",
+  "recorded_at": "2026-07-29T08:04:47.169837+00:00",
+  "schema_version": 1,
+  "searched_at": "2026-07-29T08:04:47.169768+00:00",
+  "sources": [
+    {
+      "relevance": "Target repository and canonical RetroInfer block-cache/harness implementation under audit.",
+      "source_type": "official_repo",
+      "title": "River861/RetrievalAttention",
+      "url": "https://github.com/River861/RetrievalAttention"
+    },
+    {
+      "relevance": "Official CUDA guidance for page-locked host memory, asynchronous copies, and stream concurrency.",
+      "source_type": "official_docs",
+      "title": "CUDA C++ Programming Guide",
+      "url": "https://docs.nvidia.com/cuda/cuda-c-programming-guide/"
+    },
+    {
+      "relevance": "Official CUDA stream/concurrent-execution guidance relevant to H2D overlap validation.",
+      "source_type": "official_docs",
+      "title": "CUDA C++ Best Practices Guide",
+      "url": "https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html#streams-concurrent-execution"
+    },
+    {
+      "relevance": "Official profiler for observing CUDA memcpy/kernel timelines, stream gaps, and overlap.",
+      "source_type": "official_docs",
+      "title": "NVIDIA Nsight Systems User Guide",
+      "url": "https://docs.nvidia.com/nsight-systems/UserGuide/index.html"
+    },
+    {
+      "relevance": "Official compatibility surface for PyTorch 2.5 CUDA wheels used by the RetroInfer venv.",
+      "source_type": "official_docs",
+      "title": "PyTorch previous versions installation matrix",
+      "url": "https://pytorch.org/get-started/previous-versions/"
+    },
+    {
+      "relevance": "Adjacent maintained multi-tier KV-cache/offload stack considered for reuse/rejection.",
+      "source_type": "author_repo",
+      "title": "LMCache",
+      "url": "https://github.com/LMCache/LMCache"
+    },
+    {
+      "relevance": "NVIDIA-maintained KV offload/block-management reference for adjacent infrastructure comparison.",
+      "source_type": "official_docs",
+      "title": "NVIDIA Dynamo KV Cache Offloading",
+      "url": "https://docs.nvidia.com/dynamo/backends/v-llm/kv-cache-offloading"
+    },
+    {
+      "relevance": "Research-frontier evidence that async KV prefetch/stream scheduling is relevant to the chosen bottleneck family.",
+      "source_type": "preprint",
+      "title": "Accelerating LLM Inference Throughput via Asynchronous KV Cache Prefetching",
+      "url": "https://arxiv.org/abs/2504.06319"
+    }
+  ],
+  "stage": "environment"
+}

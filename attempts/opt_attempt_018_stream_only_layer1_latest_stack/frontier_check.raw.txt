@@ -1,0 +1,1 @@
+frontier watch: opt018 layer-1 stream-only residency evidence recorded as of 2026-07-29; no material update blocking the bounded measurement; check_passed

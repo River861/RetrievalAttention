@@ -1,6 +1,39 @@
 import os, json, math
 from pathlib import Path
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+RETROINFER_PAGES_PER_CLUSTER_OVERRIDE_ENV = "RETROINFER_PAGES_PER_CLUSTER_OVERRIDE"
+
+
+def _env_positive_int_override(name: str) -> tuple[int | None, str]:
+    value = os.environ.get(name)
+    if value is None or value.strip() == "":
+        return None, "unset"
+    raw_value = value.strip()
+    try:
+        parsed = int(raw_value, 10)
+    except ValueError as exc:
+        raise ValueError(f"{name} must be a positive integer; got {value!r}") from exc
+    if parsed <= 0:
+        raise ValueError(f"{name} must be a positive integer; got {value!r}")
+    return parsed, raw_value
+
+
+def resolve_retroinfer_pages_per_cluster(default_pages_per_cluster: int) -> dict:
+    if default_pages_per_cluster <= 0:
+        raise ValueError(
+            f"default_pages_per_cluster({default_pages_per_cluster}) should be positive"
+        )
+    override, override_env = _env_positive_int_override(
+        RETROINFER_PAGES_PER_CLUSTER_OVERRIDE_ENV
+    )
+    override_active = override is not None
+    return {
+        "default": default_pages_per_cluster,
+        "effective": override if override_active else default_pages_per_cluster,
+        "override_env": override_env,
+        "override_active": override_active,
+        "source": "env_override" if override_active else "config_default",
+    }
 
 
 def compute_retroinfer_block_cache_capacity(
@@ -96,10 +129,17 @@ def generate_config(
     n_clusters = lower if abs(n_clusters - lower) <= abs(n_clusters - upper) else upper
 
     if attn_type == 'RetroInfer':
+        pages_per_cluster_resolution = resolve_retroinfer_pages_per_cluster(
+            round(avg_cluster_size / 8)
+        )
         _config[attn_type]['core'] = get_numa_node_core_count(0)
         _config[attn_type]['n_centroids'] = n_clusters
         _config[attn_type]['n_segment'] = n_segments
-        _config[attn_type]['pages_per_cluster'] = round(avg_cluster_size / 8) # default page size is 8 vectors
+        _config[attn_type]['pages_per_cluster'] = pages_per_cluster_resolution['effective'] # default page size is 8 vectors
+        _config[attn_type]['pages_per_cluster_default'] = pages_per_cluster_resolution['default']
+        _config[attn_type]['pages_per_cluster_override_env'] = pages_per_cluster_resolution['override_env']
+        _config[attn_type]['pages_per_cluster_override_active'] = pages_per_cluster_resolution['override_active']
+        _config[attn_type]['pages_per_cluster_source'] = pages_per_cluster_resolution['source']
         _config[attn_type]['retrieval_budget'] = retrieval_budget
         _config[attn_type]['estimation_budget'] = estimation_budget
         _config[attn_type]['cache_ratio'] = cache_ratio

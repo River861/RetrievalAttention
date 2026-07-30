@@ -1,0 +1,2 @@
+candidate,correctness,allocation_policy,allocation_decision,preallocated_before_prefill,allocated_after_prefill,block_cache_mib,peak_gpu_mib,decode_tok_s,e2e_tok_s,peak_delta_vs_baseline_mib,peak_delta_vs_validation_mib,decode_delta_vs_validation_pct
+forced_late_low6_async_buffer_mult_3p0,pass,late,allocate_after_prefill,False,True,5673.0,29884.0,198.58532124731784,3.2617790848068484,-12076.0,-11720.0,-0.007109951656109889

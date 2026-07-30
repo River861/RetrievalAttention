@@ -1,0 +1,51 @@
+{
+  "attempt_id": "opt_attempt_009_stream_index_metadata_staging",
+  "decision_impact": "Implement only a default-off Python/runtime staged-index metadata path; require real 120000x8 measurements and do not claim transfer/compute overlap from metadata alone.",
+  "frontier_as_of": "2026-07-29",
+  "material_updates": [
+    {
+      "action": "Evaluate staged RetroInfer index metadata with the canonical harness and report correctness, process peak memory, block-cache bytes, decode/e2e throughput, and CUDA-graph behavior.",
+      "finding": "Recent/offload guidance supports pinned host memory, tiered residency, prefetch, and per-layer metadata management, but throughput effects are hardware/workload dependent.",
+      "impact": "The opt009 result is a measured negative/redirect when H2D metadata copy volume dominates the modest resident-memory saving."
+    }
+  ],
+  "network_status": "online",
+  "queries": [
+    {
+      "channel": "web_search",
+      "purpose": "Fresh optimize-stage evidence for staged index metadata / CPU-GPU prefetch mechanism.",
+      "query": "2025 2026 LLM inference KV cache GPU memory reduction streaming CPU GPU offload prefetch host to device overlap metadata residency real hardware evaluation"
+    }
+  ],
+  "recorded_at": "2026-07-29T16:42:10.884840+00:00",
+  "schema_version": 1,
+  "source_diff_sha256": "9ca9f9e857d6bcfb44ff8c76966a19dc9a8010d7fd7222fd25b82ca7aae9998f",
+  "sources": [
+    {
+      "relevance": "Target repository and native RetroInfer block-cache implementation.",
+      "source_type": "official_repo",
+      "title": "River861/RetrievalAttention",
+      "url": "https://github.com/River861/RetrievalAttention"
+    },
+    {
+      "relevance": "Pinned/offloaded cache movement and overlap claims need hardware-aware evidence.",
+      "source_type": "vendor_engineering",
+      "title": "NVIDIA KV cache offload / CPU-GPU memory sharing guidance",
+      "url": "https://developer.nvidia.com/blog/accelerate-large-scale-llm-inference-and-kv-cache-offload-with-cpu-gpu-memory-sharing/"
+    },
+    {
+      "relevance": "Recent survey context for partial/tiered/offloaded KV cache tradeoffs.",
+      "source_type": "survey",
+      "title": "KV Cache Optimization Strategies for Scalable and Efficient LLM Inference",
+      "url": "https://arxiv.org/abs/2603.20397"
+    },
+    {
+      "relevance": "Adjacent streaming/offload/prefetch mechanisms are policy- and workload-sensitive.",
+      "source_type": "engineering_summary",
+      "title": "KV cache offloading with optimized memory management",
+      "url": "https://www.emergentmind.com/topics/kv-cache-offloading-with-optimized-memory-management"
+    }
+  ],
+  "stage": "optimize",
+  "trigger": "mechanism_pivot_to_stream_index_metadata_staging"
+}

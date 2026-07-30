@@ -1,0 +1,53 @@
+# Environment audit: opt_attempt_030_scratch_buffer_layer31_capacity_recovery
+generated_at_utc=2026-07-30T04:51:06Z
+cwd=/home/v-xuchuanluo/RetroInfer
+target_python=/home/v-xuchuanluo/RetroInfer/.venv/bin/python
+git_head=7096eab9190da389bbc75c1992140d1432d9d8ec
+git_status_porcelain:
+ M cache_hub/retroinfer_cache.py
+ M model_hub/llama.py
+ M research/PIPELINE_STATE.json
+ M throughput_eval/reproduce_block_cache.py
+?? RESULTS.md
+?? attempts/
+?? research/BASELINE_PROTOCOL.md
+?? research/BASELINE_RESULT.json
+?? research/ENVIRONMENT_AUDIT.json
+?? research/ENVIRONMENT_AUDIT.md
+?? research/FRONTIER_WATCH.jsonl
+?? research/GROUND_TRUTH.md
+?? research/INFRASTRUCTURE_REUSE_PLAN.md
+?? research/KERNEL_SCOPE.md
+?? research/PROJECT_NATIVE_SETUP.md
+?? research/TOOLCHAIN_CANDIDATES.md
+?? research/VALIDATION_MATRIX.md
+?? research/VALIDATION_RESULT.json
+?? research/baseline_block_cache_single_a100_120k_b8_cr0p05/
+?? research/frontier/
+?? research/validation_fractional_layer_capacity_120k_b8_cr0p05/
+?? research/validation_layer_cache_residency_120k_b8_cr0p05/
+?? research/validation_low6_async_buffer_mult_3p0_120k_b8_cr0p05/
+?? research/validation_low6_async_cluster_id_copy_120k_b8_cr0p05/
+?? research/validation_low6_multilayer_fractional_capacity_120k_b8_cr0p05/
+
+# environment_audit check
+/home/v-xuchuanluo/RetroInfer/.venv/bin/python: Error while finding module specification for 'argus_skill.verticals.kernel_engineering.environment_audit' (ModuleNotFoundError: No module named 'argus_skill')
+
+# runtime imports
+/home/v-xuchuanluo/RetroInfer/.venv/lib/python3.11/site-packages/transformers/utils/hub.py:106: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+ENV_AUDIT_JSON={"flash_attn": "2.7.3", "flashinfer": "0.2.4+cu124torch2.5", "gpu0_capability": [8, 0], "gpu0_name": "NVIDIA A100 80GB PCIe", "nsys_path": "/usr/local/bin/nsys", "nvcc_path": "/usr/bin/nvcc", "nvcc_version": ["nvcc: NVIDIA (R) Cuda compiler driver", "Copyright (c) 2005-2023 NVIDIA Corporation", "Built on Fri_Jan__6_16:45:21_PST_2023", "Cuda compilation tools, release 12.0, V12.0.140", "Build cuda_12.0.r12.0/compiler.32267302_0"], "nvidia_smi_path": "/usr/bin/nvidia-smi", "nvidia_smi_version": ["NVIDIA A100 80GB PCIe, 81920 MiB, 580.173.02"], "pybind11": "2.12.0", "python_executable": "/home/v-xuchuanluo/RetroInfer/.venv/bin/python", "python_version": "3.11.15", "retroinfer_kernel_symbols": {"ThreadPool": true, "WaveBufferCPU": true, "batch_gemm_softmax": true, "gather_copy_and_concat": true, "gather_copy_and_scatter": true, "gather_copy_vectors": true}, "retroinfer_kernels": "imported", "torch": "2.5.1+cu124", "torch_cuda_available": true, "torch_cuda_device_count": 1, "torch_cuda_version": "12.4", "transformers": "4.49.0", "triton": "3.1.0", "vllm": "0.6.5", "weighted_flash_decoding": "0.1"}
+
+# corrected environment_audit check with Argus runtime
+generated_at_utc=2026-07-30T04:51:29Z
+usage: environment_audit.py [-h] {collect,check,catalog} ...
+environment_audit.py: error: unrecognized arguments: --target-python .venv/bin/python --capabilities torch,triton,profiling
+
+# corrected environment_audit check with Argus runtime (valid interface)
+generated_at_utc=2026-07-30T04:51:40Z
+environment audit unreadable: FileNotFoundError: [Errno 2] No such file or directory: '/home/v-xuchuanluo/RetroInfer/attempts/opt_attempt_030_scratch_buffer_layer31_capacity_recovery/ENV_AUDIT.md'
+
+# environment_audit collect/check with Argus runtime and project venv target
+generated_at_utc=2026-07-30T04:51:52Z
+{"ready": true, "blocking_findings": []}
+kernel environment audit: ready

@@ -1,0 +1,12 @@
+# opt025 one-round core override screens
+started_at_utc=2026-07-30T02:37:32Z
+# begin core=16 output=attempts/opt_attempt_025_wavebuffer_core_tuning_lower_memory/raw/core16_screen_120k_b8_cr0p05
+Wrote block-cache artifacts to attempts/opt_attempt_025_wavebuffer_core_tuning_lower_memory/raw/core16_screen_120k_b8_cr0p05
+# end core=16 returncode=0
+# begin core=12 output=attempts/opt_attempt_025_wavebuffer_core_tuning_lower_memory/raw/core12_screen_120k_b8_cr0p05
+Wrote block-cache artifacts to attempts/opt_attempt_025_wavebuffer_core_tuning_lower_memory/raw/core12_screen_120k_b8_cr0p05
+# end core=12 returncode=0
+# begin core=8 output=attempts/opt_attempt_025_wavebuffer_core_tuning_lower_memory/raw/core8_screen_120k_b8_cr0p05
+Wrote block-cache artifacts to attempts/opt_attempt_025_wavebuffer_core_tuning_lower_memory/raw/core8_screen_120k_b8_cr0p05
+# end core=8 returncode=0
+finished_at_utc=2026-07-30T02:56:48Z

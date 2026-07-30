@@ -203,6 +203,9 @@ class LLM:
                     break
             outputs_ids.append(output_ids)
 
+        finish_decode = getattr(self.kv_cache, "finish_decode", None)
+        if finish_decode is not None:
+            finish_decode()
         decode_end = time.time()
         prefill_latency = prefill_end - prefill_start
         decode_latency = decode_end - decode_start

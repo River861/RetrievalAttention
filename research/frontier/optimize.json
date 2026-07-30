@@ -1,0 +1,132 @@
+{
+  "candidate": {
+    "environment_c1": {
+      "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+      "RETROINFER_ASYNC_STREAM_ONLY_GATHER": "unset",
+      "RETROINFER_ASYNC_WAVE_BATCH_ACCESS": "unset",
+      "RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY": "late",
+      "RETROINFER_BUFFER_NPROBE_MULTIPLIER": "3.0",
+      "RETROINFER_LATE_BLOCK_CACHE_INIT": "uninitialized",
+      "RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY": "pinned_side_stream",
+      "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.75,2-3=0.75,25=0.75,28-29=0.75",
+      "RETROINFER_STREAM_ONLY_LAYERS": "31"
+    },
+    "environment_c2_delta_if_allowed": {
+      "RETROINFER_ASYNC_WAVE_BATCH_ACCESS": "1"
+    },
+    "name": "stream_only_layer31_lowhit_screen",
+    "node_key": "opt029_stream_only_layer31_lowhit_screen",
+    "reference": "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/OUTCOME.json",
+    "screen_policy": "C1 one round; C2 one round with async-wave only if C1 is correctness-clean and misses throughput retention by a small decode/e2e/wall-clock margin; exact two-round confirmation only for a one-round candidate satisfying all promotion gates.",
+    "shape": "context_len=120000,batch_size=8,gen_len=100,cache_ratio=0.05,seed=2025,A100_80GB,use_cuda_graph=true"
+  },
+  "checked_surfaces": [
+    "target_repository",
+    "official_toolchains",
+    "research_frontier",
+    "target_repository_current_source",
+    "prior_attempt_frontier_records",
+    "prior_layer31_capacity_results",
+    "prior_stream_only_layer1_layer2_results",
+    "opt013_retained_reference"
+  ],
+  "decision_impact": "Proceed with the bounded no-source C1 stream-only layer31 screen on the canonical 120000x8/cache_ratio=0.05/gen_len=100 harness using opt013 as reference; do not rerun the healthy baseline, Figure 13, source rebuilds, metadata staging, WaveBuffer core retuning, or broad stream-only/capacity variants.",
+  "frontier_as_of": "2026-07-30",
+  "material_updates": [
+    {
+      "action": "Stop repeating layer31 capacity-only and WaveBuffer core-count recovery variants.",
+      "finding": "opt021 layer31 capacity-only and opt028 async-wave capacity recovery reduced memory but failed throughput retention; prior core-count and buffer/scratch branches were already negative for this bounded planner scope.",
+      "impact": "The next bounded mechanism should remove layer31 GPU block-cache residency entirely through the existing stream-only path, not add another fractional capacity or core-count sweep."
+    },
+    {
+      "action": "Treat stream-only layer31 as a distinct low-hit block-cache residency-removal mechanism.",
+      "finding": "Layer1/layer2 stream-only negatives do not settle layer31 because opt021/opt028 showed layer31 can tolerate some cache reduction and is the current low-hit target, while `RETROINFER_STREAM_ONLY_LAYERS=31` changes residency/admission semantics by setting layer31 cache pages to zero.",
+      "impact": "Screen exactly C1: opt013 stack with `RETROINFER_STREAM_ONLY_LAYERS=31`, low6 capacity scale excluding layer31, and both async stream-only gather and async wave unset. Only if C1 is correctness-clean and narrowly misses throughput retention, screen C2 by enabling `RETROINFER_ASYNC_WAVE_BATCH_ACCESS=1` for the remaining cached layers."
+    },
+    {
+      "action": "Keep correctness and warning gates ahead of speed claims.",
+      "finding": "The canonical harness exposes raw `RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth`, `use_cuda_graph`, block-cache/peak-GPU memory, and raw logs where `Warning: retrieved pages exceeds max consider pages` must be counted even if summary counters miss it.",
+      "impact": "Promotion requires raw correctness true, use_cuda_graph true, lower block cache and peak process GPU memory, zero buffer-overflow warnings, and no decode/e2e regression versus opt013 before any two-round confirmation."
+    }
+  ],
+  "network_status": "online",
+  "queries": [
+    {
+      "channel": "online_target_repository",
+      "purpose": "Refresh public repository-level evidence for RetroInfer's GPU-CPU co-execution and block-cache/wave-buffer context before selecting a no-source streaming residency screen.",
+      "query": "Fetch https://github.com/River861/RetrievalAttention on 2026-07-30; the public README describes RetroInfer as GPU-CPU co-execution with wave index/wave buffer and notes CUDA 12.4 dependency expectations.",
+      "references": [
+        "https://github.com/River861/RetrievalAttention"
+      ]
+    },
+    {
+      "channel": "online_official_toolchains",
+      "purpose": "Refresh official PyTorch evidence for pinned-memory/non_blocking transfer and CUDA stream/event semantics relevant to existing async cluster-id copy and optional async-wave recovery.",
+      "query": "Fetch current PyTorch CUDA semantics and pinned-memory/non_blocking transfer docs on 2026-07-30.",
+      "references": [
+        "https://docs.pytorch.org/docs/2.13/notes/cuda.html",
+        "https://docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html"
+      ]
+    },
+    {
+      "channel": "target_repository_current_source",
+      "purpose": "Confirm the current Python stack already exposes stream-only layer selection, block-cache allocation removal for stream-only layers, low6 per-layer capacity scale, async-wave gating, and canonical telemetry without a CUDA/C++ rebuild or a new harness.",
+      "query": "Inspect cache_hub/retroinfer_cache.py and throughput_eval/reproduce_block_cache.py for RETROINFER_STREAM_ONLY_LAYERS, RETROINFER_LAYER_CACHE_CAPACITY_SCALE, RETROINFER_ASYNC_WAVE_BATCH_ACCESS, use_cuda_graph telemetry, and raw RETROINFER_OUTPUT_JSON correctness fields.",
+      "references": [
+        "cache_hub/retroinfer_cache.py",
+        "throughput_eval/reproduce_block_cache.py"
+      ]
+    },
+    {
+      "channel": "prior_attempt_evidence",
+      "purpose": "Differentiate opt029 from earlier negative mechanisms and select a bounded screen instead of repeating capacity/core/async-wave retuning.",
+      "query": "Compare opt029 stream-only layer31 block-cache removal against opt013 retained reference, opt017 layer2 stream-only/async split negative, opt018 layer1 stream-only negative, opt021 layer31 capacity-only negative, opt024 async-wave evidence, and opt028 async-wave layer31 capacity recovery negative.",
+      "references": [
+        "attempts/opt_attempt_013_uninitialized_late_block_cache_allocation/OUTCOME.json",
+        "attempts/opt_attempt_017_async_stream_only_gather_overlap/OUTCOME.json",
+        "attempts/opt_attempt_018_stream_only_layer1_latest_stack/OUTCOME.json",
+        "attempts/opt_attempt_021_layer31_conservative_capacity_frontier/OUTCOME.json",
+        "attempts/opt_attempt_024_async_wave_batch_access_overlap/OUTCOME.json",
+        "attempts/opt_attempt_028_async_wave_conservative_layer31_recovery/OUTCOME.json"
+      ]
+    }
+  ],
+  "record_id": "e9d0bfce74df080c",
+  "recorded_at": "2026-07-30T04:29:26.557558+00:00",
+  "schema_version": 1,
+  "searched_at": "2026-07-30T04:29:26.557474+00:00",
+  "sources": [
+    {
+      "relevance": "Public target repository README confirms RetroInfer's GPU-CPU co-execution, wave buffer, highly optimized CUDA kernels, and CUDA 12.4 dependency expectation.",
+      "source_type": "official_repo",
+      "title": "River861/RetrievalAttention",
+      "url": "https://github.com/River861/RetrievalAttention"
+    },
+    {
+      "relevance": "Current official CUDA semantics reference for stream/device behavior and asynchronous CUDA execution constraints used by the existing project mechanisms.",
+      "source_type": "official_docs",
+      "title": "PyTorch CUDA semantics",
+      "url": "https://docs.pytorch.org/docs/2.13/notes/cuda.html"
+    },
+    {
+      "relevance": "Current official transfer guidance relevant to the existing pinned side-stream metadata migration and async cluster-id copy paths.",
+      "source_type": "official_docs",
+      "title": "PyTorch pinned memory and non_blocking transfer tutorial",
+      "url": "https://docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html"
+    },
+    {
+      "relevance": "Repository source surface for stream-only layer selection, zero block-cache pages for stream-only layers, async-wave gating, late allocation, and telemetry; local measured file is captured separately in SOURCE_PROVENANCE.json.",
+      "source_type": "official_repo",
+      "title": "RetrievalAttention cache_hub/retroinfer_cache.py",
+      "url": "https://github.com/River861/RetrievalAttention/blob/main/cache_hub/retroinfer_cache.py"
+    },
+    {
+      "relevance": "Repository harness surface corresponding to the canonical local 120000x8 block-cache harness with raw logs, memory samples, use_cuda_graph, and exported block-cache/peak-memory metrics.",
+      "source_type": "official_repo",
+      "title": "RetrievalAttention throughput_eval/reproduce_block_cache.py",
+      "url": "https://github.com/River861/RetrievalAttention/blob/main/throughput_eval/reproduce_block_cache.py"
+    }
+  ],
+  "stage": "optimize",
+  "trigger": "mechanism_pivot_from_layer31_capacity_core_and_async_wave_recovery_to_stream_only_layer31_block_cache_removal"
+}

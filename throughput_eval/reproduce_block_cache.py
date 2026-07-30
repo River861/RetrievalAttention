@@ -72,7 +72,11 @@ except ModuleNotFoundError:
 
 MEMORY_JSON_RE = re.compile(r"BLOCK_CACHE_MEMORY_JSON=(\{.*\})")
 RETURNCODE_RE = re.compile(r"^# returncode:\s*(.+)$", re.MULTILINE)
-CACHE_PAGES_RE = re.compile(r"^Cache pages:\s*(?P<cache_pages>\d+),\s*Buffer pages:\s*(?P<buffer_pages>\d+)", re.MULTILINE)
+CACHE_PAGES_RE = re.compile(
+    r"^Cache pages:\s*(?P<cache_pages>\d+),\s*Buffer pages:\s*(?P<buffer_pages>\d+)"
+    r"(?:,\s*Buffer nprobe multiplier:\s*(?P<buffer_nprobe_multiplier>[0-9.eE+-]+))?",
+    re.MULTILINE,
+)
 INITIAL_CENTROIDS_RE = re.compile(
     r"^Initial n_centroids:\s*(?P<n_centroids>\d+),\s*nprobe:\s*(?P<nprobe>\d+),",
     re.MULTILINE,
@@ -93,6 +97,10 @@ BLOCK_CACHE_FIELDS = [
     "block_cache_retrieval_clusters",
     "block_cache_clusters_per_layer",
     "block_cache_pages_per_cluster",
+    "block_cache_pages_per_cluster_default",
+    "block_cache_pages_per_cluster_override_env",
+    "block_cache_pages_per_cluster_override_active",
+    "block_cache_pages_per_cluster_source",
     "block_cache_pages_per_layer",
     "block_cache_page_size_vectors",
     "block_cache_vectors_per_layer",
@@ -103,6 +111,288 @@ BLOCK_CACHE_FIELDS = [
     "block_cache_bytes_per_layer",
     "block_cache_total_bytes",
     "block_cache_total_gib",
+    "block_cache_nominal_pages_per_layer",
+    "block_cache_nominal_bytes_per_layer",
+    "block_cache_residency_mode",
+    "block_cache_capacity_scale_spec",
+    "block_cache_active_layer_count",
+    "block_cache_layer_pages",
+    "block_cache_layer_capacity_scales",
+    "block_cache_layer_bytes",
+    "buffer_nprobe_multiplier",
+    "buffer_nprobe_multiplier_env",
+    "buffer_pages_per_cluster",
+    "buffer_pages_per_cluster_floor",
+    "buffer_pages_per_cluster_floor_effective",
+    "buffer_pages_per_cluster_floor_env",
+    "buffer_pages_per_cluster_floor_active",
+    "buffer_pages_per_cluster_source",
+    "buffer_pages",
+    "buffer_min_pages",
+    "buffer_probe_pages",
+    "buffer_retrieval_clusters",
+    "wave_buffer_cpu_core_config_value",
+    "wave_buffer_cpu_core_effective",
+    "wave_buffer_cpu_core_override_env",
+    "wave_buffer_cpu_core_override_active",
+    "wave_buffer_cpu_core_source",
+    "execution_stride",
+    "block_cache_allocation_policy",
+    "block_cache_allocation_policy_env",
+    "block_cache_allocation_decision",
+    "block_cache_allocation_decision_reason",
+    "block_cache_free_memory_gib",
+    "block_cache_estimated_gpu_memory_gib",
+    "block_cache_preallocation_threshold_multiplier",
+    "block_cache_preallocation_threshold_gib",
+    "block_cache_auto_preallocate_before_prefill",
+    "block_cache_preallocated_before_prefill",
+    "block_cache_allocated_after_prefill",
+    "block_cache_allocation_prepare_cache_calls",
+    "block_cache_late_init_policy",
+    "block_cache_late_init_policy_env",
+    "block_cache_late_init_effective",
+    "block_cache_late_init_mode",
+    "block_cache_late_init_reason",
+    "block_cache_late_init_safety",
+    "block_cache_late_uninitialized_tensor_count",
+    "block_cache_late_uninitialized_bytes",
+    "block_cache_late_init_torch_deterministic_algorithms",
+    "block_cache_late_init_torch_fill_uninitialized_memory",
+    "block_cache_logical_total_pages",
+    "block_cache_logical_total_vectors",
+    "block_cache_logical_total_bytes",
+    "block_cache_slot_rotation_enabled",
+    "block_cache_slot_rotation_env",
+    "block_cache_slot_rotation_delta_enabled",
+    "block_cache_slot_rotation_delta_env",
+    "block_cache_slot_rotation_dirty_page_d2h_enabled",
+    "block_cache_slot_rotation_dirty_page_d2h_env",
+    "block_cache_slot_rotation_copy_mode",
+    "block_cache_slot_rotation_path_executed",
+    "block_cache_slot_rotation_allocation_status",
+    "block_cache_slot_rotation_allocation_error",
+    "block_cache_slot_rotation_initial_m_rationale",
+    "block_cache_gpu_slots_requested",
+    "block_cache_gpu_slots_env",
+    "block_cache_actual_gpu_slot_count",
+    "block_cache_actual_gpu_slot_count_le_m",
+    "block_cache_slot_rotation_cpu_owner_bytes",
+    "block_cache_slot_rotation_cpu_owner_pinned",
+    "block_cache_slot_rotation_cpu_owner_pinned_bytes",
+    "block_cache_slot_rotation_cpu_owner_pageable_bytes",
+    "block_cache_slot_rotation_host_meminfo",
+    "block_cache_slot_rotation_gpu_slot_bytes",
+    "block_cache_slot_rotation_gpu_slot_total_bytes",
+    "block_cache_slot_rotation_h2d_stream_count",
+    "block_cache_slot_rotation_d2h_stream_count",
+    "block_cache_slot_rotation_h2d_total_count",
+    "block_cache_slot_rotation_h2d_total_bytes",
+    "block_cache_slot_rotation_d2h_total_count",
+    "block_cache_slot_rotation_d2h_total_bytes",
+    "block_cache_slot_rotation_full_layer_h2d_total_count",
+    "block_cache_slot_rotation_full_layer_h2d_total_bytes",
+    "block_cache_slot_rotation_full_layer_d2h_total_count",
+    "block_cache_slot_rotation_full_layer_d2h_total_bytes",
+    "block_cache_slot_rotation_h2d_counts_by_layer",
+    "block_cache_slot_rotation_h2d_bytes_by_layer",
+    "block_cache_slot_rotation_d2h_counts_by_layer",
+    "block_cache_slot_rotation_d2h_bytes_by_layer",
+    "block_cache_slot_rotation_page_h2d_total_count",
+    "block_cache_slot_rotation_page_h2d_total_bytes",
+    "block_cache_slot_rotation_page_h2d_total_listed_pages",
+    "block_cache_slot_rotation_page_h2d_total_unique_pages",
+    "block_cache_slot_rotation_page_d2h_total_count",
+    "block_cache_slot_rotation_page_d2h_total_bytes",
+    "block_cache_slot_rotation_page_d2h_total_listed_pages",
+    "block_cache_slot_rotation_page_d2h_total_unique_pages",
+    "block_cache_slot_rotation_page_h2d_counts_by_layer",
+    "block_cache_slot_rotation_page_h2d_bytes_by_layer",
+    "block_cache_slot_rotation_page_h2d_listed_pages_by_layer",
+    "block_cache_slot_rotation_page_h2d_unique_pages_by_layer",
+    "block_cache_slot_rotation_page_d2h_counts_by_layer",
+    "block_cache_slot_rotation_page_d2h_bytes_by_layer",
+    "block_cache_slot_rotation_page_d2h_listed_pages_by_layer",
+    "block_cache_slot_rotation_page_d2h_unique_pages_by_layer",
+    "block_cache_slot_rotation_hit_page_materialization_count",
+    "block_cache_slot_rotation_dirty_page_flush_count",
+    "block_cache_slot_rotation_page_index_violation_count",
+    "block_cache_slot_rotation_prefetch_count",
+    "block_cache_slot_rotation_wraparound_prefetch_count",
+    "block_cache_slot_rotation_initial_prefetch_count",
+    "block_cache_slot_rotation_event_wait_count",
+    "block_cache_slot_rotation_wait_enqueue_elapsed_ms",
+    "block_cache_slot_rotation_explicit_sync_count",
+    "block_cache_slot_rotation_explicit_sync_elapsed_ms",
+    "block_cache_slot_rotation_final_pending_h2d_count",
+    "block_cache_slot_rotation_final_pending_d2h_count",
+    "block_cache_slot_rotation_final_pending_transfer_count",
+    "block_cache_slot_rotation_overwrite_prevention_count",
+    "block_cache_slot_rotation_dirty_read_prevention_count",
+    "block_cache_slot_rotation_generation_mismatch_count",
+    "block_cache_slot_rotation_violation_count",
+    "block_cache_slot_rotation_slot_states",
+    "block_cache_slot_rotation_layer_slot_generation",
+    "block_cache_slot_rotation_transition_count",
+    "block_cache_slot_rotation_transition_tail",
+    "block_cache_slot_rotation_cuda_graph_mode",
+    "block_cache_slot_rotation_cuda_graph_blocker_reason",
+    "scratch_buffer_init_policy",
+    "scratch_buffer_init_policy_env",
+    "scratch_buffer_init_effective",
+    "scratch_buffer_init_mode",
+    "scratch_buffer_init_reason",
+    "scratch_buffer_init_safety",
+    "scratch_buffer_uninitialized_tensor_count",
+    "scratch_buffer_uninitialized_bytes",
+    "scratch_buffer_uninitialized_by_name",
+    "scratch_buffer_init_torch_deterministic_algorithms",
+    "scratch_buffer_init_torch_fill_uninitialized_memory",
+    "stream_only_layers_enabled",
+    "stream_only_layers_env",
+    "stream_only_layer_count",
+    "stream_only_layers",
+    "stream_only_mode",
+    "stream_only_wave_buffer_admission",
+    "async_stream_only_gather_enabled",
+    "async_stream_only_gather_requested",
+    "async_stream_only_gather_env",
+    "async_stream_only_gather_disabled_reason",
+    "async_stream_only_gather_mode",
+    "async_stream_only_gather_stream_count",
+    "async_stream_only_gather_launch_count",
+    "async_stream_only_gather_eager_launch_count",
+    "async_stream_only_gather_cudagraph_launch_count",
+    "async_stream_only_gather_sync_count",
+    "async_stream_only_gather_pending_device_count",
+    "async_stream_only_gather_pending_layers",
+    "async_stream_only_gather_launch_elapsed_ms",
+    "async_stream_only_gather_wait_enqueue_elapsed_ms",
+    "async_stream_only_gather_sync_mode",
+    "async_stream_only_gather_launch_point",
+    "async_stream_only_gather_sync_point",
+    "async_stream_only_gather_overlap_window",
+    "async_stream_only_gather_last_sync_reason",
+    "async_stream_only_gather_uses_cuda_graph",
+    "async_stream_only_gather_split_cuda_graph",
+    "async_stream_only_gather_path_executed",
+    "async_cluster_id_copy_enabled",
+    "async_cluster_id_copy_env",
+    "async_cluster_id_copy_mode",
+    "async_cluster_id_copy_stream_count",
+    "async_cluster_id_copy_destination",
+    "async_cluster_id_copy_sync_point",
+    "async_cluster_id_copy_overlap_window",
+    "async_wave_batch_access_enabled",
+    "async_wave_batch_access_env",
+    "async_wave_batch_access_mode",
+    "async_wave_batch_access_thread_count",
+    "async_wave_batch_access_launch_count",
+    "async_wave_batch_access_sync_count",
+    "async_wave_batch_access_exception_count",
+    "async_wave_batch_access_pending_count",
+    "async_wave_batch_access_pending_layer",
+    "async_wave_batch_access_pending_device",
+    "async_wave_batch_access_launch_elapsed_ms",
+    "async_wave_batch_access_join_wait_ms",
+    "async_wave_batch_access_worker_elapsed_ms",
+    "async_wave_batch_access_cluster_id_wait_ms",
+    "async_wave_batch_access_batch_access_elapsed_ms",
+    "async_wave_batch_access_cluster_id_copy_async",
+    "async_wave_batch_access_launch_point",
+    "async_wave_batch_access_sync_point",
+    "async_wave_batch_access_overlap_window",
+    "async_wave_batch_access_last_sync_reason",
+    "async_wave_batch_access_path_executed",
+    "async_cache_admission_enabled",
+    "async_cache_admission_env",
+    "async_cache_admission_mode",
+    "async_cache_admission_stream_count",
+    "async_cache_admission_launch_count",
+    "async_cache_admission_sync_count",
+    "async_cache_admission_pending_device_count",
+    "async_cache_admission_pending_layers",
+    "async_cache_admission_launch_elapsed_ms",
+    "async_cache_admission_wait_enqueue_elapsed_ms",
+    "async_cache_admission_sync_mode",
+    "async_cache_admission_sync_point",
+    "async_cache_admission_overlap_window",
+    "async_cache_admission_last_sync_reason",
+    "async_cache_admission_uses_cuda_graph_update",
+    "index_metadata_staging_enabled",
+    "index_metadata_prefill_residency",
+    "index_metadata_prefill_residency_env",
+    "index_metadata_prefill_residency_effective",
+    "index_metadata_prefill_residency_reason",
+    "index_metadata_prefill_gpu_bytes",
+    "index_metadata_prefill_cpu_bytes",
+    "index_metadata_prefill_host_pinned_bytes",
+    "index_metadata_current_gpu_bytes",
+    "index_metadata_current_cpu_bytes",
+    "index_metadata_current_host_pinned_bytes",
+    "index_metadata_staged_layers_env",
+    "index_metadata_staged_layer_count",
+    "index_metadata_staged_layers",
+    "index_metadata_layer_bytes",
+    "index_metadata_nominal_persistent_gpu_bytes",
+    "index_metadata_persistent_gpu_bytes",
+    "index_metadata_stage_buffer_bytes",
+    "index_metadata_gpu_resident_bytes",
+    "index_metadata_gpu_bytes_saved_vs_nominal",
+    "index_metadata_host_pinned_bytes",
+    "index_metadata_stage_stream_count",
+    "index_metadata_stage_loaded_layers",
+    "index_metadata_stage_prefetch_count",
+    "index_metadata_stage_sync_count",
+    "index_metadata_stage_copy_bytes",
+    "index_metadata_stage_mode",
+    "index_metadata_stage_copy_mode",
+    "index_metadata_stage_sync_point",
+    "index_metadata_stage_prefetch_policy",
+    "index_metadata_cuda_graph_behavior",
+    "index_metadata_late_migration_policy",
+    "index_metadata_late_migration_policy_env",
+    "index_metadata_late_migration_enabled",
+    "index_metadata_late_migration_host_pinned",
+    "index_metadata_late_migration_non_blocking",
+    "index_metadata_late_migration_copy_mode",
+    "index_metadata_late_migration_sync_point",
+    "index_metadata_late_migration_stream_count",
+    "index_metadata_late_migration_copy_count",
+    "index_metadata_late_migration_copy_bytes",
+    "index_metadata_late_migration_source_cpu_bytes",
+    "index_metadata_late_migration_source_host_pinned_bytes",
+    "index_metadata_late_migration_sync_count",
+    "index_metadata_late_migration_elapsed_ms",
+    "index_metadata_late_migration_copy_launch_elapsed_ms",
+    "index_metadata_late_migration_sync_wait_ms",
+    "index_metadata_late_migration_prepare_window_elapsed_ms",
+    "index_metadata_late_migration_elapsed_scope",
+]
+
+RETROINFER_ENV_FIELDS = [
+    "RETROINFER_ASYNC_CLUSTER_ID_COPY",
+    "RETROINFER_INDEX_METADATA_PREFILL_RESIDENCY",
+    "RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY",
+    "RETROINFER_STAGE_INDEX_METADATA_LAYERS",
+    "RETROINFER_STREAM_ONLY_LAYERS",
+    "RETROINFER_LAYER_CACHE_CAPACITY_SCALE",
+    "RETROINFER_LAYER_CACHE_RESIDENCY",
+    "RETROINFER_BUFFER_NPROBE_MULTIPLIER",
+    "RETROINFER_BUFFER_PAGES_PER_CLUSTER_FLOOR",
+    "RETROINFER_WAVE_BUFFER_CORE_OVERRIDE",
+    "RETROINFER_PAGES_PER_CLUSTER_OVERRIDE",
+    "RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY",
+    "RETROINFER_LATE_BLOCK_CACHE_INIT",
+    "RETROINFER_SCRATCH_BUFFER_INIT",
+    "RETROINFER_ASYNC_CACHE_ADMISSION",
+    "RETROINFER_ASYNC_STREAM_ONLY_GATHER",
+    "RETROINFER_ASYNC_WAVE_BATCH_ACCESS",
+    "RETROINFER_CACHE_TELEMETRY",
+    "RETROINFER_BLOCK_CACHE_SLOT_ROTATION",
+    "RETROINFER_BLOCK_CACHE_GPU_SLOTS",
+    "RETROINFER_BLOCK_CACHE_SLOT_ROTATION_DELTA",
+    "RETROINFER_BLOCK_CACHE_SLOT_ROTATION_DIRTY_PAGE_D2H",
 ]
 
 DERIVED_MEMORY_FIELDS = [
@@ -390,11 +680,20 @@ def parse_block_cache_log_hints(text: str) -> dict[str, Any]:
     config = parse_retroinfer_config_log_text(cleaned)
     config_n_centroids = int_or_none(config.get("n_centroids"))
     config_pages_per_cluster = int_or_none(config.get("pages_per_cluster"))
+    config_pages_per_cluster_default = int_or_none(config.get("pages_per_cluster_default"))
     config_cache_ratio = number_or_none(config.get("cache_ratio"))
     if config_n_centroids is not None:
         hints["block_cache_index_clusters"] = config_n_centroids
     if config_pages_per_cluster is not None:
         hints["block_cache_pages_per_cluster"] = config_pages_per_cluster
+    if config_pages_per_cluster_default is not None:
+        hints["block_cache_pages_per_cluster_default"] = config_pages_per_cluster_default
+    if "pages_per_cluster_override_env" in config:
+        hints["block_cache_pages_per_cluster_override_env"] = config.get("pages_per_cluster_override_env")
+    if "pages_per_cluster_override_active" in config:
+        hints["block_cache_pages_per_cluster_override_active"] = config.get("pages_per_cluster_override_active")
+    if "pages_per_cluster_source" in config:
+        hints["block_cache_pages_per_cluster_source"] = config.get("pages_per_cluster_source")
     if config_cache_ratio is not None:
         hints["block_cache_ratio"] = config_cache_ratio
         hints["block_cache_source"] = "cache_ratio" if config_cache_ratio > 0.0 else "retrieval_budget_default"
@@ -407,7 +706,12 @@ def parse_block_cache_log_hints(text: str) -> dict[str, Any]:
     cache_pages_match = CACHE_PAGES_RE.search(cleaned)
     if cache_pages_match:
         cache_pages = int(cache_pages_match.group("cache_pages"))
+        buffer_pages = int(cache_pages_match.group("buffer_pages"))
         hints["block_cache_pages_per_layer"] = cache_pages
+        hints["buffer_pages"] = buffer_pages
+        buffer_nprobe_multiplier = cache_pages_match.group("buffer_nprobe_multiplier")
+        if buffer_nprobe_multiplier is not None:
+            hints["buffer_nprobe_multiplier"] = float(buffer_nprobe_multiplier)
         pages_per_cluster = int_or_none(hints.get("block_cache_pages_per_cluster"))
         if pages_per_cluster:
             hints["block_cache_clusters_per_layer"] = cache_pages // pages_per_cluster
@@ -601,6 +905,10 @@ def command_for_run(run: dict[str, Any], args: argparse.Namespace) -> list[str]:
     return command
 
 
+def retroinfer_env_metadata() -> dict[str, str]:
+    return {name: os.environ.get(name, "unset") for name in RETROINFER_ENV_FIELDS}
+
+
 def make_run(
     args: argparse.Namespace,
     context_len: int,
@@ -659,6 +967,7 @@ def run_one(run: dict[str, Any], args: argparse.Namespace, output_dir: Path) -> 
     log_path = logs_dir / f"{run['run_id']}.txt"
     sample_path = samples_dir / f"{run['run_id']}.jsonl"
     command = command_for_run(run, args)
+    retroinfer_env = retroinfer_env_metadata()
     env = os.environ.copy()
     env["CUDA_VISIBLE_DEVICES"] = args.cuda_visible_devices
     env["PYTHONUNBUFFERED"] = "1"
@@ -673,6 +982,7 @@ def run_one(run: dict[str, Any], args: argparse.Namespace, output_dir: Path) -> 
         log.write(f"# cwd: {THROUGHPUT_DIR}\n")
         log.write(f"# command: {shlex.join(command)}\n")
         log.write(f"# CUDA_VISIBLE_DEVICES: {args.cuda_visible_devices}\n\n")
+        log.write(f"# retroinfer_env: {json.dumps(retroinfer_env, sort_keys=True)}\n\n")
         log.flush()
         if args.dry_run:
             log.write("# dry_run: command was not executed\n")
@@ -1573,7 +1883,8 @@ def write_report(
 
 
 def write_config(output_dir: Path, args: argparse.Namespace, runs: list[dict[str, Any]]) -> dict[str, Any]:
-    commands = [{**run, "command": command_for_run(run, args)} for run in runs]
+    retroinfer_env = retroinfer_env_metadata()
+    commands = [{**run, "command": command_for_run(run, args), "retroinfer_env": retroinfer_env} for run in runs]
     context_batch_groups = selected_context_batch_groups(args)
     config = {
         "artifact_schema_version": ARTIFACT_SCHEMA_VERSION,
@@ -1592,6 +1903,7 @@ def write_config(output_dir: Path, args: argparse.Namespace, runs: list[dict[str
         "use_cuda_graph": args.use_cuda_graph,
         "retrieval_budget": args.retrieval_budget,
         "estimation_budget": args.estimation_budget,
+        "retroinfer_env": retroinfer_env,
         "cache_ratios": args.cache_ratios or parse_float_list(DEFAULT_CACHE_RATIOS),
         "baseline_cache_ratio": args.baseline_cache_ratio,
         "dry_run": args.dry_run,

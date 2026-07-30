@@ -1,0 +1,8 @@
+# opt022 frontier check
+generated_at=2026-07-30T01:20:22+00:00
+frontier watch: fresh optimize check for Python-only scratch empty policy
+network_status=online
+checked_surfaces=official_toolchains,target_repository,prior_attempt_evidence
+official_docs=torch.empty uninitialized data; torch.utils.deterministic.fill_uninitialized_memory; CUDA graph capture/replay troubleshooting
+material_updates=torch.empty must remain write-before-read; CUDA graphs require static tensors to be overwritten before replay reads
+decision_impact=Proceed with default-off RETROINFER_SCRATCH_BUFFER_INIT=uninitialized limited to decode scratch outputs; compare against opt013 and stop if correctness or throughput gate fails.

@@ -1,0 +1,4 @@
+candidate_id,wave_buffer_core_override,rounds,context_len,batch_size,gen_len,cache_ratio,seed,env_stack,output_dir,status,gate_reason
+core16_screen,16,1,120000,8,100,0.05,2025,opt023_lower_memory,attempts/opt_attempt_025_wavebuffer_core_tuning_lower_memory/raw/core16_screen_120k_b8_cr0p05,fail_one_round,decode_regressed_vs_opt013
+core12_screen,12,1,120000,8,100,0.05,2025,opt023_lower_memory,attempts/opt_attempt_025_wavebuffer_core_tuning_lower_memory/raw/core12_screen_120k_b8_cr0p05,fail_one_round,e2e_regressed_vs_opt013
+core8_screen,8,1,120000,8,100,0.05,2025,opt023_lower_memory,attempts/opt_attempt_025_wavebuffer_core_tuning_lower_memory/raw/core8_screen_120k_b8_cr0p05,fail_one_round,e2e_regressed_vs_opt013

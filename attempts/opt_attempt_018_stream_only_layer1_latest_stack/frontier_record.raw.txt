@@ -1,0 +1,67 @@
+{
+  "checked_surfaces": [
+    "target_repository",
+    "prior_attempt_artifacts",
+    "research_frontier",
+    "official_toolchains"
+  ],
+  "decision_impact": "Proceed with the project-native stream-only fused gather path for only layer 1, excluding layer 1 from RETROINFER_LAYER_CACHE_CAPACITY_SCALE and reusing the opt013 stack. No new source mechanism or CUDA/C++ rebuild is warranted for this bounded node.",
+  "frontier_as_of": "2026-07-29",
+  "material_updates": [],
+  "network_status": "online",
+  "no_material_update": true,
+  "queries": [
+    {
+      "channel": "web_search",
+      "purpose": "Check whether the layer-wise stream-only residency pivot requires a different mechanism than the project-native fused gather path.",
+      "query": "recent LLM KV cache offloading streaming layer-wise residency GPU memory throughput tradeoffs 2026"
+    },
+    {
+      "channel": "target_repository",
+      "purpose": "Confirm the existing code can disable layer-1 GPU block-cache residency while leaving opt013 late-allocation stack intact.",
+      "query": "RETROINFER_STREAM_ONLY_LAYERS and RETROINFER_LAYER_CACHE_CAPACITY_SCALE in cache_hub/retroinfer_cache.py"
+    }
+  ],
+  "schema_version": 1,
+  "searched_at": "2026-07-29T23:33:00Z",
+  "sources": [
+    {
+      "relevance": "Existing RETROINFER_STREAM_ONLY_LAYERS sets per-layer cache_pages=0 and uses direct fused cluster gather from CPU/list KV, bypassing WaveBuffer GPU cache admission for selected layers.",
+      "source_type": "target_repo",
+      "title": "cache_hub/retroinfer_cache.py stream-only fused gather implementation",
+      "url": "cache_hub/retroinfer_cache.py"
+    },
+    {
+      "relevance": "Layer 1 was the largest hit-rate outlier in the certified telemetry probe, motivating this bounded layer-1 residency test.",
+      "source_type": "prior_artifact",
+      "title": "Layer-cache telemetry probe 120k/b8/cr0.05",
+      "url": "attempts/opt_attempt_001_layer_cache_residency/telemetry_probe_120k_b8_cr0p05/results.jsonl"
+    },
+    {
+      "relevance": "Prior stream-only layer 2 and async stream-only gather are negative controls, not candidates to repeat.",
+      "source_type": "prior_artifact",
+      "title": "opt017 async stream-only gather overlap refutation",
+      "url": "attempts/opt_attempt_017_async_stream_only_gather_overlap/OUTCOME.json"
+    },
+    {
+      "relevance": "Contemporary KV-cache systems emphasize tiered residency and batched data movement, consistent with testing residency choices rather than inventing new gather infrastructure here.",
+      "source_type": "external_frontier",
+      "title": "LMCache KV cache management/offloading references",
+      "url": "https://github.com/LMCache/LMCache"
+    },
+    {
+      "relevance": "Confirms the broader memory/throughput tradeoff framing for KV-cache offload and residency decisions.",
+      "source_type": "external_frontier",
+      "title": "NVIDIA CPU-GPU memory sharing for KV-cache offload",
+      "url": "https://developer.nvidia.com/blog/accelerate-large-scale-llm-inference-and-kv-cache-offload-with-cpu-gpu-memory-sharing/"
+    },
+    {
+      "relevance": "Tracks layer-wise/head-wise/tiered KV-cache management as an active systems direction.",
+      "source_type": "external_frontier",
+      "title": "Awesome KV Cache Management index",
+      "url": "https://github.com/TreeAI-Lab/Awesome-KV-Cache-Management"
+    }
+  ],
+  "stage": "optimize",
+  "trigger": "mechanism_pivot_to_layer1_stream_only_block_cache_residency"
+}

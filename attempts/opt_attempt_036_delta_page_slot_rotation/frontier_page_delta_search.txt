@@ -1,0 +1,12 @@
+Fresh frontier search recorded for opt036 after opt035's full-layer PCIe bottleneck.
+
+Query focus: page/block-granular KV-cache offload and delta transfer between pinned CPU memory and GPU for LLM inference, with emphasis on moving only needed or dirty KV pages instead of whole per-layer KV tensors.
+
+Findings:
+- vLLM KV offloading and PagedAttention organize KV cache at block/page granularity and asynchronously offload/promote blocks between GPU and CPU memory instead of moving whole layers. Sources surfaced: https://docs.vllm.ai/en/latest/features/kv_offloading_usage/ and https://docs.vllm.ai/projects/ascend/en/latest/user_guide/feature_guide/kv_cache_cpu_offload.html.
+- LMCache is a KV-cache orchestration layer for vLLM/SGLang-style inference stacks that exposes block-level lookup, pinning, transfer, and cleanup, including CPU/GPU and distributed KV movement. Sources surfaced: https://arxiv.org/abs/2510.09665 and https://arxiv.org/pdf/2510.09665.
+- vLLM production-stack documentation describes CPU KV offload in deployment terms and reinforces block/page movement as the production mechanism. Source surfaced: https://github.com/vllm-project/production-stack/blob/main/tutorials/05-offload-kv-cache.md.
+- llm-d-kv-cache and KServe/vLLM offload docs indicate current serving stacks are converging on cache-aware routing and block/page transfer rather than layer-wide KV movement. Sources surfaced: https://github.com/llm-d/llm-d-kv-cache and https://kserve.github.io/website/docs/model-serving/generative-inference/kvcache-offloading.
+- NVIDIA Grace/Blackwell CPU-GPU memory-sharing material supports the broader direction of page-granular CPU/GPU KV movement, though opt036 intentionally keeps explicit stream/event/generation ownership rather than switching to unified-memory-only behavior. Source surfaced: https://developer.nvidia.com/blog/accelerate-large-scale-llm-inference-and-kv-cache-offload-with-cpu-gpu-memory-sharing/.
+
+Conclusion for this attempt: opt035's full-layer rotation should not be reused as a speed candidate. The frontier supports a distinct page-delta mechanism: keep CPU as full-KV owner, keep fixed GPU slot addresses, materialize only WaveBuffer hit pages before gather, and flush only dirty update pages after admission.

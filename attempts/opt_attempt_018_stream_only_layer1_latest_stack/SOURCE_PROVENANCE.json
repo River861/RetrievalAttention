@@ -1,0 +1,48 @@
+{
+  "attempt_id": "opt_attempt_018_stream_only_layer1_latest_stack",
+  "candidate_behavior": "Environment-only use of existing RETROINFER_STREAM_ONLY_LAYERS=1 to bypass GPU block-cache residency/admission for layer 1.",
+  "changed_source_surfaces": [],
+  "git_status_short_at_packaging": [
+    " M cache_hub/retroinfer_cache.py",
+    " M model_hub/llama.py",
+    " M research/PIPELINE_STATE.json",
+    " M throughput_eval/reproduce_block_cache.py",
+    "?? RESULTS.md",
+    "?? attempts/",
+    "?? research/BASELINE_PROTOCOL.md",
+    "?? research/BASELINE_RESULT.json",
+    "?? research/ENVIRONMENT_AUDIT.json",
+    "?? research/ENVIRONMENT_AUDIT.md",
+    "?? research/FRONTIER_WATCH.jsonl",
+    "?? research/GROUND_TRUTH.md",
+    "?? research/INFRASTRUCTURE_REUSE_PLAN.md",
+    "?? research/KERNEL_SCOPE.md",
+    "?? research/PROJECT_NATIVE_SETUP.md",
+    "?? research/TOOLCHAIN_CANDIDATES.md",
+    "?? research/VALIDATION_MATRIX.md",
+    "?? research/VALIDATION_RESULT.json",
+    "?? research/baseline_block_cache_single_a100_120k_b8_cr0p05/",
+    "?? research/frontier/",
+    "?? research/validation_fractional_layer_capacity_120k_b8_cr0p05/",
+    "?? research/validation_layer_cache_residency_120k_b8_cr0p05/",
+    "?? research/validation_low6_async_buffer_mult_3p0_120k_b8_cr0p05/",
+    "?? research/validation_low6_async_cluster_id_copy_120k_b8_cr0p05/",
+    "?? research/validation_low6_multilayer_fractional_capacity_120k_b8_cr0p05/"
+  ],
+  "no_cuda_cpp_rebuild": true,
+  "provenance_file": "attempts/opt_attempt_018_stream_only_layer1_latest_stack/NO_SOURCE_CHANGES.md",
+  "repository_head": "7096eab9190da389bbc75c1992140d1432d9d8ec",
+  "reused_source_surfaces": [
+    "cache_hub/retroinfer_cache.py",
+    "throughput_eval/reproduce_block_cache.py",
+    "throughput_eval/test.py"
+  ],
+  "schema_version": 1,
+  "source_changes_introduced_by_attempt": false,
+  "source_rebuild_status": {
+    "execution_status": "blocked_for_source_rebuild",
+    "failure_class": "environment_rebuild_toolchain_cuda_version_mismatch",
+    "idea_status": "not_evaluated",
+    "notes": "Fresh audit used installed cu124 Python/runtime extensions. Proven compiler paths are not CUDA 12.4-compatible for a source rebuild, and CUDA/C++ rebuild is a non-goal for this node."
+  }
+}

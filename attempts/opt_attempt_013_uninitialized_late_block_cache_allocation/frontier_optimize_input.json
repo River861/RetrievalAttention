@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "stage": "optimize",
+  "trigger": "mechanism_pivot_to_uninitialized_late_block_cache_allocation",
+  "frontier_as_of": "2026-07-29",
+  "network_status": "online",
+  "checked_surfaces": [
+    "target_repository",
+    "official_toolchains",
+    "research_frontier",
+    "adjacent_implementations"
+  ],
+  "queries": [
+    {
+      "channel": "web_search",
+      "purpose": "Refresh optimize-stage evidence for replacing zero-filled late GPU block-cache allocation with uninitialized allocation only when every cache slot is written by WaveBuffer admission before any cache-hit read.",
+      "query": "Official PyTorch documentation for torch.empty uninitialized tensor allocation on CUDA versus torch.zeros, deterministic fill_uninitialized_memory behavior, and safety requirements when tensors are fully written before read."
+    },
+    {
+      "channel": "web_fetch",
+      "purpose": "Confirm official torch.empty, torch.zeros, and uninitialized-memory determinism semantics.",
+      "query": "Fetch official PyTorch torch.empty, torch.zeros, and reproducibility notes for filling uninitialized memory.",
+      "urls": [
+        "https://docs.pytorch.org/docs/2.13/generated/torch.empty.html",
+        "https://docs.pytorch.org/docs/2.13/generated/torch.zeros.html",
+        "https://docs.pytorch.org/docs/2.13/notes/randomness.html#filling-uninitialized-memory"
+      ]
+    }
+  ],
+  "material_updates": [
+    {
+      "action": "Evaluate an opt-in torch.empty allocation policy only for forced-late GPU block-cache K/V tensors.",
+      "finding": "PyTorch documents torch.empty as returning uninitialized data, while torch.zeros returns scalar-zero-filled tensors. PyTorch also documents that using uninitialized memory as input is invalid; it is performance-motivated only when the program is valid and does not read uninitialized memory.",
+      "impact": "The candidate must remain default-off, must keep unset/default zero-filled behavior, and must restrict uninitialized allocation to cache_keys/cache_values allocated in prepare_cache() after prefill. The safety argument depends on WaveBufferCPU descriptors initializing clusters as misses and setting inBlockCache only when gather_copy_and_scatter writes admitted blocks."
+    },
+    {
+      "action": "Keep opt012 as the memory/throughput reference stack.",
+      "finding": "opt012 preserved opt010-like block cache and peak process GPU memory (5673.0 MiB block cache, 29884 MiB peak) while improving decode throughput versus opt010 through pinned side-stream late metadata migration.",
+      "impact": "The opt013 measurement should reuse the opt012 environment and compare against research/BASELINE_RESULT.json plus opt010/opt011/opt012 artifacts without rerunning the healthy baseline."
+    }
+  ],
+  "decision_impact": "Proceed with a Python-only, default-off late block-cache init policy. Retain the idea only if two real-hardware rounds preserve correctness and opt012-like memory while improving e2e or decode throughput; otherwise mark it refuted or inconclusive without claiming a speedup from allocation semantics alone.",
+  "sources": [
+    {
+      "source_type": "official_repo",
+      "title": "River861/RetrievalAttention",
+      "url": "https://github.com/River861/RetrievalAttention",
+      "relevance": "cache_hub/retroinfer_cache.py shows forced-late cache_keys/cache_values allocation in prepare_cache(); WaveBufferCPU starts clusters as misses and admits cache entries only after GPU scatter writes."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch torch.empty",
+      "url": "https://docs.pytorch.org/docs/2.13/generated/torch.empty.html",
+      "relevance": "Documents that torch.empty returns tensors filled with uninitialized data and may be deterministically filled only under deterministic safety settings."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch torch.zeros",
+      "url": "https://docs.pytorch.org/docs/2.13/generated/torch.zeros.html",
+      "relevance": "Documents the default-safe zero-filled allocation behavior that must remain preserved when opt013 is unset."
+    },
+    {
+      "source_type": "official_docs",
+      "title": "PyTorch reproducibility: filling uninitialized memory",
+      "url": "https://docs.pytorch.org/docs/2.13/notes/randomness.html#filling-uninitialized-memory",
+      "relevance": "States that using uninitialized memory as input is invalid, but skipping fill can improve performance when the program does not use uninitialized memory as an operation input."
+    }
+  ],
+  "candidate": {
+    "name": "uninitialized_late_block_cache_allocation",
+    "node_key": "opt013_uninitialized_late_block_cache_allocation",
+    "shape": "context_len=120000,batch_size=8,gen_len=100,cache_ratio=0.05,rounds=2,seed=2025,A100_80GB",
+    "environment": {
+      "RETROINFER_BLOCK_CACHE_ALLOCATION_POLICY": "late",
+      "RETROINFER_LATE_INDEX_METADATA_MIGRATION_POLICY": "pinned_side_stream",
+      "RETROINFER_LATE_BLOCK_CACHE_INIT": "uninitialized",
+      "RETROINFER_ASYNC_CLUSTER_ID_COPY": "1",
+      "RETROINFER_LAYER_CACHE_CAPACITY_SCALE": "1=0.75,2-3=0.75,25=0.75,28-29=0.75",
+      "RETROINFER_BUFFER_NPROBE_MULTIPLIER": "3.0",
+      "RETROINFER_INDEX_METADATA_PREFILL_RESIDENCY": "unset",
+      "RETROINFER_STAGE_INDEX_METADATA_LAYERS": "unset",
+      "RETROINFER_STREAM_ONLY_LAYERS": "unset",
+      "RETROINFER_LAYER_CACHE_RESIDENCY": "unset",
+      "RETROINFER_CACHE_TELEMETRY": "unset"
+    }
+  }
+}

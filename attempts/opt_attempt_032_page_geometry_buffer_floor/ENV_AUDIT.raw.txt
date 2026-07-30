@@ -1,0 +1,90 @@
+# env_audit opt032 2026-07-30T05:57:36Z
+## git_status_before
+ M cache_hub/retroinfer_cache.py
+ M config/config.py
+ M model_hub/llama.py
+ M research/PIPELINE_STATE.json
+ M throughput_eval/reproduce_block_cache.py
+?? RESULTS.md
+?? attempts/
+?? research/BASELINE_PROTOCOL.md
+?? research/BASELINE_RESULT.json
+?? research/ENVIRONMENT_AUDIT.json
+?? research/ENVIRONMENT_AUDIT.md
+?? research/FRONTIER_WATCH.jsonl
+?? research/GROUND_TRUTH.md
+?? research/INFRASTRUCTURE_REUSE_PLAN.md
+?? research/KERNEL_SCOPE.md
+?? research/PROJECT_NATIVE_SETUP.md
+?? research/TOOLCHAIN_CANDIDATES.md
+?? research/VALIDATION_MATRIX.md
+?? research/VALIDATION_RESULT.json
+?? research/baseline_block_cache_single_a100_120k_b8_cr0p05/
+?? research/frontier/
+?? research/validation_fractional_layer_capacity_120k_b8_cr0p05/
+?? research/validation_layer_cache_residency_120k_b8_cr0p05/
+?? research/validation_low6_async_buffer_mult_3p0_120k_b8_cr0p05/
+?? research/validation_low6_async_cluster_id_copy_120k_b8_cr0p05/
+?? research/validation_low6_multilayer_fractional_capacity_120k_b8_cr0p05/
+
+## python_runtime
+Python 3.11.15 (main, Mar  3 2026, 09:26:23) [GCC 13.3.0]
+/home/v-xuchuanluo/RetroInfer/.venv/lib/python3.11/site-packages/transformers/utils/hub.py:106: FutureWarning: Using `TRANSFORMERS_CACHE` is deprecated and will be removed in v5 of Transformers. Use `HF_HOME` instead.
+  warnings.warn(
+{
+  "cwd": "/home/v-xuchuanluo/RetroInfer",
+  "env": {
+    "CUDA_HOME": null,
+    "CUDA_VISIBLE_DEVICES": "0",
+    "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+  },
+  "executable": "/home/v-xuchuanluo/RetroInfer/.venv/bin/python",
+  "flash_attn": "2.7.3",
+  "flashinfer": "0.2.4+cu124torch2.5",
+  "platform": "Linux-6.17.0-1020-azure-x86_64-with-glibc2.39",
+  "pybind11": "2.12.0",
+  "retroinfer_kernels": {
+    "ThreadPool": true,
+    "WaveBufferCPU": true,
+    "batch_gemm_softmax": true,
+    "gather_copy_and_concat": true,
+    "gather_copy_and_scatter": true,
+    "gather_copy_vectors": true
+  },
+  "torch": {
+    "cuda_available": true,
+    "cuda_version": "12.4",
+    "device0_capability": [
+      8,
+      0
+    ],
+    "device0_name": "NVIDIA A100 80GB PCIe",
+    "device_count": 1,
+    "pinned_h2d_smoke_numel": 1024,
+    "version": "2.5.1+cu124"
+  },
+  "transformers": "4.49.0",
+  "triton": "3.1.0",
+  "version": "3.11.15 (main, Mar  3 2026, 09:26:23) [GCC 13.3.0]",
+  "vllm": "0.6.5",
+  "weighted_flash_decoding": "0.1"
+}
+
+## nvidia_smi
+Field "cuda_version" is not a valid field to query.
+
+
+## compiler_probe
+/usr/bin/nvcc
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2023 NVIDIA Corporation
+Built on Fri_Jan__6_16:45:21_PST_2023
+Cuda compilation tools, release 12.0, V12.0.140
+Build cuda_12.0.r12.0/compiler.32267302_0
+/usr/local/cuda-13.3/bin/nvcc
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2026 NVIDIA Corporation
+Built on Tue_Jun_09_02:43:40_PM_PDT_2026
+Cuda compilation tools, release 13.3, V13.3.73
+Build cuda_13.3.r13.3/compiler.38244171_0
+torch.utils.cpp_extension.CUDA_HOME=/usr

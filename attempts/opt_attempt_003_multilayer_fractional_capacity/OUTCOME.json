@@ -1,0 +1,1176 @@
+{
+  "attempt_id": "opt_attempt_003_multilayer_fractional_capacity",
+  "baseline": {
+    "block_cache_total_gib": 5.8125,
+    "block_cache_total_mib": 5952.0,
+    "correctness": true,
+    "decode_throughput_tokens_s": 198.8364143870935,
+    "e2e_generated_tokens_per_s": 3.277045618,
+    "peak_process_gpu_memory_mib": 41960.0,
+    "source": "research/BASELINE_RESULT.json"
+  },
+  "baseline_identity": "research/BASELINE_RESULT.json canonical 120000x8/cache_ratio=0.05 baseline at repository HEAD 7096eab9190da389bbc75c1992140d1432d9d8ec on A100 80GB with PyTorch CUDA 12.4; correctness pass with RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth=true.",
+  "candidate_identity": "Working tree at repository HEAD 7096eab9190da389bbc75c1992140d1432d9d8ec; reused existing Python-only RETROINFER_LAYER_CACHE_CAPACITY_SCALE and RETROINFER_CACHE_TELEMETRY runtime controls with no CUDA/C++ rebuild. Diff sha256 for cache_hub/retroinfer_cache.py and throughput_eval/reproduce_block_cache.py is 86c09205e792db488b390f146cc6540cdcc713eba54579ce51e8ea9f7b8e6d61; this attempt adds only optimize frontier/outcome artifacts and measured raw outputs.",
+  "candidate_matrix": [
+    {
+      "cache_hit_impact_vs_telemetry_baseline": {
+        "reference_source": "attempts/opt_attempt_001_layer_cache_residency/telemetry_probe_120k_b8_cr0p05/results.jsonl",
+        "target_layers": {
+          "1": {
+            "baseline_hit_rate_units": 0.7376961131046624,
+            "baseline_miss_num_units": 486905,
+            "candidate_hit_rate_units": 0.7088526790860736,
+            "candidate_miss_num_units": 540469,
+            "delta_hit_rate_units": -0.0288434340185888,
+            "delta_miss_num_units": 53564
+          },
+          "2": {
+            "baseline_hit_rate_units": 0.8890055747241795,
+            "baseline_miss_num_units": 221741,
+            "candidate_hit_rate_units": 0.8890570212212147,
+            "candidate_miss_num_units": 221638,
+            "delta_hit_rate_units": 5.144649703514581e-05,
+            "delta_miss_num_units": -103
+          },
+          "25": {
+            "baseline_hit_rate_units": 0.8832780891908495,
+            "baseline_miss_num_units": 210333,
+            "candidate_hit_rate_units": 0.8527032921659968,
+            "candidate_miss_num_units": 265416,
+            "delta_hit_rate_units": -0.030574797024852662,
+            "delta_miss_num_units": 55083
+          },
+          "28": {
+            "baseline_hit_rate_units": 0.8970980460613223,
+            "baseline_miss_num_units": 183918,
+            "candidate_hit_rate_units": 0.8972413704358295,
+            "candidate_miss_num_units": 183668,
+            "delta_hit_rate_units": 0.00014332437450725877,
+            "delta_miss_num_units": -250
+          },
+          "29": {
+            "baseline_hit_rate_units": 0.8807853510906837,
+            "baseline_miss_num_units": 210823,
+            "candidate_hit_rate_units": 0.8542697085439412,
+            "candidate_miss_num_units": 257694,
+            "delta_hit_rate_units": -0.026515642546742435,
+            "delta_miss_num_units": 46871
+          },
+          "3": {
+            "baseline_hit_rate_units": 0.896220458582892,
+            "baseline_miss_num_units": 188693,
+            "candidate_hit_rate_units": 0.8961697124218304,
+            "candidate_miss_num_units": 188797,
+            "delta_hit_rate_units": -5.0746161061598904e-05,
+            "delta_miss_num_units": 104
+          }
+        },
+        "total": {
+          "candidate": 0.9261336708609135,
+          "delta": -0.0025686147536350123,
+          "delta_pct": -0.27658107376523655,
+          "reference": 0.9287022856145485
+        }
+      },
+      "candidate_id": "low3_scale0p75",
+      "capacity_spec": "1=0.75,25=0.75,29=0.75",
+      "command": "env -u RETROINFER_LAYER_CACHE_RESIDENCY RETROINFER_CACHE_TELEMETRY=1 RETROINFER_LAYER_CACHE_CAPACITY_SCALE='1=0.75,25=0.75,29=0.75' .venv/bin/python throughput_eval/reproduce_block_cache.py --suite opt_attempt_003_low3_scale0p75 --context-batch-groups 120000x8 --cache-ratios 0.05 --baseline-cache-ratio 0.05 --rounds 1 --gen-len 100 --retrieval-budget 0.018 --estimation-budget 0.232 --seed 2025 --cuda-visible-devices 0 --require-idle-gpu --stop-on-error --output-dir attempts/opt_attempt_003_multilayer_fractional_capacity/low3_scale0p75_120k_b8_cr0p05",
+      "correctness": {
+        "all_outputs_contain_groundtruth": true,
+        "groundtruth": "9879991",
+        "harness_status": "passed",
+        "oracle": "RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+        "returncode": 0,
+        "status": "pass",
+        "task_contains_groundtruth": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      "deltas_vs_baseline": {
+        "block_cache_total_gib": {
+          "candidate": 5.67626953125,
+          "delta": -0.13623046875,
+          "delta_pct": -2.34375,
+          "reference": 5.8125
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 193.7844088514255,
+          "delta": -5.052005535668002,
+          "delta_pct": -2.540784871443512,
+          "reference": 198.8364143870935
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.2860087153163926,
+          "delta": 0.008963097316392776,
+          "delta_pct": 0.2735115210835242,
+          "reference": 3.277045618
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41816.0,
+          "delta": -144.0,
+          "delta_pct": -0.34318398474737843,
+          "reference": 41960.0
+        }
+      },
+      "deltas_vs_prior_layer_off": {
+        "block_cache_total_gib": {
+          "candidate": 5.67626953125,
+          "delta": 0.04541015625,
+          "delta_pct": 0.8064516129032258,
+          "reference": 5.630859375
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 193.7844088514255,
+          "delta": -0.31233811956764157,
+          "delta_pct": -0.16091878119643038,
+          "reference": 194.09674697099314
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.2860087153163926,
+          "delta": 0.011921788727050853,
+          "delta_pct": 0.36412560186573706,
+          "reference": 3.2740869265893418
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41816.0,
+          "delta": 44.0,
+          "delta_pct": 0.10533371636502921,
+          "reference": 41772.0
+        }
+      },
+      "deltas_vs_validation_layer1_0p75": {
+        "block_cache_total_gib": {
+          "candidate": 5.67626953125,
+          "delta": -0.0908203125,
+          "delta_pct": -1.5748031496062993,
+          "reference": 5.76708984375
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 193.7844088514255,
+          "delta": -7.720647508001832,
+          "delta_pct": -3.831490706729665,
+          "reference": 201.50505635942733
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.2860087153163926,
+          "delta": 0.006436754876924411,
+          "delta_pct": 0.19626813970143453,
+          "reference": 3.279571960439468
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41816.0,
+          "delta": -96.0,
+          "delta_pct": -0.22905134567665586,
+          "reference": 41912.0
+        }
+      },
+      "description": "top-3 low-hit layers from telemetry at 75% capacity",
+      "execution_status": "completed",
+      "failure_class": "success",
+      "idea_status": "correctness_passed_e2e_conservative_tradeoff_not_selected",
+      "layer_capacity_metadata": {
+        "active_layer_count": 32,
+        "all_layer_bytes": [
+          195035136,
+          146276352,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          146276352,
+          195035136,
+          195035136,
+          195035136,
+          146276352,
+          195035136,
+          195035136
+        ],
+        "all_layer_capacity_scales": [
+          1.0,
+          0.75,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.75,
+          1.0,
+          1.0,
+          1.0,
+          0.75,
+          1.0,
+          1.0
+        ],
+        "all_layer_pages": [
+          744,
+          558,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          558,
+          744,
+          744,
+          744,
+          558,
+          744,
+          744
+        ],
+        "block_cache_capacity_scale_spec": "1=0.75,25=0.75,29=0.75",
+        "nominal_pages_per_layer": 744
+      },
+      "metrics": {
+        "block_cache_total_bytes": 6094848000,
+        "block_cache_total_gib": 5.67626953125,
+        "block_cache_total_mib": 5812.5,
+        "decode_latency_s": 4.0870161056518555,
+        "decode_throughput_tokens_s": 193.7844088514255,
+        "e2e_generated_tokens_per_s": 3.2860087153163926,
+        "e2e_latency_s": 243.456444978714,
+        "miss_num_units": 4387761,
+        "peak_process_gpu_memory_mib": 41816.0,
+        "torch_cuda_peak_allocated_mib": 38420.56884765625,
+        "torch_cuda_peak_reserved_mib": 41286.0,
+        "total_hit_rate_units": 0.9261336708609135,
+        "total_miss_rate_units": 0.0738663291390865,
+        "update_num_units": 4387761
+      },
+      "raw_artifacts": {
+        "memory_samples": "attempts/opt_attempt_003_multilayer_fractional_capacity/low3_scale0p75_120k_b8_cr0p05/memory_samples/opt_attempt_003_low3_scale0p75_retroinfer_ctx120000_bsz8_cr0p05_r1.jsonl",
+        "output_dir": "attempts/opt_attempt_003_multilayer_fractional_capacity/low3_scale0p75_120k_b8_cr0p05",
+        "raw_log": "attempts/opt_attempt_003_multilayer_fractional_capacity/low3_scale0p75_120k_b8_cr0p05/raw_logs/opt_attempt_003_low3_scale0p75_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+        "report": "attempts/opt_attempt_003_multilayer_fractional_capacity/low3_scale0p75_120k_b8_cr0p05/REPORT.md",
+        "results_jsonl": "attempts/opt_attempt_003_multilayer_fractional_capacity/low3_scale0p75_120k_b8_cr0p05/results.jsonl",
+        "summary_csv": "attempts/opt_attempt_003_multilayer_fractional_capacity/low3_scale0p75_120k_b8_cr0p05/summary.csv"
+      },
+      "summary_row": {
+        "batch_size": "8",
+        "block_cache_active_layer_count": "32",
+        "block_cache_bytes_per_layer": "190464000",
+        "block_cache_capacity_scale_spec": "1=0.75,25=0.75,29=0.75",
+        "block_cache_clusters_per_layer": "372",
+        "block_cache_dtype_bytes": "2",
+        "block_cache_index_clusters": "7440",
+        "block_cache_layer_bytes": "[195035136, 146276352, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 146276352, 195035136, 195035136, 195035136, 146276352, 195035136, 195035136]",
+        "block_cache_layer_capacity_scales": "[1.0, 0.75, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.75, 1.0, 1.0, 1.0, 0.75, 1.0, 1.0]",
+        "block_cache_layer_count": "32",
+        "block_cache_layer_pages": "[744, 558, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 558, 744, 744, 744, 558, 744, 744]",
+        "block_cache_nominal_bytes_per_layer": "195035136",
+        "block_cache_nominal_pages_per_layer": "744",
+        "block_cache_page_size_vectors": "8",
+        "block_cache_pages_per_cluster": "2",
+        "block_cache_pages_per_layer": "744",
+        "block_cache_percent_of_a100_80gb": "7.0953369140625",
+        "block_cache_ratio": "0.05",
+        "block_cache_residency_mode": "all",
+        "block_cache_retrieval_clusters": "134",
+        "block_cache_source": "cache_ratio",
+        "block_cache_total_bytes": "6094848000",
+        "block_cache_total_gib": "5.67626953125",
+        "block_cache_total_mib": "5812.5",
+        "block_cache_total_pages": "23250",
+        "block_cache_total_vectors": "186000",
+        "block_cache_vectors_per_layer": "5952",
+        "cache_ratio": "0.05",
+        "cache_role": "paper_default_5pct",
+        "context_len": "120000",
+        "failed_runs": "0",
+        "gen_len": "100",
+        "max_peak_process_gpu_memory_mib": "41816.0",
+        "mean_block_cache_percent_of_peak_process_memory": "13.90018174861297",
+        "mean_decode_latency_s": "4.0870161056518555",
+        "mean_decode_throughput_tokens_s": "193.7844088514255",
+        "mean_e2e_latency_s": "243.456444978714",
+        "mean_non_block_cache_peak_process_memory_mib": "36003.5",
+        "mean_peak_process_gpu_memory_mib": "41816.0",
+        "mean_torch_cuda_peak_allocated_mib": "38420.56884765625",
+        "mean_torch_cuda_peak_reserved_mib": "41286.0",
+        "method": "RetroInfer",
+        "model_name": "gradientai/Llama-3-8B-Instruct-Gradient-1048k",
+        "passed_runs": "1",
+        "round_decode_throughput_tokens_s": "r1=193.784409",
+        "round_peak_process_gpu_memory_mib": "r1=41816.0",
+        "seed": "2025",
+        "stdev_decode_throughput_tokens_s": "",
+        "suite": "opt_attempt_003_low3_scale0p75",
+        "task_name": "NIAH",
+        "total_runs": "1",
+        "variance_decode_throughput_tokens_s": ""
+      }
+    },
+    {
+      "cache_hit_impact_vs_telemetry_baseline": {
+        "reference_source": "attempts/opt_attempt_001_layer_cache_residency/telemetry_probe_120k_b8_cr0p05/results.jsonl",
+        "target_layers": {
+          "1": {
+            "baseline_hit_rate_units": 0.7376961131046624,
+            "baseline_miss_num_units": 486905,
+            "candidate_hit_rate_units": 0.7088989385055041,
+            "candidate_miss_num_units": 540384,
+            "delta_hit_rate_units": -0.028797174599158315,
+            "delta_miss_num_units": 53479
+          },
+          "2": {
+            "baseline_hit_rate_units": 0.8890055747241795,
+            "baseline_miss_num_units": 221741,
+            "candidate_hit_rate_units": 0.828249028172243,
+            "candidate_miss_num_units": 343121,
+            "delta_hit_rate_units": -0.06075654655193652,
+            "delta_miss_num_units": 121380
+          },
+          "25": {
+            "baseline_hit_rate_units": 0.8832780891908495,
+            "baseline_miss_num_units": 210333,
+            "candidate_hit_rate_units": 0.8524479552191269,
+            "candidate_miss_num_units": 265918,
+            "delta_hit_rate_units": -0.03083013397172263,
+            "delta_miss_num_units": 55585
+          },
+          "28": {
+            "baseline_hit_rate_units": 0.8970980460613223,
+            "baseline_miss_num_units": 183918,
+            "candidate_hit_rate_units": 0.8707678811305755,
+            "candidate_miss_num_units": 230986,
+            "delta_hit_rate_units": -0.026330164930746802,
+            "delta_miss_num_units": 47068
+          },
+          "29": {
+            "baseline_hit_rate_units": 0.8807853510906837,
+            "baseline_miss_num_units": 210823,
+            "candidate_hit_rate_units": 0.854014239423637,
+            "candidate_miss_num_units": 258151,
+            "delta_hit_rate_units": -0.02677111166704671,
+            "delta_miss_num_units": 47328
+          },
+          "3": {
+            "baseline_hit_rate_units": 0.896220458582892,
+            "baseline_miss_num_units": 188693,
+            "candidate_hit_rate_units": 0.8821747896164976,
+            "candidate_miss_num_units": 214247,
+            "delta_hit_rate_units": -0.014045668966394365,
+            "delta_miss_num_units": 25554
+          }
+        },
+        "total": {
+          "candidate": 0.9228173089838709,
+          "delta": -0.005884976630677552,
+          "delta_pct": -0.6336774143700203,
+          "reference": 0.9287022856145485
+        }
+      },
+      "candidate_id": "low6_scale0p75",
+      "capacity_spec": "1=0.75,2-3=0.75,25=0.75,28-29=0.75",
+      "command": "env -u RETROINFER_LAYER_CACHE_RESIDENCY RETROINFER_CACHE_TELEMETRY=1 RETROINFER_LAYER_CACHE_CAPACITY_SCALE='1=0.75,2-3=0.75,25=0.75,28-29=0.75' .venv/bin/python throughput_eval/reproduce_block_cache.py --suite opt_attempt_003_low6_scale0p75 --context-batch-groups 120000x8 --cache-ratios 0.05 --baseline-cache-ratio 0.05 --rounds 1 --gen-len 100 --retrieval-budget 0.018 --estimation-budget 0.232 --seed 2025 --cuda-visible-devices 0 --require-idle-gpu --stop-on-error --output-dir attempts/opt_attempt_003_multilayer_fractional_capacity/low6_scale0p75_120k_b8_cr0p05",
+      "correctness": {
+        "all_outputs_contain_groundtruth": true,
+        "groundtruth": "9879991",
+        "harness_status": "passed",
+        "oracle": "RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+        "returncode": 0,
+        "status": "pass",
+        "task_contains_groundtruth": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      "deltas_vs_baseline": {
+        "block_cache_total_gib": {
+          "candidate": 5.5400390625,
+          "delta": -0.2724609375,
+          "delta_pct": -4.6875,
+          "reference": 5.8125
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 194.41043488764666,
+          "delta": -4.425979499446839,
+          "delta_pct": -2.225940109154438,
+          "reference": 198.8364143870935
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.2685992281761207,
+          "delta": -0.00844638982387913,
+          "delta_pct": -0.2577440416906375,
+          "reference": 3.277045618
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41672.0,
+          "delta": -288.0,
+          "delta_pct": -0.6863679694947569,
+          "reference": 41960.0
+        }
+      },
+      "deltas_vs_prior_layer_off": {
+        "block_cache_total_gib": {
+          "candidate": 5.5400390625,
+          "delta": -0.0908203125,
+          "delta_pct": -1.6129032258064515,
+          "reference": 5.630859375
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 194.41043488764666,
+          "delta": 0.3136879166535209,
+          "delta_pct": 0.1616142060847625,
+          "reference": 194.09674697099314
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.2685992281761207,
+          "delta": -0.005487698413221054,
+          "delta_pct": -0.16761004018111575,
+          "reference": 3.2740869265893418
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41672.0,
+          "delta": -100.0,
+          "delta_pct": -0.23939480992052092,
+          "reference": 41772.0
+        }
+      },
+      "deltas_vs_validation_layer1_0p75": {
+        "block_cache_total_gib": {
+          "candidate": 5.5400390625,
+          "delta": -0.22705078125,
+          "delta_pct": -3.937007874015748,
+          "reference": 5.76708984375
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 194.41043488764666,
+          "delta": -7.09462147178067,
+          "delta_pct": -3.520815606297192,
+          "reference": 201.50505635942733
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.2685992281761207,
+          "delta": -0.010972732263347496,
+          "delta_pct": -0.3345781826320143,
+          "reference": 3.279571960439468
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41672.0,
+          "delta": -240.0,
+          "delta_pct": -0.5726283641916396,
+          "reference": 41912.0
+        }
+      },
+      "description": "all six assigned low-hit layers at 75% capacity",
+      "execution_status": "completed",
+      "failure_class": "success",
+      "idea_status": "retained_memory_decode_pareto_tradeoff_correctness_passed",
+      "layer_capacity_metadata": {
+        "active_layer_count": 32,
+        "all_layer_bytes": [
+          195035136,
+          146276352,
+          146276352,
+          146276352,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          146276352,
+          195035136,
+          195035136,
+          146276352,
+          146276352,
+          195035136,
+          195035136
+        ],
+        "all_layer_capacity_scales": [
+          1.0,
+          0.75,
+          0.75,
+          0.75,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.75,
+          1.0,
+          1.0,
+          0.75,
+          0.75,
+          1.0,
+          1.0
+        ],
+        "all_layer_pages": [
+          744,
+          558,
+          558,
+          558,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          558,
+          744,
+          744,
+          558,
+          558,
+          744,
+          744
+        ],
+        "block_cache_capacity_scale_spec": "1=0.75,2-3=0.75,25=0.75,28-29=0.75",
+        "nominal_pages_per_layer": 744
+      },
+      "metrics": {
+        "block_cache_total_bytes": 5948571648,
+        "block_cache_total_gib": 5.5400390625,
+        "block_cache_total_mib": 5673.0,
+        "decode_latency_s": 4.073855400085449,
+        "decode_throughput_tokens_s": 194.41043488764666,
+        "e2e_generated_tokens_per_s": 3.2685992281761207,
+        "e2e_latency_s": 244.75316309928894,
+        "miss_num_units": 4584789,
+        "peak_process_gpu_memory_mib": 41672.0,
+        "torch_cuda_peak_allocated_mib": 38276.56884765625,
+        "torch_cuda_peak_reserved_mib": 41142.0,
+        "total_hit_rate_units": 0.9228173089838709,
+        "total_miss_rate_units": 0.07718269101612903,
+        "update_num_units": 4584789
+      },
+      "raw_artifacts": {
+        "memory_samples": "attempts/opt_attempt_003_multilayer_fractional_capacity/low6_scale0p75_120k_b8_cr0p05/memory_samples/opt_attempt_003_low6_scale0p75_retroinfer_ctx120000_bsz8_cr0p05_r1.jsonl",
+        "output_dir": "attempts/opt_attempt_003_multilayer_fractional_capacity/low6_scale0p75_120k_b8_cr0p05",
+        "raw_log": "attempts/opt_attempt_003_multilayer_fractional_capacity/low6_scale0p75_120k_b8_cr0p05/raw_logs/opt_attempt_003_low6_scale0p75_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+        "report": "attempts/opt_attempt_003_multilayer_fractional_capacity/low6_scale0p75_120k_b8_cr0p05/REPORT.md",
+        "results_jsonl": "attempts/opt_attempt_003_multilayer_fractional_capacity/low6_scale0p75_120k_b8_cr0p05/results.jsonl",
+        "summary_csv": "attempts/opt_attempt_003_multilayer_fractional_capacity/low6_scale0p75_120k_b8_cr0p05/summary.csv"
+      },
+      "summary_row": {
+        "batch_size": "8",
+        "block_cache_active_layer_count": "32",
+        "block_cache_bytes_per_layer": "185892864",
+        "block_cache_capacity_scale_spec": "1=0.75,2-3=0.75,25=0.75,28-29=0.75",
+        "block_cache_clusters_per_layer": "372",
+        "block_cache_dtype_bytes": "2",
+        "block_cache_index_clusters": "7440",
+        "block_cache_layer_bytes": "[195035136, 146276352, 146276352, 146276352, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 146276352, 195035136, 195035136, 146276352, 146276352, 195035136, 195035136]",
+        "block_cache_layer_capacity_scales": "[1.0, 0.75, 0.75, 0.75, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.75, 1.0, 1.0, 0.75, 0.75, 1.0, 1.0]",
+        "block_cache_layer_count": "32",
+        "block_cache_layer_pages": "[744, 558, 558, 558, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 558, 744, 744, 558, 558, 744, 744]",
+        "block_cache_nominal_bytes_per_layer": "195035136",
+        "block_cache_nominal_pages_per_layer": "744",
+        "block_cache_page_size_vectors": "8",
+        "block_cache_pages_per_cluster": "2",
+        "block_cache_pages_per_layer": "744",
+        "block_cache_percent_of_a100_80gb": "6.925048828125",
+        "block_cache_ratio": "0.05",
+        "block_cache_residency_mode": "all",
+        "block_cache_retrieval_clusters": "134",
+        "block_cache_source": "cache_ratio",
+        "block_cache_total_bytes": "5948571648",
+        "block_cache_total_gib": "5.5400390625",
+        "block_cache_total_mib": "5673.0",
+        "block_cache_total_pages": "22692",
+        "block_cache_total_vectors": "181536",
+        "block_cache_vectors_per_layer": "5952",
+        "cache_ratio": "0.05",
+        "cache_role": "paper_default_5pct",
+        "context_len": "120000",
+        "failed_runs": "0",
+        "gen_len": "100",
+        "max_peak_process_gpu_memory_mib": "41672.0",
+        "mean_block_cache_percent_of_peak_process_memory": "13.613457477442887",
+        "mean_decode_latency_s": "4.073855400085449",
+        "mean_decode_throughput_tokens_s": "194.41043488764666",
+        "mean_e2e_latency_s": "244.75316309928894",
+        "mean_non_block_cache_peak_process_memory_mib": "35999.0",
+        "mean_peak_process_gpu_memory_mib": "41672.0",
+        "mean_torch_cuda_peak_allocated_mib": "38276.56884765625",
+        "mean_torch_cuda_peak_reserved_mib": "41142.0",
+        "method": "RetroInfer",
+        "model_name": "gradientai/Llama-3-8B-Instruct-Gradient-1048k",
+        "passed_runs": "1",
+        "round_decode_throughput_tokens_s": "r1=194.410435",
+        "round_peak_process_gpu_memory_mib": "r1=41672.0",
+        "seed": "2025",
+        "stdev_decode_throughput_tokens_s": "",
+        "suite": "opt_attempt_003_low6_scale0p75",
+        "task_name": "NIAH",
+        "total_runs": "1",
+        "variance_decode_throughput_tokens_s": ""
+      }
+    },
+    {
+      "cache_hit_impact_vs_telemetry_baseline": {
+        "reference_source": "attempts/opt_attempt_001_layer_cache_residency/telemetry_probe_120k_b8_cr0p05/results.jsonl",
+        "target_layers": {
+          "1": {
+            "baseline_hit_rate_units": 0.7376961131046624,
+            "baseline_miss_num_units": 486905,
+            "candidate_hit_rate_units": 0.7089908638433057,
+            "candidate_miss_num_units": 540186,
+            "delta_hit_rate_units": -0.028705249261356758,
+            "delta_miss_num_units": 53281
+          },
+          "2": {
+            "baseline_hit_rate_units": 0.8890055747241795,
+            "baseline_miss_num_units": 221741,
+            "candidate_hit_rate_units": 0.8641341973463886,
+            "candidate_miss_num_units": 271413,
+            "delta_hit_rate_units": -0.024871377377790882,
+            "delta_miss_num_units": 49672
+          },
+          "25": {
+            "baseline_hit_rate_units": 0.8832780891908495,
+            "baseline_miss_num_units": 210333,
+            "candidate_hit_rate_units": 0.8528732570239334,
+            "candidate_miss_num_units": 265104,
+            "delta_hit_rate_units": -0.03040483216691614,
+            "delta_miss_num_units": 54771
+          },
+          "28": {
+            "baseline_hit_rate_units": 0.8970980460613223,
+            "baseline_miss_num_units": 183918,
+            "candidate_hit_rate_units": 0.887586101554374,
+            "candidate_miss_num_units": 200915,
+            "delta_hit_rate_units": -0.009511944506948256,
+            "delta_miss_num_units": 16997
+          },
+          "29": {
+            "baseline_hit_rate_units": 0.8807853510906837,
+            "baseline_miss_num_units": 210823,
+            "candidate_hit_rate_units": 0.8540955882352941,
+            "candidate_miss_num_units": 257959,
+            "delta_hit_rate_units": -0.026689762855389598,
+            "delta_miss_num_units": 47136
+          },
+          "3": {
+            "baseline_hit_rate_units": 0.896220458582892,
+            "baseline_miss_num_units": 188693,
+            "candidate_hit_rate_units": 0.8902672369746106,
+            "candidate_miss_num_units": 199516,
+            "delta_hit_rate_units": -0.005953221608281378,
+            "delta_miss_num_units": 10823
+          }
+        },
+        "total": {
+          "candidate": 0.9248045625527777,
+          "delta": -0.0038977230617708303,
+          "delta_pct": -0.4196956465108296,
+          "reference": 0.9287022856145485
+        }
+      },
+      "candidate_id": "low3_0p75_secondary_0p875",
+      "capacity_spec": "1=0.75,25=0.75,29=0.75,2-3=0.875,28=0.875",
+      "command": "env -u RETROINFER_LAYER_CACHE_RESIDENCY RETROINFER_CACHE_TELEMETRY=1 RETROINFER_LAYER_CACHE_CAPACITY_SCALE='1=0.75,25=0.75,29=0.75,2-3=0.875,28=0.875' .venv/bin/python throughput_eval/reproduce_block_cache.py --suite opt_attempt_003_low3_0p75_secondary_0p875 --context-batch-groups 120000x8 --cache-ratios 0.05 --baseline-cache-ratio 0.05 --rounds 1 --gen-len 100 --retrieval-budget 0.018 --estimation-budget 0.232 --seed 2025 --cuda-visible-devices 0 --require-idle-gpu --stop-on-error --output-dir attempts/opt_attempt_003_multilayer_fractional_capacity/low3_0p75_secondary_0p875_120k_b8_cr0p05",
+      "correctness": {
+        "all_outputs_contain_groundtruth": true,
+        "groundtruth": "9879991",
+        "harness_status": "passed",
+        "oracle": "RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth",
+        "returncode": 0,
+        "status": "pass",
+        "task_contains_groundtruth": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      "deltas_vs_baseline": {
+        "block_cache_total_gib": {
+          "candidate": 5.60888671875,
+          "delta": -0.20361328125,
+          "delta_pct": -3.503024193548387,
+          "reference": 5.8125
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 192.1092373632477,
+          "delta": -6.7271770238457975,
+          "delta_pct": -3.383272145890426,
+          "reference": 198.8364143870935
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.2746790217373225,
+          "delta": -0.002366596262677323,
+          "delta_pct": -0.07221737316313803,
+          "reference": 3.277045618
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41744.0,
+          "delta": -216.0,
+          "delta_pct": -0.5147759771210677,
+          "reference": 41960.0
+        }
+      },
+      "deltas_vs_prior_layer_off": {
+        "block_cache_total_gib": {
+          "candidate": 5.60888671875,
+          "delta": -0.02197265625,
+          "delta_pct": -0.39021852237252863,
+          "reference": 5.630859375
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 192.1092373632477,
+          "delta": -1.9875096077454373,
+          "delta_pct": -1.0239788346594296,
+          "reference": 194.09674697099314
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.2746790217373225,
+          "delta": 0.0005920951479807535,
+          "delta_pct": 0.018084283076672817,
+          "reference": 3.2740869265893418
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41744.0,
+          "delta": -28.0,
+          "delta_pct": -0.06703054677774586,
+          "reference": 41772.0
+        }
+      },
+      "deltas_vs_validation_layer1_0p75": {
+        "block_cache_total_gib": {
+          "candidate": 5.60888671875,
+          "delta": -0.158203125,
+          "delta_pct": -2.743205486410973,
+          "reference": 5.76708984375
+        },
+        "decode_throughput_tokens_s": {
+          "candidate": 192.1092373632477,
+          "delta": -9.395818996179628,
+          "delta_pct": -4.662820460157673,
+          "reference": 201.50505635942733
+        },
+        "e2e_generated_tokens_per_s": {
+          "candidate": 3.2746790217373225,
+          "delta": -0.004892938702145688,
+          "delta_pct": -0.1491944302844334,
+          "reference": 3.279571960439468
+        },
+        "peak_process_gpu_memory_mib": {
+          "candidate": 41744.0,
+          "delta": -168.0,
+          "delta_pct": -0.40083985493414775,
+          "reference": 41912.0
+        }
+      },
+      "description": "top-3 low-hit layers at 75%, secondary low-hit layers at 87.5%",
+      "execution_status": "completed",
+      "failure_class": "success",
+      "idea_status": "correctness_passed_non_competitive_decode_tradeoff",
+      "layer_capacity_metadata": {
+        "active_layer_count": 32,
+        "all_layer_bytes": [
+          195035136,
+          146276352,
+          170917888,
+          170917888,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          195035136,
+          146276352,
+          195035136,
+          195035136,
+          170917888,
+          146276352,
+          195035136,
+          195035136
+        ],
+        "all_layer_capacity_scales": [
+          1.0,
+          0.75,
+          0.8763440860215054,
+          0.8763440860215054,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.75,
+          1.0,
+          1.0,
+          0.8763440860215054,
+          0.75,
+          1.0,
+          1.0
+        ],
+        "all_layer_pages": [
+          744,
+          558,
+          652,
+          652,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          744,
+          558,
+          744,
+          744,
+          652,
+          558,
+          744,
+          744
+        ],
+        "block_cache_capacity_scale_spec": "1=0.75,25=0.75,29=0.75,2-3=0.875,28=0.875",
+        "nominal_pages_per_layer": 744
+      },
+      "metrics": {
+        "block_cache_total_bytes": 6022496256,
+        "block_cache_total_gib": 5.60888671875,
+        "block_cache_total_mib": 5743.5,
+        "decode_latency_s": 4.122654438018799,
+        "decode_throughput_tokens_s": 192.1092373632477,
+        "e2e_generated_tokens_per_s": 3.2746790217373225,
+        "e2e_latency_s": 244.29875254631042,
+        "miss_num_units": 4466615,
+        "peak_process_gpu_memory_mib": 41744.0,
+        "torch_cuda_peak_allocated_mib": 38348.56884765625,
+        "torch_cuda_peak_reserved_mib": 41214.0,
+        "total_hit_rate_units": 0.9248045625527777,
+        "total_miss_rate_units": 0.07519543744722229,
+        "update_num_units": 4466615
+      },
+      "raw_artifacts": {
+        "memory_samples": "attempts/opt_attempt_003_multilayer_fractional_capacity/low3_0p75_secondary_0p875_120k_b8_cr0p05/memory_samples/opt_attempt_003_low3_0p75_secondary_0p875_retroinfer_ctx120000_bsz8_cr0p05_r1.jsonl",
+        "output_dir": "attempts/opt_attempt_003_multilayer_fractional_capacity/low3_0p75_secondary_0p875_120k_b8_cr0p05",
+        "raw_log": "attempts/opt_attempt_003_multilayer_fractional_capacity/low3_0p75_secondary_0p875_120k_b8_cr0p05/raw_logs/opt_attempt_003_low3_0p75_secondary_0p875_retroinfer_ctx120000_bsz8_cr0p05_r1.txt",
+        "report": "attempts/opt_attempt_003_multilayer_fractional_capacity/low3_0p75_secondary_0p875_120k_b8_cr0p05/REPORT.md",
+        "results_jsonl": "attempts/opt_attempt_003_multilayer_fractional_capacity/low3_0p75_secondary_0p875_120k_b8_cr0p05/results.jsonl",
+        "summary_csv": "attempts/opt_attempt_003_multilayer_fractional_capacity/low3_0p75_secondary_0p875_120k_b8_cr0p05/summary.csv"
+      },
+      "summary_row": {
+        "batch_size": "8",
+        "block_cache_active_layer_count": "32",
+        "block_cache_bytes_per_layer": "188203008",
+        "block_cache_capacity_scale_spec": "1=0.75,25=0.75,29=0.75,2-3=0.875,28=0.875",
+        "block_cache_clusters_per_layer": "372",
+        "block_cache_dtype_bytes": "2",
+        "block_cache_index_clusters": "7440",
+        "block_cache_layer_bytes": "[195035136, 146276352, 170917888, 170917888, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 195035136, 146276352, 195035136, 195035136, 170917888, 146276352, 195035136, 195035136]",
+        "block_cache_layer_capacity_scales": "[1.0, 0.75, 0.8763440860215054, 0.8763440860215054, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.75, 1.0, 1.0, 0.8763440860215054, 0.75, 1.0, 1.0]",
+        "block_cache_layer_count": "32",
+        "block_cache_layer_pages": "[744, 558, 652, 652, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 744, 558, 744, 744, 652, 558, 744, 744]",
+        "block_cache_nominal_bytes_per_layer": "195035136",
+        "block_cache_nominal_pages_per_layer": "744",
+        "block_cache_page_size_vectors": "8",
+        "block_cache_pages_per_cluster": "2",
+        "block_cache_pages_per_layer": "744",
+        "block_cache_percent_of_a100_80gb": "7.0111083984375",
+        "block_cache_ratio": "0.05",
+        "block_cache_residency_mode": "all",
+        "block_cache_retrieval_clusters": "134",
+        "block_cache_source": "cache_ratio",
+        "block_cache_total_bytes": "6022496256",
+        "block_cache_total_gib": "5.60888671875",
+        "block_cache_total_mib": "5743.5",
+        "block_cache_total_pages": "22974",
+        "block_cache_total_vectors": "183792",
+        "block_cache_vectors_per_layer": "5952",
+        "cache_ratio": "0.05",
+        "cache_role": "paper_default_5pct",
+        "context_len": "120000",
+        "failed_runs": "0",
+        "gen_len": "100",
+        "max_peak_process_gpu_memory_mib": "41744.0",
+        "mean_block_cache_percent_of_peak_process_memory": "13.758863549252586",
+        "mean_decode_latency_s": "4.122654438018799",
+        "mean_decode_throughput_tokens_s": "192.1092373632477",
+        "mean_e2e_latency_s": "244.29875254631042",
+        "mean_non_block_cache_peak_process_memory_mib": "36000.5",
+        "mean_peak_process_gpu_memory_mib": "41744.0",
+        "mean_torch_cuda_peak_allocated_mib": "38348.56884765625",
+        "mean_torch_cuda_peak_reserved_mib": "41214.0",
+        "method": "RetroInfer",
+        "model_name": "gradientai/Llama-3-8B-Instruct-Gradient-1048k",
+        "passed_runs": "1",
+        "round_decode_throughput_tokens_s": "r1=192.109237",
+        "round_peak_process_gpu_memory_mib": "r1=41744.0",
+        "seed": "2025",
+        "stdev_decode_throughput_tokens_s": "",
+        "suite": "opt_attempt_003_low3_0p75_secondary_0p875",
+        "task_name": "NIAH",
+        "total_runs": "1",
+        "variance_decode_throughput_tokens_s": ""
+      }
+    }
+  ],
+  "code_diff_sha256_for_existing_runtime_controls": "86c09205e792db488b390f146cc6540cdcc713eba54579ce51e8ea9f7b8e6d61",
+  "conclusion": {
+    "limits": [
+      "All opt_attempt_003 timings were collected with RETROINFER_CACHE_TELEMETRY=1 to record cache-hit impact; compare throughput to non-telemetry validation/baseline as directional until revalidated without telemetry.",
+      "Single-round measurements on one A100 support optimize-stage selection only; validation would need repeat runs for stability.",
+      "No profiler timeline was collected, so no asynchronous transfer/compute overlap claim is made."
+    ],
+    "retained_candidate": "low6_scale0p75",
+    "retained_capacity_spec": "1=0.75,2-3=0.75,25=0.75,28-29=0.75",
+    "why": "Within the three telemetry-enabled one-round schedules, low6_scale0p75 passed correctness and had the lowest block-cache memory, lowest peak process GPU memory, and highest decode throughput. It is a memory/decode Pareto tradeoff versus the canonical baseline and improves the prior layer-off memory/decode point, but it does not claim async H2D overlap and its e2e latency is a small tradeoff."
+  },
+  "environment": {
+    "audit_log": "attempts/opt_attempt_003_multilayer_fractional_capacity/environment_audit.log",
+    "runtime_status": "installed_runtime_usable",
+    "source_rebuild_status": {
+      "evidence": "attempt environment audit shows torch CUDA 12.4 and installed retroinfer_kernels import successfully on A100, while nvcc is CUDA 12.0 under /usr/bin and CUDA 13.3 under /usr/local/cuda; no CUDA 12.4-compatible nvcc/CUDA_HOME was proven, so no rebuild was attempted.",
+      "execution_status": "blocked_for_source_rebuild",
+      "failure_class": "environment_rebuild_toolchain_cuda_version_mismatch",
+      "idea_status": "not_evaluated"
+    }
+  },
+  "evidence": "Raw artifacts: attempts/opt_attempt_003_multilayer_fractional_capacity/low3_scale0p75_120k_b8_cr0p05/, attempts/opt_attempt_003_multilayer_fractional_capacity/low6_scale0p75_120k_b8_cr0p05/, attempts/opt_attempt_003_multilayer_fractional_capacity/low3_0p75_secondary_0p875_120k_b8_cr0p05/. Environment audit: attempts/opt_attempt_003_multilayer_fractional_capacity/environment_audit.log. Frontier watch: research/frontier/optimize.json and research/FRONTIER_WATCH.jsonl. Structured candidate comparisons and raw log paths are in this OUTCOME.json candidate_matrix.",
+  "execution_status": "completed",
+  "failure_class": "none",
+  "generated_at": "2026-07-29T11:21:01+00:00",
+  "idea_status": "supported",
+  "path_coverage": "Each candidate raw log reports block_cache_capacity_scale_spec matching the requested multi-layer schedule, per-layer block_cache_layer_pages/capacity_scales reflecting reduced capacities, block_cache_telemetry_totals/layers populated by RETROINFER_CACHE_TELEMETRY=1, and RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth=true. The measured rows therefore exercised retroinfer_cache.block_cache_metadata(), WaveBufferCPU capacity construction, GPU cache tensor allocation, gather/scatter cache stride metadata, and the canonical throughput_eval/reproduce_block_cache.py harness path.",
+  "prior_layer_off_reference": {
+    "block_cache_total_gib": 5.630859375,
+    "candidate": "RETROINFER_LAYER_CACHE_RESIDENCY=layers:0,2-31",
+    "decode_throughput_tokens_s": 194.09674697099314,
+    "e2e_generated_tokens_per_s": 3.2740869265893418,
+    "peak_process_gpu_memory_mib": 41772.0,
+    "source": "attempts/opt_attempt_001_layer_cache_residency/OUTCOME.json and candidate31_120k_b8_cr0p05/results.jsonl"
+  },
+  "raw_artifacts": {
+    "attempt_dir": "attempts/opt_attempt_003_multilayer_fractional_capacity",
+    "changes": "attempts/opt_attempt_003_multilayer_fractional_capacity/CHANGES.md",
+    "environment_audit": "attempts/opt_attempt_003_multilayer_fractional_capacity/environment_audit.log",
+    "frontier_ledger": "research/FRONTIER_WATCH.jsonl",
+    "frontier_snapshot": "research/frontier/optimize.json",
+    "outcome": "attempts/opt_attempt_003_multilayer_fractional_capacity/OUTCOME.json"
+  },
+  "repository_head": "7096eab9190da389bbc75c1992140d1432d9d8ec",
+  "schema_version": 1,
+  "scope": {
+    "candidate_limit": "three one-round candidates; no CUDA/C++ rebuild; no new harness",
+    "configuration": {
+      "batch_size": 8,
+      "cache_ratio": 0.05,
+      "context_len": 120000,
+      "cuda_visible_devices": "0",
+      "gen_len": 100
+    },
+    "frontier_watch": {
+      "ledger": "research/FRONTIER_WATCH.jsonl",
+      "snapshot": "research/frontier/optimize.json"
+    },
+    "mechanism": "Python-only RETROINFER_LAYER_CACHE_CAPACITY_SCALE multi-layer fractional block-cache capacity schedules",
+    "stage": "optimize",
+    "telemetry_basis": {
+      "decode_throughput_tokens_s": 193.94677611656394,
+      "hit_rate_units": 0.9287022856145485,
+      "low_hit_layer_order": [
+        1,
+        25,
+        29,
+        2,
+        3,
+        28
+      ],
+      "low_hit_layers": {
+        "1": {
+          "hit_rate_units": 0.7376961131046624,
+          "miss_num_units": 486905
+        },
+        "2": {
+          "hit_rate_units": 0.8890055747241795,
+          "miss_num_units": 221741
+        },
+        "25": {
+          "hit_rate_units": 0.8832780891908495,
+          "miss_num_units": 210333
+        },
+        "28": {
+          "hit_rate_units": 0.8970980460613223,
+          "miss_num_units": 183918
+        },
+        "29": {
+          "hit_rate_units": 0.8807853510906837,
+          "miss_num_units": 210823
+        },
+        "3": {
+          "hit_rate_units": 0.896220458582892,
+          "miss_num_units": 188693
+        }
+      },
+      "miss_rate_units": 0.07129771438545153,
+      "note": "Telemetry probe uses RETROINFER_CACHE_TELEMETRY=1 and is used only for cache-hit impact; canonical throughput baseline remains research/BASELINE_RESULT.json.",
+      "source": "attempts/opt_attempt_001_layer_cache_residency/telemetry_probe_120k_b8_cr0p05/results.jsonl"
+    }
+  },
+  "selected_candidate": "low6_scale0p75",
+  "summary": "Three telemetry-enabled one-round multi-layer fractional capacity schedules ran successfully at 120000x8/gen_len=100/cache_ratio=0.05. All returned code 0 and all raw logs contain RETROINFER_OUTPUT_JSON.all_outputs_contain_groundtruth=true. The retained low6_scale0p75 schedule reduces block-cache memory from 5.8125 GiB to 5.5400390625 GiB and peak process GPU memory from 41960 MiB to 41672 MiB; decode throughput is 194.41043488764666 tok/s under telemetry versus the canonical non-telemetry baseline 198.8364143870935 tok/s, so it is a memory/decode tradeoff for validation rather than an async-overlap or speedup claim.",
+  "validation_reference": {
+    "block_cache_total_gib": 5.76708984375,
+    "candidate": "RETROINFER_LAYER_CACHE_CAPACITY_SCALE=1=0.75",
+    "decode_throughput_tokens_s": 201.50505635942733,
+    "e2e_generated_tokens_per_s": 3.279571960439468,
+    "note": "Validation candidate was measured without cache telemetry, so throughput deltas against telemetry-enabled opt_attempt_003 runs are directional only.",
+    "peak_process_gpu_memory_mib": 41912.0,
+    "source": "research/VALIDATION_RESULT.json"
+  }
+}

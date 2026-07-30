@@ -1,0 +1,70 @@
+# RetroInfer opt017 environment audit
+2026-07-29T23:06:26Z
+## Python/runtime
+{
+  "CUDA_HOME_env": null,
+  "capability0": "8.0",
+  "cuda_available": true,
+  "flash_attn": "2.7.3",
+  "flashinfer": "0.2.4+cu124torch2.5",
+  "gpu0": "NVIDIA A100 80GB PCIe",
+  "ninja_path": null,
+  "nsys_path": "/usr/local/bin/nsys",
+  "nsys_version": [
+    "NVIDIA Nsight Systems version 2026.1.3.425-261338342291v0"
+  ],
+  "nvcc_path": "/usr/bin/nvcc",
+  "nvcc_version": [
+    "nvcc: NVIDIA (R) Cuda compiler driver",
+    "Copyright (c) 2005-2023 NVIDIA Corporation",
+    "Built on Fri_Jan__6_16:45:21_PST_2023"
+  ],
+  "platform": "Linux-6.17.0-1020-azure-x86_64-with-glibc2.39",
+  "ptxas_path": "/usr/bin/ptxas",
+  "ptxas_version": [
+    "ptxas: NVIDIA (R) Ptx optimizing assembler",
+    "Copyright (c) 2005-2023 NVIDIA Corporation",
+    "Built on Fri_Jan__6_16:43:29_PST_2023"
+  ],
+  "pybind11": "2.12.0",
+  "python_executable": "/home/v-xuchuanluo/RetroInfer/.venv/bin/python",
+  "python_version": "3.11.15",
+  "retroinfer_kernels": "import_ok",
+  "side_stream_cudagraph_replay": "ok",
+  "torch": "2.5.1+cu124",
+  "torch_cpp_extension_CUDA_HOME": "/usr",
+  "torch_cuda": "12.4",
+  "transformers": "4.49.0",
+  "triton": "3.1.0",
+  "vllm": "0.6.5",
+  "weighted_flash_decoding": "0.1"
+}
+
+## Isolated PATH repair note
+venv_ninja_path=/home/v-xuchuanluo/RetroInfer/.venv/bin/ninja
+{
+  "ninja_path_with_venv_path": "/home/v-xuchuanluo/RetroInfer/.venv/bin/ninja",
+  "ninja_version_with_venv_path": [
+    "1.11.1.git.kitware.jobserver-1"
+  ],
+  "nsys_path_with_venv_path": "/usr/local/bin/nsys",
+  "nsys_version_with_venv_path": [
+    "NVIDIA Nsight Systems version 2026.1.3.425-261338342291v0"
+  ],
+  "nvcc_path_with_venv_path": "/usr/bin/nvcc",
+  "nvcc_version_with_venv_path": [
+    "nvcc: NVIDIA (R) Cuda compiler driver",
+    "Copyright (c) 2005-2023 NVIDIA Corporation",
+    "Built on Fri_Jan__6_16:45:21_PST_2023",
+    "Cuda compilation tools, release 12.0, V12.0.140",
+    "Build cuda_12.0.r12.0/compiler.32267302_0"
+  ],
+  "ptxas_path_with_venv_path": "/usr/bin/ptxas",
+  "ptxas_version_with_venv_path": [
+    "ptxas: NVIDIA (R) Ptx optimizing assembler",
+    "Copyright (c) 2005-2023 NVIDIA Corporation",
+    "Built on Fri_Jan__6_16:43:29_PST_2023",
+    "Cuda compilation tools, release 12.0, V12.0.140",
+    "Build cuda_12.0.r12.0/compiler.32267302_0"
+  ]
+}

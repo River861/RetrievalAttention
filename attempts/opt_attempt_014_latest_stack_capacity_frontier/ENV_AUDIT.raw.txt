@@ -1,0 +1,62 @@
+== pwd ==
+/home/v-xuchuanluo/RetroInfer
+== git head/status ==
+7096eab9190da389bbc75c1992140d1432d9d8ec
+ M cache_hub/retroinfer_cache.py
+ M model_hub/llama.py
+ M research/PIPELINE_STATE.json
+ M throughput_eval/reproduce_block_cache.py
+?? RESULTS.md
+?? attempts/
+?? research/BASELINE_PROTOCOL.md
+?? research/BASELINE_RESULT.json
+?? research/ENVIRONMENT_AUDIT.json
+?? research/ENVIRONMENT_AUDIT.md
+?? research/FRONTIER_WATCH.jsonl
+?? research/GROUND_TRUTH.md
+?? research/INFRASTRUCTURE_REUSE_PLAN.md
+?? research/KERNEL_SCOPE.md
+?? research/PROJECT_NATIVE_SETUP.md
+?? research/TOOLCHAIN_CANDIDATES.md
+?? research/VALIDATION_MATRIX.md
+?? research/VALIDATION_RESULT.json
+?? research/baseline_block_cache_single_a100_120k_b8_cr0p05/
+?? research/frontier/
+?? research/validation_fractional_layer_capacity_120k_b8_cr0p05/
+?? research/validation_layer_cache_residency_120k_b8_cr0p05/
+?? research/validation_low6_async_buffer_mult_3p0_120k_b8_cr0p05/
+?? research/validation_low6_async_cluster_id_copy_120k_b8_cr0p05/
+?? research/validation_low6_multilayer_fractional_capacity_120k_b8_cr0p05/
+== python/runtime ==
+python_executable= /home/v-xuchuanluo/RetroInfer/.venv/bin/python
+python_version= 3.11.15 (main, Mar  3 2026, 09:26:23) [GCC 13.3.0]
+platform= Linux-6.17.0-1020-azure-x86_64-with-glibc2.39
+torch= 2.5.1+cu124
+vllm= 0.6.5
+transformers= 4.49.0
+flash_attn= 2.7.3
+flashinfer= 0.2.4+cu124torch2.5
+triton= 3.1.0
+pybind11= 2.12.0
+weighted_flash_decoding= 0.1
+torch_cuda= 12.4
+cuda_available= True
+device0= NVIDIA A100 80GB PCIe
+device0_cc= 8.0
+device0_mem_mib= 81151
+retroinfer_kernels_symbols= ['ThreadPool', 'WaveBufferCPU', 'gather_copy_and_concat', 'gather_copy_and_scatter', 'gather_copy_vectors', 'batch_gemm_softmax']
+torch_cuda_home= /usr
+== gpu ==
+0, NVIDIA A100 80GB PCIe, 81920 MiB, 580.173.02, 8.0
+== nvcc probes ==
+/usr/bin/nvcc
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2023 NVIDIA Corporation
+Built on Fri_Jan__6_16:45:21_PST_2023
+Cuda compilation tools, release 12.0, V12.0.140
+Build cuda_12.0.r12.0/compiler.32267302_0
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2026 NVIDIA Corporation
+Built on Tue_Jun_09_02:43:40_PM_PDT_2026
+Cuda compilation tools, release 13.3, V13.3.73
+Build cuda_13.3.r13.3/compiler.38244171_0

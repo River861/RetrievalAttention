@@ -1,0 +1,3 @@
+candidate_id,capacity_spec,suite,rounds,artifact_dir,returncode
+layer31_0p75,"1=0.75,2-3=0.75,25=0.75,28-29=0.75,31=0.75",opt019_layer31_0p75,1,attempts/opt_attempt_019_latest_stack_telemetry_guided_capacity/raw/layer31_0p75_120k_b8_cr0p05,0
+full_low3_0p875,"1=0.75,2-3=0.75,25=0.75,27=0.875,28-29=0.75,30-31=0.875",opt019_full_low3_0p875,1,attempts/opt_attempt_019_latest_stack_telemetry_guided_capacity/raw/full_low3_0p875_120k_b8_cr0p05,0
